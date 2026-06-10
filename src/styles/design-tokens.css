@@ -1,0 +1,32 @@
+:root {
+  --color-bg: #f2f5f4;
+  --color-surface: #ffffff;
+  --color-fg: #29484a;
+  --color-muted: #71868b;
+  --color-border: #ffffffb8;
+  --color-accent: #35c7b0;
+  --color-accent-secondary: #72b8c7;
+  --color-warm: #e7dc76;
+  --color-pink: #eaa6b9;
+  --color-shadow: #50647816;
+  --font-display: "Avenir Next", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-body: "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --radius-control: 14px;
+  --radius-card: 30px;
+  --radius-large: 36px;
+  --shadow-glass: 0 18px 60px var(--color-shadow), inset 0 1px rgb(255 255 255 / .74);
+  --transition-fast: 200ms ease;
+  --transition-card: 250ms ease;
+  --page-width: 1280px;
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --fg: var(--color-fg);
+  --muted: var(--color-muted);
+  --border: var(--color-border);
+  --accent: var(--color-accent);
+  --accent-2: var(--color-accent-secondary);
+  --warm: var(--color-warm);
+  --pink: var(--color-pink);
+  --shadow: var(--color-shadow);
+}
