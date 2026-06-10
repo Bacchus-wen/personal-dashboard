@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Theodore · Personal Dashboard</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body data-page="home">
+  <main class="home-shell" style="padding-top: 64px;">
+    <aside class="home-side glass" data-od-id="home-navigation">
+      <div class="profile">
+        <span class="avatar">T</span>
+        <div><strong>Theodore</strong><span class="status">正在记录生活</span></div>
+      </div>
+      <p class="side-label">GENERAL</p>
+      <nav class="side-menu">
+        <a href="articles.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a2 2 0 0 1 2 2v15H7a2 2 0 0 1-2-2V4a1 1 0 0 1 1-1Z"></path><path d="M8 7h7M8 11h7M8 15h5"></path></svg>近期文章</a>
+        <a href="projects.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg>我的项目</a>
+        <a href="about.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M8.5 13.5c1.8 1.8 5.2 1.8 7 0M9 9.5h.01M15 9.5h.01"></path></svg>关于网站</a>
+        <a href="resources.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"></path></svg>推荐分享</a>
+        <a href="blogs.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg>优秀博客</a>
+      </nav>
+    </aside>
+
+    <div class="home-main">
+      <a class="album-preview glass lift" href="album.html" data-od-id="album-preview">
+        <div class="photo-strip">
+          <span class="mini-photo"></span><span class="mini-photo"></span>
+          <span class="mini-photo"></span><span class="mini-photo"></span>
+        </div>
+        <span class="preview-label">Album · 最近的光影</span>
+      </a>
+
+      <section class="welcome glass card lift" data-od-id="welcome">
+        <div>
+          <div class="welcome-mark">TH</div>
+          <p class="eyebrow">PERSONAL SPACE</p>
+          <h1>Good Night</h1>
+          <p>I'm Theodore, nice to meet you.</p>
+        </div>
+      </section>
+
+      <section class="socials" data-od-id="social-links">
+        <a class="glass" href="#">GitHub</a>
+        <a class="glass" href="#">小红书</a>
+        <a class="glass" href="#">Bilibili</a>
+        <a class="glass" href="#">X / Twitter</a>
+      </section>
+
+      <div class="home-bottom">
+        <a class="story glass card lift" href="album.html" data-od-id="album-story">
+          <div class="story-row">
+            <div class="thumb"></div>
+            <div><span class="eyebrow">PHOTO NOTE</span><h3>暮色之后的散步</h3><p>短暂离开屏幕，收集城市边缘的颜色。</p></div>
+          </div>
+        </a>
+        <a class="recommend glass card lift" href="resources.html" data-od-id="random-recommend">
+          <span class="eyebrow">随机推荐</span>
+          <h3>CSS · Glass &amp; Light</h3>
+          <p>关于柔光背景与可读性平衡的随手笔记。</p>
+          <div class="metrics mono"><span>Views —</span><span>Marks —</span></div>
+        </a>
+      </div>
+    </div>
+
+    <aside class="home-widgets">
+      <section class="clock glass card lift" data-od-id="clock">
+        <div class="clock-time" data-clock="">--:--</div><small data-date="">今天</small>
+      </section>
+      <section class="calendar glass card lift" data-od-id="calendar">
+        <h3>June 2026</h3>
+        <div class="calendar-grid">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+          <span>8</span><span>9</span><span class="today">10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+          <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+          <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+          <span>29</span><span>30</span>
+        </div>
+      </section>
+      <section class="player glass card lift" data-od-id="music-player">
+        <div class="album-art"></div>
+        <div><h3>Close To You</h3><div class="progress"></div></div>
+        <button class="play" aria-label="播放音乐">▶</button>
+      </section>
+    </aside>
+  </main>
+  <script src="shared.js"></script>
+
+
+</body></html>
