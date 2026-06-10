@@ -65,3 +65,11 @@ Before considering frontend work complete:
 - Run `npm run build`.
 - Inspect affected routes in the browser at desktop and mobile widths.
 - Verify navigation, filters, search, quiet mode, scroll-to-top, player, and album interactions when changed.
+
+## Installation and disk safety
+
+- The user's C drive has limited free space, and CLI tools may not have write permission for some C-drive directories.
+- Before any install, download, new dependency, CLI, Docker, or large-cache operation, explain what is needed, why, likely disk impact, default write location, whether it may write to C drive, and the no-install alternative.
+- Do not run the operation until the user explicitly approves it.
+- Prefer project-local caches and the F-drive workspace.
+- The current authentication phase must not require Docker.
