@@ -77,3 +77,10 @@ export type PlanActionResult = {
   fieldErrors?: PlanFieldErrors;
   planId?: string;
 };
+
+export type PaginatedPlans = {
+  plans: Plan[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
