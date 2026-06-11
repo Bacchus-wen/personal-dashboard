@@ -1,7 +1,8 @@
-export type NavId = "home" | "articles" | "projects" | "about" | "resources" | "blogs";
+export type NavId = "home" | "plans" | "articles" | "projects" | "about" | "resources" | "blogs";
 
 export const navigation: { id: NavId; href: string; label: string }[] = [
   { id: "home", href: "/", label: "首页" },
+  { id: "plans", href: "/plans", label: "近日规划" },
   { id: "articles", href: "/articles", label: "近期文章" },
   { id: "projects", href: "/projects", label: "我的项目" },
   { id: "about", href: "/about", label: "关于网站" },
