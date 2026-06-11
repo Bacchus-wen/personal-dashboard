@@ -17,5 +17,9 @@ export async function requireAdmin() {
     redirect(destination);
   }
 
+  if (!user) {
+    redirect("/admin/login");
+  }
+
   return user;
 }
