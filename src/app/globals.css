@@ -191,7 +191,62 @@ p { text-wrap: pretty; }
 }
 .btn:hover { transform: translateY(-2px); background: var(--surface); }
 .btn.primary { color: var(--surface); border-color: var(--accent); background: var(--accent); }
+.btn:disabled { cursor: wait; opacity: .64; transform: none; }
+.btn:focus-visible, .admin-text-link:focus-visible {
+  outline: 3px solid color-mix(in oklch, var(--accent) 42%, transparent);
+  outline-offset: 3px;
+}
 .card { border-radius: 30px; padding: 28px; animation: float-in .55s ease both; }
+
+/* Admin */
+.admin-page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 32px 18px;
+}
+.admin-card {
+  width: min(460px, 100%);
+  padding: clamp(28px, 6vw, 48px);
+  border-radius: var(--radius-large);
+  animation: float-in .55s ease both;
+}
+.admin-card h1 { margin-bottom: 10px; font-size: clamp(30px, 6vw, 44px); letter-spacing: -.045em; }
+.admin-card > .muted { margin-bottom: 28px; }
+.admin-card > .btn { margin-top: 12px; }
+.admin-mark {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 26px;
+  border-radius: 21px;
+  background: linear-gradient(145deg, color-mix(in oklch, var(--accent) 30%, var(--surface)), color-mix(in oklch, var(--warm) 36%, var(--surface)));
+  font: 800 18px var(--font-display);
+}
+.admin-form { display: grid; gap: 16px; margin-top: 30px; }
+.admin-form label { display: grid; gap: 7px; color: var(--muted); font-size: 13px; }
+.admin-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in oklch, var(--muted) 18%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--fg);
+  background: color-mix(in oklch, var(--surface) 62%, transparent);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+.admin-form input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 13%, transparent);
+}
+.admin-form .btn { width: 100%; margin-top: 4px; }
+.admin-text-link { justify-self: center; color: var(--muted); font-size: 13px; transition: color var(--transition-fast); }
+.admin-text-link:hover { color: var(--accent); }
+.admin-notice { margin: 0; padding: 10px 12px; border-radius: 12px; font-size: 12px; }
+.admin-notice.error { color: #8f4550; background: color-mix(in oklch, var(--pink) 24%, transparent); }
+.admin-notice.success { color: var(--fg); background: color-mix(in oklch, var(--accent) 16%, transparent); }
 
 /* Home */
 .home-shell {
