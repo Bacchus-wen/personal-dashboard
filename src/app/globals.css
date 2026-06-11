@@ -316,6 +316,13 @@ p { text-wrap: pretty; }
 .markdown-content th, .markdown-content td { padding: 8px; border: 1px solid color-mix(in oklch, var(--muted) 22%, transparent); text-align: left; }
 .plan-editor-save strong { font-family: var(--font-display); }
 .plan-editor-save p { margin-bottom: 0; font-size: 12px; }
+.trash-plan-grid { display: grid; gap: 16px; }
+.trash-plan-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+.trash-plan-card h2 { margin-bottom: 6px; }
+.trash-plan-card .plan-meta-row, .trash-plan-card .admin-plan-actions, .trash-plan-card .admin-notice { grid-column: 1 / -1; }
+.delete-dialog { width: min(520px, calc(100% - 28px)); padding: 28px; border: 1px solid var(--border); border-radius: var(--radius-large); color: var(--fg); }
+.delete-dialog::backdrop { background: rgb(41 72 74 / .28); backdrop-filter: blur(8px); }
+.delete-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
 
 /* Home */
 .home-shell {
@@ -654,6 +661,9 @@ p { text-wrap: pretty; }
   .category-dialog { padding: 20px; }
   .plan-editor-main, .plan-editor-settings, .plan-editor-save { padding: 20px; }
   .plan-editor-section-head { flex-direction: column; }
+  .trash-plan-card { grid-template-columns: 1fr; }
+  .delete-dialog { padding: 20px; }
+  .delete-dialog-actions { display: grid; grid-template-columns: 1fr; }
   .top-nav { left: 8px; top: 8px; padding: 6px; border-radius: 20px; }
   .nav-link, .avatar-link { width: 40px; height: 40px; }
   .nav-glider { width: 40px; height: 40px; }
