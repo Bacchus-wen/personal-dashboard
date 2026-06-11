@@ -73,3 +73,17 @@ Before considering frontend work complete:
 - Do not run the operation until the user explicitly approves it.
 - Prefer project-local caches and the F-drive workspace.
 - The current authentication phase must not require Docker.
+
+## Authentication and data safety
+
+- Never commit real passwords, Supabase keys, administrator IDs, or `.env.local`.
+- Browser code may use only `NEXT_PUBLIC_SUPABASE_URL` and
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+- `SUPABASE_SECRET_KEY` must remain in server-only modules and server environment
+  variables.
+- Every backend write must verify the administrator before using the server-only
+  Supabase client.
+- Backend-only tables must deny direct `anon` and `authenticated` browser-role
+  access.
+- Do not claim cloud authentication, database, Storage, or deployment security
+  works until it has been verified against the real service.
