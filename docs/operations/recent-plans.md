@@ -82,3 +82,36 @@ drop type if exists public.plan_status;
 ```
 
 不要因为回滚云端数据库而删除 Git 中的迁移文件。迁移文件用于记录数据库历史和安全边界。
+
+## 2026-06-12 云端权限验证结果
+
+使用项目现有 `.env.local` 和 Supabase SDK 进行了真实云端验证。命令只输出 PASS/FAIL，没有输出项目 URL、密钥、用户 ID、令牌或测试内容。
+
+- publishable key 匿名读取 `plans`：PASS，访问被拒绝。
+- publishable key 匿名写入 `plans`：PASS，访问被拒绝。
+- Secret Key 创建临时草稿：PASS。
+- Secret Key 读取临时草稿：PASS。
+- Secret Key 更新临时草稿：PASS。
+- Secret Key 删除临时草稿：PASS，测试数据已清理。
+- 已登录普通浏览器角色：迁移 SQL 已撤销 `authenticated` 权限；本次没有普通用户会话令牌，因此尚未进行真实会话验证。
+
+## 内容管理流程
+
+1. 登录 `/admin/login`，进入 `/admin/plans`。
+2. 点击“新建规划”，可以先以草稿保存不完整内容。
+3. 私密或公开规划必须填写标题和简短描述。
+4. 将规划设为公开后，它会出现在 `/plans`；符合首页规则的规划也会出现在首页近日规划卡片。
+5. 将公开规划改为私密或草稿后，它会立即从公开页面和首页候选中移除。
+6. 分类可以在后台规划列表的“管理分类”中新增、重命名或删除；删除分类不会删除相关规划。
+7. 移入回收站后，规划不会出现在公开页面；恢复时会自动改为草稿。
+8. 永久删除无法恢复，操作前应确认该内容不再需要。
+
+## 后续数据库变更检查
+
+每次新增或修改规划相关表后，都必须重新确认：
+
+- RLS 已启用；
+- `anon` 和 `authenticated` 的直接表权限已撤销；
+- 只有 `service_role`/Secret Key 可以执行服务端操作；
+- 公开查询仍在 Next.js 服务端限制 `visibility`、`status` 和 `deleted_at`；
+- 破坏性迁移前已备份需要保留的数据。
