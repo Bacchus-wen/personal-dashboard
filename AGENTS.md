@@ -28,6 +28,7 @@ This project uses Next.js 16 App Router. Read relevant guides in `node_modules/n
 - `/blogs`: searchable blog directory
 - `/album`: interactive photo stack
 - `/about`: about page
+- `/plans`: public recent plans list
 
 ## Design system rules
 
@@ -73,3 +74,30 @@ Before considering frontend work complete:
 - Do not run the operation until the user explicitly approves it.
 - Prefer project-local caches and the F-drive workspace.
 - The current authentication phase must not require Docker.
+
+## Authentication and data safety
+
+- Never commit real passwords, Supabase keys, administrator IDs, or `.env.local`.
+- Browser code may use only `NEXT_PUBLIC_SUPABASE_URL` and
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+- `SUPABASE_SECRET_KEY` must remain in server-only modules and server environment
+  variables.
+- Every backend write must verify the administrator before using the server-only
+  Supabase client.
+- Backend-only tables must deny direct `anon` and `authenticated` browser-role
+  access.
+- Do not claim cloud authentication, database, Storage, or deployment security
+  works until it has been verified against the real service.
+
+## Recent plans safety
+
+- `plans` and `plan_categories` remain server-only tables. Browser code must
+  never query or mutate them directly.
+- Every planning mutation must revalidate the current administrator before
+  using the server-only Supabase client.
+- Public planning queries must enforce approved visibility, status, and
+  `deleted_at` filters on the server.
+- Every new planning migration must enable RLS, revoke `anon` and
+  `authenticated` table access, and be verified against the real cloud project.
+- Do not install planning-related dependencies or tools without the user's
+  prior approval.
