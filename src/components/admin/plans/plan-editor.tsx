@@ -107,9 +107,7 @@ export function PlanEditor({
     const result = await action(previousState, formData);
     if (result.ok) {
       setSavedSnapshot(JSON.stringify(valuesFromFormData(formData)));
-      if (!plan && result.planId) {
-        router.replace(`/admin/plans/${result.planId}/edit`);
-      }
+      router.replace("/admin/plans");
     }
     return result;
   };

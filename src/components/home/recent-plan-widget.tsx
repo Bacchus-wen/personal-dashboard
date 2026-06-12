@@ -91,7 +91,7 @@ export function RecentPlanWidget({ candidates }: { candidates: Plan[] | null }) 
           <div className="plan-progress"><span style={{ width: `${plan.progress}%` }} /></div>
         </div>
       </Link>
-      {open ? <PlanPreview className="recent-plan-preview glass" plan={plan} /> : null}
+      {open ? <PlanPreview className="recent-plan-preview" plan={plan} /> : null}
       <dialog
         className="recent-plan-dialog glass"
         onClick={(event) => {

@@ -25,3 +25,7 @@ export function SunIcon(props: IconProps) {
 export function UpIcon(props: IconProps) {
   return <svg {...base} {...props}><path d="m6 15 6-6 6 6" /></svg>;
 }
+
+export function AdminIcon(props: IconProps) {
+  return <svg {...base} {...props}><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2" /></svg>;
+}

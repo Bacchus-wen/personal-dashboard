@@ -13,6 +13,9 @@ export default function AdminPage() {
         <Link className="btn primary" href="/admin/plans">
           管理近日规划
         </Link>
+        <Link className="btn" href="/">
+          返回主页
+        </Link>
         <SignOutButton />
       </section>
     </main>

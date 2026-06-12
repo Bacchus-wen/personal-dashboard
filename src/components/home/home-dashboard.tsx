@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FloatingTools } from "@/components/chrome/floating-tools";
 import { RecentPlanWidget } from "@/components/home/recent-plan-widget";
-import { NavIcon } from "@/components/icons";
+import { AdminIcon, NavIcon } from "@/components/icons";
 import { navigation, socials } from "@/data/site-content";
 import type { Plan } from "@/lib/plans/types";
 
@@ -45,7 +45,7 @@ export function HomeDashboard({ planCandidates }: { planCandidates: Plan[] | nul
       <aside className="home-side glass">
         <div className="profile"><span className="avatar">T</span><div><strong>Theodore</strong><span className="status">正在记录生活</span></div></div>
         <p className="side-label">GENERAL</p>
-        <nav className="side-menu" aria-label="主页导航">{navigation.slice(1).map((item) => <Link key={item.id} href={item.href}><NavIcon name={item.id} />{item.label}</Link>)}</nav>
+        <nav className="side-menu" aria-label="主页导航">{navigation.slice(1).map((item) => <Link key={item.id} href={item.href}><NavIcon name={item.id} />{item.label}</Link>)}<Link href="/admin"><AdminIcon />管理后台</Link></nav>
       </aside>
       <div className="home-main">
         <Link className="album-preview glass lift" href="/album" aria-label="进入相册"><div className="photo-strip">{[1, 2, 3, 4].map((item) => <span className="mini-photo" key={item} />)}</div><span className="preview-label">Album · 最近的光影</span></Link>
