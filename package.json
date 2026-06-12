@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run --pool=threads --maxWorkers=1 --passWithNoTests",
     "test:watch": "vitest"
   },
   "dependencies": {
