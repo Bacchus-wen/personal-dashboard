@@ -741,6 +741,68 @@ p { text-wrap: pretty; }
   .article-list::before { left: 55px; }
 }
 
+/* Published home layout */
+.home-shell {
+  width: min(1540px, calc(100% - 48px));
+  height: 100svh;
+  min-height: 720px;
+  padding: clamp(28px, 4vh, 48px) 28px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 18px);
+  align-items: stretch;
+  overflow: visible;
+}
+.home-module {
+  min-width: 0;
+  min-height: 0;
+  grid-column: calc(var(--grid-x) + 1) / span var(--grid-width);
+  grid-row: calc(var(--grid-y) + 1) / span var(--grid-height);
+}
+.home-module > * { width: 100%; height: 100%; }
+.home-side { position: static; margin-top: 0; overflow: auto; }
+.profile-avatar { object-fit: cover; border-radius: 50%; }
+.album-preview, .welcome { min-height: 0; }
+.welcome { color: inherit; }
+.socials { height: 100%; }
+.socials a { min-height: 0; }
+.recommend { display: grid; align-content: center; }
+.recommend .metrics { margin-top: 14px; }
+.clock { display: grid; place-content: center; }
+.clock-time { font-size: clamp(34px, 4vw, 62px); }
+.calendar { overflow: auto; }
+.recent-plan-region, .recent-plan-widget { height: 100%; }
+.recent-plan-widget { min-height: 0; padding: 20px; }
+.music-widget { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 16px 18px; }
+.music-widget > span { color: var(--accent-2); font-size: 26px; }
+.music-widget strong { display: block; margin-bottom: 7px; font-size: 13px; }
+.music-widget button { width: 38px; height: 38px; border: 0; border-radius: 50%; color: var(--surface); background: var(--accent-2); cursor: pointer; }
+.music-progress { height: 5px; overflow: hidden; border-radius: 999px; background: color-mix(in oklch, var(--muted) 18%, transparent); }
+.music-progress::before { content: ""; display: block; width: 42%; height: 100%; background: var(--accent-2); }
+.home-filing { position: absolute; left: 50%; bottom: 8px; color: var(--muted); font-size: 11px; transform: translateX(-50%); }
+
+@media (max-width: 820px) {
+  .home-shell {
+    width: min(100% - 28px, 680px);
+    height: auto;
+    min-height: 100svh;
+    padding: 22px 0 62px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+  .home-module { order: var(--mobile-order); }
+  .home-module > * { height: auto; }
+  .home-module[data-home-module="welcome"] .welcome { min-height: 250px; }
+  .home-module[data-home-module="album"] .album-preview { min-height: 180px; }
+  .home-module[data-home-module="socials"] .socials { grid-template-columns: repeat(2, 1fr); }
+  .home-module[data-home-module="calendar"] .calendar { overflow: visible; }
+  .home-module[data-home-module="recentPlans"] .recent-plan-widget { min-height: 110px; }
+  .home-module[data-home-module="navigation"] .home-side { overflow: visible; }
+  .home-filing { position: static; order: 20; align-self: center; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;

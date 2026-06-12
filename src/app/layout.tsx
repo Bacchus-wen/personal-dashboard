@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { cloneDefaultSiteConfiguration } from "@/lib/site-settings/defaults";
+import { getSiteSettingsRepository } from "@/lib/site-settings/server-repository";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Theodore · Personal Space",
-    template: "%s · Theodore",
-  },
-  description: "Theodore 的个人博客、项目、阅读和生活记录。",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const configuration = await getSiteSettingsRepository()
+    .getPublished()
+    .catch(() => cloneDefaultSiteConfiguration());
+  return {
+    title: {
+      default: configuration.settings.siteTitle,
+      template: `%s · ${configuration.settings.displayName}`,
+    },
+    description: configuration.settings.siteDescription,
+    icons: { icon: configuration.settings.faviconPath },
+  };
+}
 
 export default function RootLayout({
   children,
