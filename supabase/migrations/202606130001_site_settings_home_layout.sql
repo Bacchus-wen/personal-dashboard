@@ -83,7 +83,7 @@ begin
     module_visibility = excluded.module_visibility,
     updated_at = now();
 
-  delete from public.social_links;
+  delete from public.social_links where true;
   insert into public.social_links (id, platform, label, href, position, enabled)
   select item.id, item.platform, item.label, item.href, item.position, item.enabled
   from jsonb_to_recordset(links) as item(
@@ -95,7 +95,7 @@ begin
     enabled boolean
   );
 
-  delete from public.home_layout;
+  delete from public.home_layout where true;
   insert into public.home_layout (
     module_key,
     grid_x,

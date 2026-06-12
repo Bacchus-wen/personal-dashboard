@@ -1,6 +1,7 @@
 import {
   CORE_HOME_MODULE_IDS,
   DEFAULT_HOME_LAYOUT,
+  DEFAULT_SITE_CONFIGURATION,
   HOME_GRID,
 } from "./defaults";
 import type {
@@ -63,4 +64,8 @@ export function setModuleVisibility(
 
 export function restoreDefaultLayout() {
   return DEFAULT_HOME_LAYOUT.map((item) => ({ ...item }));
+}
+
+export function restoreDefaultVisibility() {
+  return { ...DEFAULT_SITE_CONFIGURATION.settings.moduleVisibility };
 }

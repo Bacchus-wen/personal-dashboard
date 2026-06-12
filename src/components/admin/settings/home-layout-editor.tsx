@@ -5,7 +5,6 @@ import { useRef } from "react";
 import { HOME_GRID, HOME_MODULES } from "@/lib/site-settings/defaults";
 import {
   moveLayoutItem,
-  restoreDefaultLayout,
   setModuleVisibility,
   snapToGrid,
 } from "@/lib/site-settings/layout";
@@ -22,6 +21,7 @@ type Props = {
   errors: SiteConfigurationFieldErrors;
   onLayoutChange: (layout: HomeLayoutItem[]) => void;
   onVisibilityChange: (visibility: ModuleVisibility) => void;
+  onRestoreDefaults: () => void;
 };
 
 type DragState = {
@@ -36,6 +36,7 @@ export function HomeLayoutEditor({
   errors,
   onLayoutChange,
   onVisibilityChange,
+  onRestoreDefaults,
 }: Props) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
@@ -85,7 +86,7 @@ export function HomeLayoutEditor({
         <button
           className="btn"
           type="button"
-          onClick={() => onLayoutChange(restoreDefaultLayout())}
+          onClick={onRestoreDefaults}
         >
           恢复默认
         </button>

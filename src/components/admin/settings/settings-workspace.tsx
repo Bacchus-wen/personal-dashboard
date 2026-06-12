@@ -4,6 +4,10 @@ import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 
 import { publishSiteConfigurationAction } from "@/app/admin/(protected)/settings/actions";
+import {
+  restoreDefaultLayout,
+  restoreDefaultVisibility,
+} from "@/lib/site-settings/layout";
 import { HomeLayoutEditor } from "./home-layout-editor";
 import { SiteSettingsForm } from "./site-settings-form";
 import { SocialLinksEditor } from "./social-links-editor";
@@ -137,6 +141,16 @@ export function SettingsWorkspace({
             setDraft({
               ...draft,
               settings: { ...draft.settings, moduleVisibility },
+            })
+          }
+          onRestoreDefaults={() =>
+            setDraft({
+              ...draft,
+              layout: restoreDefaultLayout(),
+              settings: {
+                ...draft.settings,
+                moduleVisibility: restoreDefaultVisibility(),
+              },
             })
           }
         />

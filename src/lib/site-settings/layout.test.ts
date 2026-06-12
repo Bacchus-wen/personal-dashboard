@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_HOME_LAYOUT } from "./defaults";
 import {
   moveLayoutItem,
+  restoreDefaultVisibility,
   restoreDefaultLayout,
   setModuleVisibility,
   snapToGrid,
@@ -58,5 +59,19 @@ describe("homepage layout helpers", () => {
 
     expect(restored).toEqual(DEFAULT_HOME_LAYOUT);
     expect(restored).not.toBe(DEFAULT_HOME_LAYOUT);
+  });
+
+  it("restores every module to the default visible state", () => {
+    expect(restoreDefaultVisibility()).toEqual({
+      navigation: true,
+      welcome: true,
+      socials: true,
+      album: true,
+      clock: true,
+      calendar: true,
+      recentPlans: true,
+      recommendation: true,
+      music: true,
+    });
   });
 });
