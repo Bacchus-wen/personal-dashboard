@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FloatingTools } from "@/components/chrome/floating-tools";
+import { RecentPlanWidget } from "@/components/home/recent-plan-widget";
 import { NavIcon } from "@/components/icons";
 import { navigation, socials } from "@/data/site-content";
+import type { Plan } from "@/lib/plans/types";
 
 function Greeting() {
   const [text, setText] = useState("Good Evening");
@@ -35,12 +37,7 @@ function Calendar() {
   return <section className="calendar glass card lift"><h3>June 2026</h3><div className="calendar-grid">{"一二三四五六日".split("").map((day) => <span key={day}>{day}</span>)}{Array.from({ length: 30 }, (_, i) => i + 1).map((day) => <span className={day === 10 ? "today" : ""} key={day}>{day}</span>)}</div></section>;
 }
 
-function Player() {
-  const [playing, setPlaying] = useState(false);
-  return <section className={`player glass card lift ${playing ? "playing" : ""}`}><div className="album-art" /><div><h3>Close To You</h3><div className="progress" /></div><button className="play" aria-label={playing ? "暂停音乐" : "播放音乐"} onClick={() => setPlaying(!playing)}>{playing ? "Ⅱ" : "▶"}</button></section>;
-}
-
-export function HomeDashboard() {
+export function HomeDashboard({ planCandidates }: { planCandidates: Plan[] | null }) {
   return (
     <>
     <FloatingTools />
@@ -59,7 +56,7 @@ export function HomeDashboard() {
           <Link className="recommend glass card lift" href="/resources"><span className="eyebrow">随机推荐</span><h3>CSS · Glass & Light</h3><p>关于柔光背景与可读性平衡的随手笔记。</p><div className="metrics mono"><span>Views —</span><span>Marks —</span></div></Link>
         </div>
       </div>
-      <aside className="home-widgets"><Clock /><Calendar /><Player /></aside>
+      <aside className="home-widgets"><Clock /><Calendar /><RecentPlanWidget candidates={planCandidates} /></aside>
     </main>
     </>
   );

@@ -188,6 +188,31 @@ describe("createPlanRepository", () => {
     expect(requests[0]).not.toHaveProperty("values.relatedUrl");
   });
 
+  it("constrains plan mutations to the expected trash state", async () => {
+    const { client, requests } = createClient();
+    const repository = createPlanRepository(client);
+
+    await repository.updatePlan("plan-id", validInput());
+    await repository.movePlanToTrash("plan-id");
+    await repository.restorePlan("plan-id");
+
+    expect(requests[0].filters).toContainEqual({
+      column: "deleted_at",
+      operator: "is",
+      value: null,
+    });
+    expect(requests[1].filters).toContainEqual({
+      column: "deleted_at",
+      operator: "is",
+      value: null,
+    });
+    expect(requests[2].filters).toContainEqual({
+      column: "deleted_at",
+      operator: "not_is",
+      value: null,
+    });
+  });
+
   it("wraps database failures without exposing their details", async () => {
     const { client } = createClient({
       async selectMany() {

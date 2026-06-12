@@ -362,7 +362,10 @@ export function createPlanRepository(
             await client.update({
               table: "plans",
               columns: PLAN_COLUMNS,
-              filters: [{ column: "id", operator: "eq", value: id }],
+              filters: [
+                { column: "id", operator: "eq", value: id },
+                { column: "deleted_at", operator: "is", value: null },
+              ],
               values: inputToRow(input),
             })
           ).row,
@@ -374,7 +377,10 @@ export function createPlanRepository(
       return write(async () => {
         await client.update({
           table: "plans",
-          filters: [{ column: "id", operator: "eq", value: id }],
+          filters: [
+            { column: "id", operator: "eq", value: id },
+            { column: "deleted_at", operator: "is", value: null },
+          ],
           values: { deleted_at: new Date().toISOString() },
         });
       });
@@ -384,7 +390,10 @@ export function createPlanRepository(
       return write(async () => {
         await client.update({
           table: "plans",
-          filters: [{ column: "id", operator: "eq", value: id }],
+          filters: [
+            { column: "id", operator: "eq", value: id },
+            { column: "deleted_at", operator: "not_is", value: null },
+          ],
           values: { deleted_at: null, visibility: "draft" },
         });
       });
