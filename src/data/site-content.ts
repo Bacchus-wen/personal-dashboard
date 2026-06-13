@@ -1,10 +1,10 @@
-export type NavId = "home" | "plans" | "articles" | "projects" | "about" | "resources" | "blogs";
+export type NavId = "home" | "plans" | "articles" | "works" | "projects" | "about" | "resources" | "blogs";
 
 export const navigation: { id: NavId; href: string; label: string }[] = [
   { id: "home", href: "/", label: "首页" },
   { id: "plans", href: "/plans", label: "近日规划" },
   { id: "articles", href: "/articles", label: "近期文章" },
-  { id: "projects", href: "/projects", label: "我的项目" },
+  { id: "works", href: "/works", label: "我的作品" },
   { id: "about", href: "/about", label: "关于网站" },
   { id: "resources", href: "/resources", label: "推荐分享" },
   { id: "blogs", href: "/blogs", label: "优秀博客" },
