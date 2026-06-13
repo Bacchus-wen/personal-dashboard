@@ -1,6 +1,6 @@
 # Theodore Personal Dashboard - Project Status
 
-Last updated: 2026-06-13
+Last updated: 2026-06-14
 
 This document is the primary handoff entry for a new Codex conversation. It
 summarizes the current product direction, completed work, active Git state,
@@ -67,34 +67,37 @@ Current technology:
 | --- | --- | --- |
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
-| 3 | My works management and public portfolio | Implemented and accepted; PR #3 is currently open |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Not started |
+| 3 | My works management and public portfolio | Merged into `main` through PR #3 |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Design approved; specification in review |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
 ## Current Git And GitHub State
 
-Verified on 2026-06-13:
+Verified on 2026-06-14:
 
 - GitHub repository:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard`
 - Main workspace: `F:\网站制作`
-- Active feature worktree:
+- Previous works feature worktree:
   `F:\网站制作\.worktrees\moderate-auth-foundation`
-- Active branch: `codex/works-management`
-- Active Pull Request:
+- Previous works branch: `codex/works-management`
+- Merged Pull Request:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/3`
-- PR #3 state: open, ready for review, and mergeable at the time of this update.
-- PR #3 head commit: `fd85428 fix: refine works acceptance flow`
-- PR #3 contains six commits.
+- PR #3 state: merged into `main` as
+  `96434a1 Add works management and public portfolio pages (#3)`.
+- Active flow 4 worktree:
+  `F:\网站制作\.worktrees\collections-featured-projects`
+- Active flow 4 branch: `codex/collections-featured-projects`
+- Open Pull Requests: none at the time of this update.
 
-The active worktree may contain `.dev-server.out.log` and
+The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Before continuing, verify whether PR #3 has since been merged. If it is still
-open, do not start flow 4 on the works branch.
+Flow 4 design is approved. Review its written specification before creating the
+implementation plan or changing production code.
 
 ## Completed Work
 
@@ -211,9 +214,19 @@ Primary references:
 
 ### Flow 4 Direction
 
-Flow 4 must be designed before implementation.
+The approved flow 4 specification supersedes the earlier expectation notes
+below:
 
-Expected scope:
+- `docs/superpowers/specs/2026-06-14-collections-featured-projects-design.md`
+
+Approved decisions include `/collections` for external article/video
+collections, `/projects` for manually maintained noteworthy GitHub projects,
+external-link-only cards, protected server-only management, and a real
+homepage recommendation source without demo-data fallback.
+
+Flow 4 was designed and approved before implementation.
+
+Earlier expected scope, retained for historical context:
 
 - replace the current recommendation area with separate article and video
   collections;
@@ -346,9 +359,10 @@ Database:
 
 ## Immediate Next Step
 
-1. Verify the live state of GitHub PR #3.
-2. If PR #3 is still open, review checks and merge it before starting flow 4.
-3. After merge, update the active worktree from the latest `main`.
-4. Begin flow 4 with design analysis and approval, not implementation.
+1. Review and approve the written flow 4 design specification.
+2. After specification approval, create the detailed implementation plan.
+3. Implement flow 4 in the isolated `codex/collections-featured-projects`
+   worktree without installing new dependencies.
+4. Apply and verify the new migration against the real Supabase cloud project.
 5. Update this file whenever a flow is merged, materially redesigned, or moved
    to a new active Pull Request.
