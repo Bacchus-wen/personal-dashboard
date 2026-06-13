@@ -68,7 +68,7 @@ Current technology:
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Design approved; specification in review |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Specification approved; implementation plan ready |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -96,8 +96,8 @@ The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Flow 4 design is approved. Review its written specification before creating the
-implementation plan or changing production code.
+Flow 4 specification is approved and its implementation plan is ready. Review
+the plan execution approach before changing production code.
 
 ## Completed Work
 
@@ -214,10 +214,11 @@ Primary references:
 
 ### Flow 4 Direction
 
-The approved flow 4 specification supersedes the earlier expectation notes
-below:
+The approved flow 4 specification and implementation plan supersede the earlier
+expectation notes below:
 
 - `docs/superpowers/specs/2026-06-14-collections-featured-projects-design.md`
+- `docs/superpowers/plans/2026-06-14-collections-featured-projects.md`
 
 Approved decisions include `/collections` for external article/video
 collections, `/projects` for manually maintained noteworthy GitHub projects,
@@ -359,10 +360,9 @@ Database:
 
 ## Immediate Next Step
 
-1. Review and approve the written flow 4 design specification.
-2. After specification approval, create the detailed implementation plan.
-3. Implement flow 4 in the isolated `codex/collections-featured-projects`
+1. Choose the implementation-plan execution approach.
+2. Implement flow 4 in the isolated `codex/collections-featured-projects`
    worktree without installing new dependencies.
-4. Apply and verify the new migration against the real Supabase cloud project.
-5. Update this file whenever a flow is merged, materially redesigned, or moved
+3. Apply and verify the new migration against the real Supabase cloud project.
+4. Update this file whenever a flow is merged, materially redesigned, or moved
    to a new active Pull Request.
