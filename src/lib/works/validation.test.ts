@@ -123,4 +123,24 @@ describe("validateWorkInput", () => {
     expect(result.errors.completedOn).toBeDefined();
     expect(result.errors.screenshots).toBeDefined();
   });
+
+  it("rejects oversized public text and screenshot captions", () => {
+    const result = validateWorkInput(
+      validInput({
+        summary: "a".repeat(241),
+        description: "a".repeat(20001),
+        screenshots: [
+          {
+            imagePath: "/one.jpg",
+            caption: "a".repeat(161),
+            sortOrder: 0,
+          },
+        ],
+      }),
+    );
+
+    expect(result.errors.summary).toBeDefined();
+    expect(result.errors.description).toBeDefined();
+    expect(result.errors.screenshots).toBeDefined();
+  });
 });

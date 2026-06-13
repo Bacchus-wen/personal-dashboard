@@ -81,6 +81,7 @@ function normalizeScreenshots(
 
   for (const item of input) {
     const imagePath = validateImagePath(item.imagePath);
+    const caption = optionalText(item.caption);
     const sortOrder =
       typeof item.sortOrder === "number"
         ? item.sortOrder
@@ -89,7 +90,8 @@ function normalizeScreenshots(
       !imagePath ||
       !Number.isInteger(sortOrder) ||
       sortOrder < 0 ||
-      orders.has(sortOrder)
+      orders.has(sortOrder) ||
+      (caption?.length ?? 0) > 160
     ) {
       errors.screenshots = ["截图必须使用安全图片路径和不重复的非负顺序。"];
       continue;
@@ -97,7 +99,7 @@ function normalizeScreenshots(
     orders.add(sortOrder);
     screenshots.push({
       imagePath,
-      caption: optionalText(item.caption),
+      caption,
       sortOrder,
     });
   }
@@ -131,9 +133,14 @@ export function validateWorkInput(input: WorkInput): WorkValidationResult {
   const screenshots = normalizeScreenshots(input.screenshots, errors);
 
   if (!name || name.length > 100) errors.name = ["名称必须为 1 至 100 个字符。"];
+  if ((slug?.length ?? 0) > 80) errors.slug = ["slug 最多 80 个字符。"];
   if (slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
     errors.slug = ["slug 仅允许小写字母、数字和中间连字符。"];
   }
+  if ((summary?.length ?? 0) > 240) errors.summary = ["简短摘要最多 240 个字符。"];
+  if ((description?.length ?? 0) > 20000) errors.description = ["详细介绍最多 20000 个字符。"];
+  if ((seoTitle?.length ?? 0) > 100) errors.seoTitle = ["SEO 标题最多 100 个字符。"];
+  if ((seoDescription?.length ?? 0) > 240) errors.seoDescription = ["SEO 描述最多 240 个字符。"];
   if (!status) errors.status = ["请选择有效状态。"];
   if (!visibility) errors.visibility = ["请选择有效可见性。"];
   if (!Number.isInteger(sortOrder) || sortOrder < 0) {

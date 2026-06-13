@@ -15,9 +15,9 @@ create type public.work_visibility as enum (
 create table public.works (
   id uuid primary key default gen_random_uuid(),
   name text not null check (char_length(btrim(name)) between 1 and 100),
-  slug text,
-  summary text,
-  description text,
+  slug text check (slug is null or char_length(slug) <= 80),
+  summary text check (summary is null or char_length(summary) <= 240),
+  description text check (description is null or char_length(description) <= 20000),
   cover_path text,
   tech_stack text[] not null default '{}',
   status public.work_status not null default 'developing',
@@ -29,8 +29,8 @@ create table public.works (
   website_available boolean not null default true,
   featured boolean not null default false,
   sort_order integer not null default 0 check (sort_order >= 0),
-  seo_title text,
-  seo_description text,
+  seo_title text check (seo_title is null or char_length(seo_title) <= 100),
+  seo_description text check (seo_description is null or char_length(seo_description) <= 240),
   seo_image_path text,
   deleted_at timestamptz,
   created_at timestamptz not null default now(),
@@ -84,7 +84,7 @@ create table public.work_screenshots (
     image_path like '/%'
     or image_path ~ '^https://'
   ),
-  caption text,
+  caption text check (caption is null or char_length(caption) <= 160),
   sort_order integer not null check (sort_order >= 0),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
