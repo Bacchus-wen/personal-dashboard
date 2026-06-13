@@ -17,19 +17,12 @@ export function WorkCard({ work }: { work: Work }) {
       </div>
       <div className="work-card-body">
         <div className="work-card-heading">
-          <div>
-            <p className="eyebrow">{work.featured ? "FEATURED WORK" : "PORTFOLIO WORK"}</p>
-            <h2>{work.name}</h2>
-          </div>
+          <h2>{work.name}</h2>
           <span className="pill">{WORK_STATUS_LABELS[work.status]}</span>
         </div>
         <p className="muted">{work.summary}</p>
         <div className="tag-row">
-          {work.techStack.slice(0, 5).map((tag) => <span className="pill" key={tag}>{tag}</span>)}
-        </div>
-        <div className="work-card-footer">
-          <span>{work.startedOn ?? "日期待补充"}</span>
-          <strong>查看详情 →</strong>
+          {work.techStack.slice(0, 3).map((tag) => <span className="pill" key={tag}>{tag}</span>)}
         </div>
       </div>
     </Link>

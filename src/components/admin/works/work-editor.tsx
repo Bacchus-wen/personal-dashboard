@@ -19,6 +19,7 @@ import {
   WORK_VISIBILITIES,
   WORK_VISIBILITY_LABELS,
 } from "@/lib/works/constants";
+import { getWorkSaveDestination } from "@/lib/works/navigation";
 import type {
   Work,
   WorkActionResult,
@@ -108,10 +109,7 @@ export function WorkEditor({
     const result = await action(previousState, formData);
     if (result.ok) {
       setSavedSnapshot(JSON.stringify(values));
-      if (!work && result.workId) {
-        router.replace(`/admin/works/${result.workId}/edit`);
-      }
-      router.refresh();
+      router.replace(getWorkSaveDestination());
     }
     return result;
   };

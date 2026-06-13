@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { MarkdownContent } from "@/components/plans/markdown-content";
 import { WorkGallery } from "./work-gallery";
 import { WORK_STATUS_LABELS } from "@/lib/works/constants";
@@ -12,6 +14,11 @@ export function WorkDetail({
 }) {
   return (
     <article className="work-detail">
+      {!preview ? (
+        <Link className="work-detail-back btn" href="/works">
+          ← 返回作品列表
+        </Link>
+      ) : null}
       {preview ? <p className="work-preview-banner">后台预览，不会向访客公开</p> : null}
       <header className="work-detail-hero glass">
         <div className="work-browser-frame">
