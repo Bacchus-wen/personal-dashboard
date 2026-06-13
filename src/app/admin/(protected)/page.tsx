@@ -19,6 +19,9 @@ export default function AdminPage() {
         <Link className="btn" href="/admin/works">
           管理我的作品
         </Link>
+        <Link className="btn" href="/admin/collections">
+          管理内容收藏
+        </Link>
         <Link className="btn" href="/">
           返回主页
         </Link>
