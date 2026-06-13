@@ -10,7 +10,10 @@ export function TopNav() {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const [glider, setGlider] = useState({ x: 8, y: 8 });
-  const activeId = pathname === "/" || pathname === "/album" ? "home" : pathname.slice(1);
+  const activeId =
+    pathname === "/" || pathname === "/album"
+      ? "home"
+      : pathname.split("/")[1];
 
   const moveTo = (element: HTMLElement | null) => {
     if (element) setGlider({ x: element.offsetLeft, y: element.offsetTop });

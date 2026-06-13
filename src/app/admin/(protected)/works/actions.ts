@@ -78,6 +78,7 @@ function service() {
 function refresh(result: WorkActionResult) {
   if (!result.ok) return result;
   for (const path of getWorkMutationRevalidationPaths()) revalidatePath(path);
+  revalidatePath("/works/[slug]", "page");
   return result;
 }
 

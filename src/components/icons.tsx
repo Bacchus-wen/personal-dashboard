@@ -10,6 +10,7 @@ export function NavIcon({ name, ...props }: IconProps & { name: NavId }) {
     home: <><path d="M4 10.5 12 4l8 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z" /><path d="M9 20v-6h6v6" /></>,
     plans: <><path d="M7 4h10a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" /><path d="m9 9 1.5 1.5L14 7M9 15h6" /></>,
     articles: <><path d="M6 3h11a2 2 0 0 1 2 2v15H7a2 2 0 0 1-2-2V4a1 1 0 0 1 1-1Z" /><path d="M8 7h7M8 11h7M8 15h5" /></>,
+    works: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 9h18M7 7h.01M10 7h.01M13 7h.01" /></>,
     projects: <><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></>,
     about: <><circle cx="12" cy="12" r="8" /><path d="M8.5 13.5c1.8 1.8 5.2 1.8 7 0M9 9.5h.01M15 9.5h.01" /></>,
     resources: <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z" />,

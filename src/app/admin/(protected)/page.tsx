@@ -16,6 +16,9 @@ export default function AdminPage() {
         <Link className="btn" href="/admin/settings">
           网站设置与首页布局
         </Link>
+        <Link className="btn" href="/admin/works">
+          管理我的作品
+        </Link>
         <Link className="btn" href="/">
           返回主页
         </Link>
