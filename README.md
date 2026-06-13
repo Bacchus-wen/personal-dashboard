@@ -23,3 +23,7 @@ npm run build
 `prototype/` contains the Agent-generated HTML/CSS design source. Production code lives in `src/`. Review prototype updates with Git and selectively synchronize approved changes into reusable Next.js components.
 
 See `AGENTS.md` for the project structure, design system rules, component conventions, and synchronization workflow.
+
+For the current roadmap, completed flows, active Pull Request, operational
+constraints, and new-conversation handoff instructions, read
+`docs/PROJECT_STATUS.md`.

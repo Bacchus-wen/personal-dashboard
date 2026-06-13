@@ -9,6 +9,7 @@ This project uses Next.js 16 App Router. Read relevant guides in `node_modules/n
 - `prototype/` is the Agent-generated visual design source. It can be updated independently and must not directly overwrite production code.
 - `src/` is the production Next.js website.
 - `docs/superpowers/specs/` and `docs/superpowers/plans/` record approved design decisions and implementation plans.
+- `docs/PROJECT_STATUS.md` is the current roadmap and cross-conversation handoff entry. Verify its Git and GitHub claims before relying on them, and update it after each merged flow or major scope change.
 
 ## Production structure
 
