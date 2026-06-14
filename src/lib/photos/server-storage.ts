@@ -33,3 +33,9 @@ export function getPhotoStorageService() {
     storage,
   });
 }
+
+export function getPhotoPublicUrl(path: string) {
+  return createSupabaseAdminClient()
+    .storage.from(PUBLIC_MEDIA_BUCKET)
+    .getPublicUrl(path).data.publicUrl;
+}

@@ -25,6 +25,9 @@ export default function AdminPage() {
         <Link className="btn" href="/admin/projects">
           管理优秀项目
         </Link>
+        <Link className="btn" href="/admin/photos">
+          管理公开相册照片
+        </Link>
         <Link className="btn" href="/">
           返回主页
         </Link>
