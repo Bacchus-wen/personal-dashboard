@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type ChangeEvent, useActionState, useState } from "react";
+import { type ChangeEvent, useActionState, useEffect, useState } from "react";
 
 import { PhotoImage } from "@/components/photos/photo-image";
 import { PHOTO_VISIBILITIES, PHOTO_VISIBILITY_LABELS } from "@/lib/photos/constants";
 import { processPhotoFile } from "@/lib/photos/client-image";
 import type { Photo, PhotoActionResult, PhotoUploadResult } from "@/lib/photos/types";
+import { photoEditorFormKey } from "./photo-editor-state";
 
 type Action = (
   previousState: PhotoActionResult,
@@ -29,6 +30,14 @@ export function PhotoEditor({
   const [replacementMessage, setReplacementMessage] = useState("");
   const [replacing, setReplacing] = useState(false);
   const [state, formAction, pending] = useActionState(action, EMPTY_RESULT);
+  const formKey = photoEditorFormKey({
+    visibility: photo.visibility,
+    sortOrder: photo.sortOrder,
+  });
+
+  useEffect(() => {
+    if (state.ok) router.refresh();
+  }, [router, state]);
 
   const replace = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -72,7 +81,7 @@ export function PhotoEditor({
         </div>
       </section>
       <aside className="work-editor-sidebar">
-        <form action={formAction} className="plan-editor-settings glass">
+        <form action={formAction} className="plan-editor-settings glass" key={formKey}>
           <p className="eyebrow">SETTINGS</p>
           <h2>发布设置</h2>
           <div className="editor-field-grid">
