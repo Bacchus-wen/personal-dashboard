@@ -68,7 +68,7 @@ Current technology:
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Local implementation complete; cloud migration and acceptance pending |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Cloud migration applied; final cloud and browser acceptance pending |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -96,9 +96,9 @@ The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Flow 4 local implementation is complete on the active worktree. The new cloud
-migration, final production build, and external-browser acceptance remain
-pending.
+Flow 4 local implementation is complete on the active worktree. The cloud
+migration and final production build passed. Cloud permission and CRUD checks,
+external-browser acceptance, and Pull Request publication remain pending.
 
 ## Completed Work
 
@@ -219,11 +219,17 @@ Implemented locally:
 - real homepage random recommendation candidates without demo-data fallback;
 - responsive three-column, two-column, and one-column card layouts.
 
+Cloud migration status:
+
+- `supabase/migrations/202606140001_collections_featured_projects.sql` was
+  executed successfully in the real Supabase SQL Editor on 2026-06-14;
+- post-migration public server reads returned successfully without migration or
+  loading errors;
+- RLS state, browser-role grant isolation, administrator CRUD, and public
+  visibility isolation still require final cloud acceptance.
+
 Still pending:
 
-- execute and verify
-  `supabase/migrations/202606140001_collections_featured_projects.sql` against
-  the real Supabase cloud project;
 - external-browser desktop, tablet, and approximately 320px acceptance;
 - create and publish the flow 4 Pull Request.
 
@@ -246,8 +252,10 @@ Build and local HTTP acceptance notes:
   `/projects`;
 - `/resources` returned permanent redirect `308` to `/collections`;
 - `/blogs` returned permanent redirect `308` to `/projects`;
-- because the flow 4 cloud migration has not been executed, `/collections` and
-  `/projects` correctly displayed their controlled loading-error states;
+- after the flow 4 cloud migration, `/collections` and `/projects` returned
+  `200` without migration or loading errors;
+- unauthenticated requests to `/admin/collections` and `/admin/projects`
+  returned `307` redirects to `/admin/login`;
 - in-app browser control was unavailable, so visual and interaction acceptance
   remains pending in an external browser.
 
@@ -421,8 +429,9 @@ Database:
 
 ## Immediate Next Step
 
-1. Apply and verify the flow 4 migration against the real Supabase cloud
-   project using `docs/operations/collections-and-featured-projects.md`.
-2. Run the final production build and external-browser acceptance.
+1. Verify flow 4 RLS and browser-role grants in the real Supabase SQL Editor
+   using `docs/operations/collections-and-featured-projects.md`.
+2. Run administrator CRUD, public isolation, and external-browser visual
+   acceptance.
 3. Fix only confirmed defects, then create the flow 4 Pull Request.
 4. Update this file when the Pull Request is opened or merged.
