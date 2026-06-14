@@ -69,7 +69,7 @@ Current technology:
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
 | 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
-| 5A | Public album and Storage foundation | Draft PR #5 open |
+| 5A | Public album and Storage foundation | Merged into `main` through PR #5 |
 | 5B | Avatar, favicon, works, and collection image uploads | Designed as a later sub-flow; not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -101,7 +101,7 @@ logs and must not be committed.
 Flow 4 implementation and acceptance are complete. Pull Request #4 was squash
 merged into `main` as `1e1572c Add collections and featured projects (#4)`.
 
-Active flow 5A state:
+Flow 5A state:
 
 - worktree: `F:\网站制作\.worktrees\public-album-storage`;
 - branch: `codex/public-album-storage`;
@@ -116,8 +116,10 @@ Active flow 5A state:
 - local implementation, real Supabase migration, SQL security checks, automated
   verification, and external-browser public album layout acceptance are
   complete;
-- Flow 5A draft Pull Request:
-  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/5`.
+- Merged flow 5A Pull Request:
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/5`;
+- PR #5 state: squash merged into `main` as
+  `86e7762 Add public album storage and draggable photo board`.
 
 ## Completed Work
 
@@ -344,9 +346,7 @@ Latest local automated verification:
   with side copy, smaller photos, wider board space, whole-photo dragging, and
   a minimal single-photo lightbox.
 
-Still pending and must not be reported as passed before observation:
-
-- publish the Flow 5A Pull Request.
+Flow 5A is merged and has no remaining implementation work in this flow.
 
 Primary references:
 
@@ -522,5 +522,6 @@ Database:
 
 ## Immediate Next Step
 
-1. Review Flow 5A draft PR #5 and merge when ready.
-2. After merge, update `main` and start Flow 5B only after design confirmation.
+1. Start Flow 5B only after design confirmation.
+2. Keep using the project-local GitHub CLI at
+   `F:\网站制作\.local-tools\github-cli\bin\gh.exe` if `gh` is not in `PATH`.
