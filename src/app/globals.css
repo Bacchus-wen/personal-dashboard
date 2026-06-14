@@ -620,7 +620,7 @@ p { text-wrap: pretty; }
 .public-polaroid img, .photo-editor-polaroid img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .public-polaroid:hover, .public-polaroid:focus-visible, .public-polaroid.is-top { box-shadow: 0 34px 72px color-mix(in oklch, var(--shadow) 150%, transparent); filter: saturate(1.06); }
 .public-polaroid:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
-.public-album-controls, .photo-lightbox-controls { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.public-album-controls { display: flex; align-items: center; justify-content: center; gap: 10px; }
 .public-album-controls { min-height: 44px; }
 .photo-lightbox {
   position: fixed;
@@ -633,8 +633,7 @@ p { text-wrap: pretty; }
   backdrop-filter: blur(14px);
 }
 .photo-lightbox-panel { width: min(100%, 1080px); max-height: calc(100svh - 40px); display: grid; gap: 14px; }
-.photo-lightbox-panel > img, .photo-lightbox-panel > .photo-fallback { width: 100%; max-height: calc(100svh - 110px); object-fit: contain; border-radius: var(--radius-control); }
-.photo-lightbox-controls .pill { color: var(--surface); }
+.photo-lightbox-panel > img, .photo-lightbox-panel > .photo-fallback { width: 100%; max-height: calc(100svh - 40px); object-fit: contain; border-radius: var(--radius-control); }
 .photo-fallback {
   min-height: 160px;
   display: grid;
@@ -795,7 +794,7 @@ p { text-wrap: pretty; }
   .story-row { grid-template-columns: 82px 1fr; }
   .public-album-stage { height: 440px; }
   .public-polaroid { width: min(72vw, 260px); }
-  .public-album-controls, .photo-lightbox-controls { flex-wrap: wrap; }
+  .public-album-controls { flex-wrap: wrap; }
   .photo-lightbox { padding: 10px; }
   .photo-lightbox-panel { max-height: calc(100svh - 20px); }
   .photo-admin-grid, .cleanup-task-grid { grid-template-columns: 1fr; }
@@ -1025,7 +1024,7 @@ p { text-wrap: pretty; }
 @media (max-width: 720px) {
   .public-album-stage { height: 460px; }
   .public-polaroid { width: min(72vw, 270px); }
-  .public-album-controls, .photo-lightbox-controls { flex-wrap: wrap; }
+  .public-album-controls { flex-wrap: wrap; }
 }
 
 @media (prefers-reduced-motion: reduce) {

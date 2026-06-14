@@ -23,7 +23,7 @@ import {
 import { groupPhotos, polaroidTransform, totalPhotoGroups } from "@/lib/photos/stack";
 import type { PublicPhoto } from "@/lib/photos/types";
 
-type LightboxState = { index: number; trigger: HTMLElement | null } | null;
+type LightboxState = { photo: PublicPhoto; trigger: HTMLElement | null } | null;
 type BoardPhotoState = BoardPoint & { z: number };
 type BoardState = Record<string, BoardPhotoState>;
 type DragState = {
@@ -109,7 +109,7 @@ export function PublicAlbum({
   const totalGroups = totalPhotoGroups(photos.length);
   const openPhoto = (photo: PublicPhoto, trigger: HTMLElement) => {
     setLightbox({
-      index: photos.findIndex((candidate) => candidate.id === photo.id),
+      photo,
       trigger,
     });
   };
@@ -232,7 +232,7 @@ export function PublicAlbum({
         <span className="pill mono">{group} / {totalGroups}</span>
         {group < totalGroups ? <Link className="btn" href={`/album?group=${group + 1}`}>下一组</Link> : <span />}
       </nav>
-      {lightbox ? <PhotoLightbox initialIndex={lightbox.index} onClose={closeLightbox} photos={photos} trigger={lightbox.trigger} /> : null}
+      {lightbox ? <PhotoLightbox onClose={closeLightbox} photo={lightbox.photo} trigger={lightbox.trigger} /> : null}
     </section>
   );
 }
