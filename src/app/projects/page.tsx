@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+
 import { PageShell } from "@/components/chrome/page-shell";
-import { projects } from "@/data/site-content";
+import { FeaturedProjectCard } from "@/components/featured-projects/project-card";
+import { FeaturedProjectFilters } from "@/components/featured-projects/project-filters";
+import { parsePublicFeaturedProjectQuery } from "@/lib/featured-projects/queries";
+import { getFeaturedProjectRepository } from "@/lib/featured-projects/server-repository";
 
-export const metadata: Metadata = { title: "我的项目" };
+export const metadata: Metadata = { title: "优秀项目" };
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-export default function ProjectsPage() {
-  return <PageShell eyebrow="MADE BY THEODORE" title="我的项目" description="正在制作、维护与慢慢完善的东西。"><section className="project-grid">{projects.map((project) => <article className="project-card card glass lift" key={project.title}><div className="card-top"><div className="logo-block">{project.mark}</div><div><h2>{project.title} <span className="muted mono">{project.year}</span></h2><div className="tag-row">{project.tags.map((tag) => <span className="pill" key={tag}>{tag}</span>)}</div></div></div><p className="description">{project.description}</p><div><button className="btn">Website</button></div></article>)}</section></PageShell>;
+export default async function ProjectsPage({ searchParams }: { searchParams: SearchParams }) {
+  const query = parsePublicFeaturedProjectQuery(await searchParams);
+  let data = null;
+  try { data = await getFeaturedProjectRepository().listPublic(query); } catch { data = null; }
+  return <PageShell eyebrow="FEATURED GITHUB PROJECTS" title="优秀项目" description="手动维护、值得深入了解的 GitHub 项目。"><FeaturedProjectFilters languages={data?.availableLanguages ?? []} tags={data?.availableTags ?? []} />{!data ? <section className="admin-empty glass"><h2>优秀项目暂时无法加载</h2><p className="muted">请稍后重试。</p></section> : data.projects.length ? <section className="featured-project-grid">{data.projects.map((project) => <FeaturedProjectCard key={project.id} project={project} />)}</section> : <section className="admin-empty glass"><h2>没有符合条件的项目</h2><p className="muted">调整关键词、语言或标签后重试。</p></section>}</PageShell>;
 }

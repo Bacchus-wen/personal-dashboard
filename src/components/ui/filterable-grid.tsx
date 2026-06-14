@@ -1,7 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { DirectoryItem } from "@/data/site-content";
+type DirectoryItem = {
+  mark: string;
+  title: string;
+  url: string;
+  description: string;
+  categories: string[];
+  tags?: string[];
+};
 
 export function FilterableGrid({
   items,

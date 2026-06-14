@@ -13,8 +13,7 @@ export function NavIcon({ name, ...props }: IconProps & { name: NavId }) {
     works: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 9h18M7 7h.01M10 7h.01M13 7h.01" /></>,
     projects: <><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></>,
     about: <><circle cx="12" cy="12" r="8" /><path d="M8.5 13.5c1.8 1.8 5.2 1.8 7 0M9 9.5h.01M15 9.5h.01" /></>,
-    resources: <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z" />,
-    blogs: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" /></>,
+    collections: <><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5z" /><path d="M5 5.5v15M9 7h6M9 11h6" /></>,
   };
   return <svg {...base} {...props}>{shapes[name]}</svg>;
 }

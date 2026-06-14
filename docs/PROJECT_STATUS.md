@@ -1,6 +1,6 @@
 # Theodore Personal Dashboard - Project Status
 
-Last updated: 2026-06-13
+Last updated: 2026-06-14
 
 This document is the primary handoff entry for a new Codex conversation. It
 summarizes the current product direction, completed work, active Git state,
@@ -67,34 +67,40 @@ Current technology:
 | --- | --- | --- |
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
-| 3 | My works management and public portfolio | Implemented and accepted; PR #3 is currently open |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Not started |
+| 3 | My works management and public portfolio | Merged into `main` through PR #3 |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Pull Request #4 open and ready for review |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
 ## Current Git And GitHub State
 
-Verified on 2026-06-13:
+Verified on 2026-06-14:
 
 - GitHub repository:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard`
 - Main workspace: `F:\网站制作`
-- Active feature worktree:
+- Previous works feature worktree:
   `F:\网站制作\.worktrees\moderate-auth-foundation`
-- Active branch: `codex/works-management`
-- Active Pull Request:
+- Previous works branch: `codex/works-management`
+- Merged Pull Request:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/3`
-- PR #3 state: open, ready for review, and mergeable at the time of this update.
-- PR #3 head commit: `fd85428 fix: refine works acceptance flow`
-- PR #3 contains six commits.
+- PR #3 state: merged into `main` as
+  `96434a1 Add works management and public portfolio pages (#3)`.
+- Active flow 4 worktree:
+  `F:\网站制作\.worktrees\collections-featured-projects`
+- Active flow 4 branch: `codex/collections-featured-projects`
+- Open flow 4 Pull Request:
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/4`
 
-The active worktree may contain `.dev-server.out.log` and
+The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Before continuing, verify whether PR #3 has since been merged. If it is still
-open, do not start flow 4 on the works branch.
+Flow 4 implementation and acceptance are complete on the active worktree. The
+cloud migration, production build, cloud permission checks, CRUD checks, and
+external-browser acceptance passed. Pull Request #4 is open and ready for
+review.
 
 ## Completed Work
 
@@ -197,6 +203,79 @@ Primary references:
 - `src/app/works/`
 - `src/app/admin/(protected)/works/`
 
+### Flow 4 - Collections And Featured Projects
+
+Implemented locally:
+
+- server-only `collections` and `featured_projects` schema migration;
+- RLS, browser-role revocation, validation, queries, repositories, and
+  protected Server Actions;
+- administrator list, create, edit, live card preview, trash, restore-to-draft,
+  and permanent-delete workflows for both domains;
+- public `/collections` article/video page with type, search, and tag filters;
+- public `/projects` noteworthy GitHub project page with search, language, and
+  tag filters;
+- external-link-only cards with no internal detail pages or embedded content;
+- permanent redirects from `/resources` to `/collections` and `/blogs` to
+  `/projects`;
+- real homepage random recommendation candidates without demo-data fallback;
+- responsive three-column, two-column, and one-column card layouts.
+
+Cloud migration status:
+
+- `supabase/migrations/202606140001_collections_featured_projects.sql` was
+  executed successfully in the real Supabase SQL Editor on 2026-06-14;
+- post-migration public server reads returned successfully without migration or
+  loading errors;
+- user-run SQL Editor verification confirmed both tables have RLS enabled and
+  that `anon` and `authenticated` have no table privileges;
+- user-run external-browser acceptance confirmed create, read, edit, trash,
+  restore-to-draft, and permanent-delete workflows for both administrator
+  domains;
+- user-run external-browser acceptance confirmed public visibility isolation,
+  homepage featured-only recommendations, original-site new-tab links, and
+  desktop, tablet, and approximately 320px responsive layouts.
+
+Still pending:
+
+- review and merge Pull Request #4.
+
+Latest local automated verification:
+
+- `npm test`: 27 files and 141 tests passed;
+- `npm run lint`: passed;
+- `npx tsc --noEmit`: passed;
+- `git diff --check`: passed;
+- `npm run build -- --webpack`: passed.
+
+Build and local HTTP acceptance notes:
+
+- default Turbopack build cannot follow the project-local `node_modules`
+  directory junction because it points to another worktree;
+- the official Next.js Webpack build mode passed after `.env.local` was copied
+  without reading its contents from the previous worktree and confirmed
+  ignored by Git;
+- local production server HTTP checks passed for `/`, `/collections`, and
+  `/projects`;
+- `/resources` returned permanent redirect `308` to `/collections`;
+- `/blogs` returned permanent redirect `308` to `/projects`;
+- after the flow 4 cloud migration, `/collections` and `/projects` returned
+  `200` without migration or loading errors;
+- unauthenticated requests to `/admin/collections` and `/admin/projects`
+  returned `307` redirects to `/admin/login`;
+- in-app browser control was unavailable, so visual and interaction acceptance
+  remains pending in an external browser.
+
+Primary references:
+
+- `docs/superpowers/specs/2026-06-14-collections-featured-projects-design.md`
+- `docs/superpowers/plans/2026-06-14-collections-featured-projects.md`
+- `docs/operations/collections-and-featured-projects.md`
+- `supabase/migrations/202606140001_collections_featured_projects.sql`
+- `src/lib/collections/`
+- `src/lib/featured-projects/`
+- `src/lib/recommendations/`
+
 ## Approved Product Decisions
 
 ### Navigation And Page Roles
@@ -211,9 +290,20 @@ Primary references:
 
 ### Flow 4 Direction
 
-Flow 4 must be designed before implementation.
+The approved flow 4 specification and implementation plan supersede the earlier
+expectation notes below:
 
-Expected scope:
+- `docs/superpowers/specs/2026-06-14-collections-featured-projects-design.md`
+- `docs/superpowers/plans/2026-06-14-collections-featured-projects.md`
+
+Approved decisions include `/collections` for external article/video
+collections, `/projects` for manually maintained noteworthy GitHub projects,
+external-link-only cards, protected server-only management, and a real
+homepage recommendation source without demo-data fallback.
+
+Flow 4 was designed and approved before implementation.
+
+Earlier expected scope, retained for historical context:
 
 - replace the current recommendation area with separate article and video
   collections;
@@ -346,9 +436,5 @@ Database:
 
 ## Immediate Next Step
 
-1. Verify the live state of GitHub PR #3.
-2. If PR #3 is still open, review checks and merge it before starting flow 4.
-3. After merge, update the active worktree from the latest `main`.
-4. Begin flow 4 with design analysis and approval, not implementation.
-5. Update this file whenever a flow is merged, materially redesigned, or moved
-   to a new active Pull Request.
+1. Review and merge Pull Request #4.
+2. Update this file after the Pull Request is merged.

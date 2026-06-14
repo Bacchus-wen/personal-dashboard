@@ -15,6 +15,7 @@ import type {
   PublishedSiteConfiguration,
 } from "@/lib/site-settings/types";
 import type { Plan } from "@/lib/plans/types";
+import type { HomeRecommendation } from "@/lib/recommendations/types";
 
 function Greeting() {
   const [text, setText] = useState("Good Evening");
@@ -148,9 +149,11 @@ function HomeModule({
 export function HomeDashboard({
   configuration,
   planCandidates,
+  recommendation,
 }: {
   configuration: PublishedSiteConfiguration;
   planCandidates: Plan[] | null;
+  recommendation: HomeRecommendation | null;
 }) {
   const { settings, socialLinks, layout } = configuration;
   const positions = Object.fromEntries(
@@ -244,17 +247,18 @@ export function HomeDashboard({
           </section>
         </HomeModule>
 
-        {visible.recommendation ? (
+        {visible.recommendation && recommendation ? (
           <HomeModule item={positions.recommendation}>
-            <Link className="recommend glass card lift" href="/resources">
-              <span className="eyebrow">随机推荐</span>
-              <h3>CSS · Glass & Light</h3>
-              <p>关于柔光背景与可读性平衡的随手笔记。</p>
-              <div className="metrics mono">
-                <span>Views —</span>
-                <span>Marks —</span>
-              </div>
-            </Link>
+            <a
+              className="recommend glass card lift"
+              href={recommendation.href}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              <span className="eyebrow">随机推荐 · {recommendation.type}</span>
+              <h3>{recommendation.title}</h3>
+              <p>{recommendation.reason}</p>
+            </a>
           </HomeModule>
         ) : null}
 
