@@ -17,7 +17,8 @@ type PhotoStorageDependencies = {
   storage: PhotoStorageClient;
 };
 
-export function safeStorageError(_error: unknown): string {
+export function safeStorageError(error: unknown): string {
+  void error;
   return "Storage operation failed.";
 }
 
