@@ -69,7 +69,7 @@ Current technology:
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
 | 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
-| 5A | Public album and Storage foundation | Implemented and verified locally; PR pending |
+| 5A | Public album and Storage foundation | Draft PR #5 open |
 | 5B | Avatar, favicon, works, and collection image uploads | Designed as a later sub-flow; not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -116,7 +116,8 @@ Active flow 5A state:
 - local implementation, real Supabase migration, SQL security checks, automated
   verification, and external-browser public album layout acceptance are
   complete;
-- Flow 5A Pull Request remains pending.
+- Flow 5A draft Pull Request:
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/5`.
 
 ## Completed Work
 
@@ -521,5 +522,5 @@ Database:
 
 ## Immediate Next Step
 
-1. Publish Flow 5A for review.
+1. Review Flow 5A draft PR #5 and merge when ready.
 2. After merge, update `main` and start Flow 5B only after design confirmation.
