@@ -68,7 +68,7 @@ Current technology:
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Specification approved; implementation plan ready |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Local implementation complete; cloud migration and acceptance pending |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -90,14 +90,15 @@ Verified on 2026-06-14:
 - Active flow 4 worktree:
   `F:\网站制作\.worktrees\collections-featured-projects`
 - Active flow 4 branch: `codex/collections-featured-projects`
-- Open Pull Requests: none at the time of this update.
+- Open Pull Requests for flow 4: none at the time of this update.
 
 The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Flow 4 specification is approved and its implementation plan is ready. Review
-the plan execution approach before changing production code.
+Flow 4 local implementation is complete on the active worktree. The new cloud
+migration, final production build, and external-browser acceptance remain
+pending.
 
 ## Completed Work
 
@@ -199,6 +200,66 @@ Primary references:
 - `src/components/admin/works/`
 - `src/app/works/`
 - `src/app/admin/(protected)/works/`
+
+### Flow 4 - Collections And Featured Projects
+
+Implemented locally:
+
+- server-only `collections` and `featured_projects` schema migration;
+- RLS, browser-role revocation, validation, queries, repositories, and
+  protected Server Actions;
+- administrator list, create, edit, live card preview, trash, restore-to-draft,
+  and permanent-delete workflows for both domains;
+- public `/collections` article/video page with type, search, and tag filters;
+- public `/projects` noteworthy GitHub project page with search, language, and
+  tag filters;
+- external-link-only cards with no internal detail pages or embedded content;
+- permanent redirects from `/resources` to `/collections` and `/blogs` to
+  `/projects`;
+- real homepage random recommendation candidates without demo-data fallback;
+- responsive three-column, two-column, and one-column card layouts.
+
+Still pending:
+
+- execute and verify
+  `supabase/migrations/202606140001_collections_featured_projects.sql` against
+  the real Supabase cloud project;
+- external-browser desktop, tablet, and approximately 320px acceptance;
+- create and publish the flow 4 Pull Request.
+
+Latest local automated verification:
+
+- `npm test`: 27 files and 141 tests passed;
+- `npm run lint`: passed;
+- `npx tsc --noEmit`: passed;
+- `git diff --check`: passed;
+- `npm run build -- --webpack`: passed.
+
+Build and local HTTP acceptance notes:
+
+- default Turbopack build cannot follow the project-local `node_modules`
+  directory junction because it points to another worktree;
+- the official Next.js Webpack build mode passed after `.env.local` was copied
+  without reading its contents from the previous worktree and confirmed
+  ignored by Git;
+- local production server HTTP checks passed for `/`, `/collections`, and
+  `/projects`;
+- `/resources` returned permanent redirect `308` to `/collections`;
+- `/blogs` returned permanent redirect `308` to `/projects`;
+- because the flow 4 cloud migration has not been executed, `/collections` and
+  `/projects` correctly displayed their controlled loading-error states;
+- in-app browser control was unavailable, so visual and interaction acceptance
+  remains pending in an external browser.
+
+Primary references:
+
+- `docs/superpowers/specs/2026-06-14-collections-featured-projects-design.md`
+- `docs/superpowers/plans/2026-06-14-collections-featured-projects.md`
+- `docs/operations/collections-and-featured-projects.md`
+- `supabase/migrations/202606140001_collections_featured_projects.sql`
+- `src/lib/collections/`
+- `src/lib/featured-projects/`
+- `src/lib/recommendations/`
 
 ## Approved Product Decisions
 
@@ -360,9 +421,8 @@ Database:
 
 ## Immediate Next Step
 
-1. Choose the implementation-plan execution approach.
-2. Implement flow 4 in the isolated `codex/collections-featured-projects`
-   worktree without installing new dependencies.
-3. Apply and verify the new migration against the real Supabase cloud project.
-4. Update this file whenever a flow is merged, materially redesigned, or moved
-   to a new active Pull Request.
+1. Apply and verify the flow 4 migration against the real Supabase cloud
+   project using `docs/operations/collections-and-featured-projects.md`.
+2. Run the final production build and external-browser acceptance.
+3. Fix only confirmed defects, then create the flow 4 Pull Request.
+4. Update this file when the Pull Request is opened or merged.
