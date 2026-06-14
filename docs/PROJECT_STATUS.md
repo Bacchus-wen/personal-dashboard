@@ -227,8 +227,10 @@ Cloud migration status:
   loading errors;
 - user-run SQL Editor verification confirmed both tables have RLS enabled and
   that `anon` and `authenticated` have no table privileges;
-- administrator CRUD and public visibility isolation still require final cloud
-  acceptance.
+- user-run external-browser acceptance confirmed create, read, edit, trash,
+  restore-to-draft, and permanent-delete workflows for both administrator
+  domains;
+- public visibility isolation still requires final cloud acceptance.
 
 Still pending:
 
@@ -431,7 +433,6 @@ Database:
 
 ## Immediate Next Step
 
-1. Run administrator CRUD, public isolation, and external-browser visual
-   acceptance.
+1. Run public isolation and external-browser visual acceptance.
 2. Fix only confirmed defects, then create the flow 4 Pull Request.
 3. Update this file when the Pull Request is opened or merged.
