@@ -58,7 +58,7 @@ export function PublicAlbum({
   const stageRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
   const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
-  const [board, setBoard] = useState<BoardState>({});
+  const [boardOverrides, setBoardOverrides] = useState<BoardState>({});
   const [topId, setTopId] = useState(current[0]?.id ?? "");
   const [lightbox, setLightbox] = useState<LightboxState>(null);
   const closeLightbox = useCallback(() => setLightbox(null), []);
@@ -78,9 +78,8 @@ export function PublicAlbum({
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!current.length || stageSize.width <= 0 || stageSize.height <= 0) return;
-
+  const baseBoard = useMemo<BoardState>(() => {
+    if (!current.length || stageSize.width <= 0 || stageSize.height <= 0) return {};
     const card = estimatedCardSize(stageSize.width);
     const positions = createBoardPositions(
       currentIds,
@@ -90,14 +89,15 @@ export function PublicAlbum({
       card.height,
       `${group}:${stageSize.width}:${stageSize.height}`,
     );
-    setBoard(
-      currentIds.reduce<BoardState>((next, id, index) => {
-        next[id] = { ...positions[id], z: index + 1 };
-        return next;
-      }, {}),
-    );
-    setTopId(currentIds[0] ?? "");
+    return currentIds.reduce<BoardState>((next, id, index) => {
+      next[id] = { ...positions[id], z: index + 1 };
+      return next;
+    }, {});
   }, [current.length, currentIds, group, stageSize.height, stageSize.width]);
+  const board = useMemo<BoardState>(
+    () => ({ ...baseBoard, ...boardOverrides }),
+    [baseBoard, boardOverrides],
+  );
 
   if (failed) {
     return <section className="admin-empty glass"><h2>相册暂时无法加载</h2><p className="muted">请稍后刷新页面。</p></section>;
@@ -107,6 +107,7 @@ export function PublicAlbum({
   }
 
   const totalGroups = totalPhotoGroups(photos.length);
+  const visibleTopId = currentIds.includes(topId) ? topId : currentIds[0];
   const openPhoto = (photo: PublicPhoto, trigger: HTMLElement) => {
     setLightbox({
       photo,
@@ -115,12 +116,13 @@ export function PublicAlbum({
   };
   const raisePhoto = (id: string) => {
     setTopId(id);
-    setBoard((currentBoard) => {
+    setBoardOverrides((currentOverrides) => {
+      const currentBoard = { ...baseBoard, ...currentOverrides };
       const item = currentBoard[id];
-      if (!item) return currentBoard;
+      if (!item) return currentOverrides;
       const maxZ = Math.max(0, ...Object.values(currentBoard).map((value) => value.z));
       return {
-        ...currentBoard,
+        ...currentOverrides,
         [id]: { ...item, z: maxZ + 1 },
       };
     });
@@ -166,9 +168,9 @@ export function PublicAlbum({
       drag.cardWidth,
       drag.cardHeight,
     );
-    setBoard((currentBoard) => ({
-      ...currentBoard,
-      [drag.id]: { ...currentBoard[drag.id], ...next },
+    setBoardOverrides((currentOverrides) => ({
+      ...currentOverrides,
+      [drag.id]: { ...board[drag.id], ...currentOverrides[drag.id], ...next },
     }));
   };
   const handlePointerUp = (photo: PublicPhoto, event: PointerEvent<HTMLButtonElement>) => {
@@ -209,7 +211,7 @@ export function PublicAlbum({
           return (
             <button
               aria-label={`打开照片 ${index + 1}`}
-              className={`public-polaroid ${photo.id === topId ? "is-top" : ""}`}
+              className={`public-polaroid ${photo.id === visibleTopId ? "is-top" : ""}`}
               key={photo.id}
               onClick={(event) => event.preventDefault()}
               onKeyDown={(event) => handleKeyDown(photo, event)}
