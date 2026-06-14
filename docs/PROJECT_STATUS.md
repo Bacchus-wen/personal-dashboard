@@ -68,7 +68,7 @@ Current technology:
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Cloud migration applied; final cloud and browser acceptance pending |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Implementation and acceptance complete; Pull Request pending |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -96,9 +96,9 @@ The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Flow 4 local implementation is complete on the active worktree. The cloud
-migration and final production build passed. Cloud permission and CRUD checks,
-external-browser acceptance, and Pull Request publication remain pending.
+Flow 4 implementation and acceptance are complete on the active worktree. The
+cloud migration, production build, cloud permission checks, CRUD checks, and
+external-browser acceptance passed. Pull Request publication remains pending.
 
 ## Completed Work
 
@@ -230,11 +230,12 @@ Cloud migration status:
 - user-run external-browser acceptance confirmed create, read, edit, trash,
   restore-to-draft, and permanent-delete workflows for both administrator
   domains;
-- public visibility isolation still requires final cloud acceptance.
+- user-run external-browser acceptance confirmed public visibility isolation,
+  homepage featured-only recommendations, original-site new-tab links, and
+  desktop, tablet, and approximately 320px responsive layouts.
 
 Still pending:
 
-- external-browser desktop, tablet, and approximately 320px acceptance;
 - create and publish the flow 4 Pull Request.
 
 Latest local automated verification:
@@ -433,6 +434,5 @@ Database:
 
 ## Immediate Next Step
 
-1. Run public isolation and external-browser visual acceptance.
-2. Fix only confirmed defects, then create the flow 4 Pull Request.
-3. Update this file when the Pull Request is opened or merged.
+1. Run final automated verification and create the flow 4 Pull Request.
+2. Update this file when the Pull Request is opened or merged.
