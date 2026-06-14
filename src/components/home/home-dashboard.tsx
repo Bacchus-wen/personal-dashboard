@@ -5,6 +5,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { FloatingTools } from "@/components/chrome/floating-tools";
+import { HomeAlbumPreview } from "@/components/home/home-album-preview";
 import { RecentPlanWidget } from "@/components/home/recent-plan-widget";
 import { AdminIcon, NavIcon } from "@/components/icons";
 import { navigation } from "@/data/site-content";
@@ -15,6 +16,7 @@ import type {
   PublishedSiteConfiguration,
 } from "@/lib/site-settings/types";
 import type { Plan } from "@/lib/plans/types";
+import type { PublicPhoto } from "@/lib/photos/types";
 import type { HomeRecommendation } from "@/lib/recommendations/types";
 
 function Greeting() {
@@ -148,10 +150,12 @@ function HomeModule({
 
 export function HomeDashboard({
   configuration,
+  photos,
   planCandidates,
   recommendation,
 }: {
   configuration: PublishedSiteConfiguration;
+  photos: PublicPhoto[] | null;
   planCandidates: Plan[] | null;
   recommendation: HomeRecommendation | null;
 }) {
@@ -195,18 +199,7 @@ export function HomeDashboard({
 
         {visible.album ? (
           <HomeModule item={positions.album}>
-            <Link
-              className="album-preview glass lift"
-              href="/album"
-              aria-label="进入相册"
-            >
-              <div className="photo-strip">
-                {[1, 2, 3, 4].map((item) => (
-                  <span className="mini-photo" key={item} />
-                ))}
-              </div>
-              <span className="preview-label">Album · 最近的光影</span>
-            </Link>
+            <HomeAlbumPreview photos={photos} />
           </HomeModule>
         ) : null}
 
