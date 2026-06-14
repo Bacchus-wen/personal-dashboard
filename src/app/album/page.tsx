@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
-import { PageShell } from "@/components/chrome/page-shell";
+import { FloatingTools } from "@/components/chrome/floating-tools";
+import { PageAction } from "@/components/chrome/page-action";
+import { TopNav } from "@/components/chrome/top-nav";
 import { PublicAlbum } from "@/components/photos/public-album";
 import { getPhotoRepository } from "@/lib/photos/server-repository";
 import { normalizePhotoGroup } from "@/lib/photos/validation";
@@ -22,17 +24,23 @@ export default async function AlbumPage({
   const group = normalizePhotoGroup((await searchParams).group, photos?.length ?? 0);
 
   return (
-    <PageShell
-      eyebrow="ALBUM · 2026"
-      title="最近的光影"
-      description="点击照片将它放到最上面，再次点击打开完整照片。"
-    >
-      <PublicAlbum
-        failed={!photos}
-        group={group}
-        key={group}
-        photos={photos ?? []}
-      />
-    </PageShell>
+    <>
+      <TopNav />
+      <PageAction label="编辑" />
+      <FloatingTools />
+      <main className="page album-page">
+        <header className="page-head album-page-head">
+          <p className="eyebrow">ALBUM · 2026</p>
+          <h1>最近的光影</h1>
+          <p>拖动照片整理画板，单击照片查看完整光影。</p>
+        </header>
+        <PublicAlbum
+          failed={!photos}
+          group={group}
+          key={group}
+          photos={photos ?? []}
+        />
+      </main>
+    </>
   );
 }

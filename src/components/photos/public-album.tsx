@@ -39,8 +39,8 @@ type DragState = {
 function estimatedCardSize(stageWidth: number) {
   const width =
     stageWidth <= 720
-      ? Math.min(stageWidth * 0.72, 270)
-      : Math.min(Math.max(stageWidth * 0.27, 180), 300);
+      ? Math.min(stageWidth * 0.54, 203)
+      : Math.min(Math.max(stageWidth * 0.2025, 135), 225);
   return { width, height: width * 1.25 };
 }
 

@@ -164,6 +164,29 @@ p { text-wrap: pretty; }
 .page-head { margin: 0 auto 42px; text-align: center; }
 .page-head h1 { margin-bottom: 7px; font-size: clamp(34px, 4vw, 58px); letter-spacing: -.04em; }
 .page-head p { margin: 0; color: var(--muted); }
+.album-page {
+  width: min(1480px, calc(100vw - 48px));
+  height: 100svh;
+  padding: 84px 0 24px;
+  display: grid;
+  grid-template-columns: minmax(210px, 300px) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 46px);
+  align-items: stretch;
+  overflow: hidden;
+}
+.album-page-head {
+  align-self: center;
+  margin: 0;
+  text-align: left;
+}
+.album-page-head h1 {
+  font-size: clamp(44px, 5vw, 82px);
+  line-height: .94;
+}
+.album-page-head p {
+  max-width: 16em;
+  font-size: clamp(16px, 1.4vw, 20px);
+}
 .eyebrow { color: var(--muted); font: 700 11px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 .muted { color: var(--muted); }
 .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
@@ -588,11 +611,12 @@ p { text-wrap: pretty; }
 .quote-box { margin: 28px 0; padding: 20px; border-left: 3px solid var(--accent-2); border-radius: 0 18px 18px 0; background: color-mix(in oklch, var(--accent-2) 8%, transparent); }
 
 /* Album and photo management */
-.public-album { display: grid; gap: 22px; }
+.public-album { min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; }
 .public-album-stage {
   position: relative;
-  width: min(100%, 980px);
-  height: clamp(440px, 62vw, 650px);
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
   margin: 0 auto;
   overflow: hidden;
   border-radius: var(--radius-large);
@@ -602,7 +626,7 @@ p { text-wrap: pretty; }
   position: absolute;
   left: 0;
   top: 0;
-  width: clamp(180px, 27vw, 300px);
+  width: clamp(135px, 20.25vw, 225px);
   box-sizing: border-box;
   aspect-ratio: 4 / 5;
   padding: 12px 12px 42px;
@@ -618,6 +642,11 @@ p { text-wrap: pretty; }
 }
 .public-polaroid:active { cursor: grabbing; }
 .public-polaroid img, .photo-editor-polaroid img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.public-polaroid img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
 .public-polaroid:hover, .public-polaroid:focus-visible, .public-polaroid.is-top { box-shadow: 0 34px 72px color-mix(in oklch, var(--shadow) 150%, transparent); filter: saturate(1.06); }
 .public-polaroid:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 .public-album-controls { display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -792,8 +821,20 @@ p { text-wrap: pretty; }
   .home-bottom { grid-template-columns: 1fr; }
   .card { padding: 22px; border-radius: 26px; }
   .story-row { grid-template-columns: 82px 1fr; }
-  .public-album-stage { height: 440px; }
-  .public-polaroid { width: min(72vw, 260px); }
+  .album-page {
+    width: min(100% - 28px, 680px);
+    height: auto;
+    min-height: 100svh;
+    padding: 86px 0 34px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+  .album-page-head { text-align: center; }
+  .album-page-head p { max-width: none; }
+  .public-album { min-height: 520px; }
+  .public-album-stage { min-height: 440px; }
+  .public-polaroid { width: min(54vw, 203px); }
   .public-album-controls { flex-wrap: wrap; }
   .photo-lightbox { padding: 10px; }
   .photo-lightbox-panel { max-height: calc(100svh - 20px); }
@@ -1022,8 +1063,8 @@ p { text-wrap: pretty; }
 }
 
 @media (max-width: 720px) {
-  .public-album-stage { height: 460px; }
-  .public-polaroid { width: min(72vw, 270px); }
+  .public-album-stage { min-height: 460px; }
+  .public-polaroid { width: min(54vw, 203px); }
   .public-album-controls { flex-wrap: wrap; }
 }
 
