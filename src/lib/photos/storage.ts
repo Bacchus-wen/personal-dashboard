@@ -86,6 +86,7 @@ export function createPhotoStorageService({
       try {
         updated = await repository.replaceStoragePath(
           photo.id,
+          photo.storagePath,
           objectPath,
           originalFilename,
         );

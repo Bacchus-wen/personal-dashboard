@@ -123,6 +123,12 @@ describe("createPhotoStorageService", () => {
     await service.replacePhoto(photo, new Uint8Array([1]), "new.jpg");
 
     expect(events).toEqual(["upload:new", "replace:path", "remove:old"]);
+    expect(repository.replaceStoragePath).toHaveBeenCalledWith(
+      photo.id,
+      photo.storagePath,
+      expect.stringMatching(/^album\/.+\.webp$/),
+      "new.jpg",
+    );
   });
 
   it("tracks a replaced old file when its removal fails", async () => {

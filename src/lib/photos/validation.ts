@@ -58,9 +58,30 @@ export function safeOriginalFilename(value: string) {
 }
 
 export function isWebpBytes(bytes: Uint8Array) {
-  if (bytes.length < 12) return false;
+  if (bytes.length < 25) return false;
+  const text = (start: number, length: number) =>
+    String.fromCharCode(...bytes.slice(start, start + length));
+  const uint32 = (start: number) =>
+    bytes[start] |
+    (bytes[start + 1] << 8) |
+    (bytes[start + 2] << 16) |
+    (bytes[start + 3] << 24);
+
+  if (text(0, 4) !== "RIFF" || text(8, 4) !== "WEBP") return false;
+  if (uint32(4) >>> 0 !== bytes.length - 8) return false;
+
+  const chunkType = text(12, 4);
+  const chunkSize = uint32(16) >>> 0;
+  const paddedChunkEnd = 20 + chunkSize + (chunkSize % 2);
+  if (paddedChunkEnd > bytes.length) return false;
+
+  if (chunkType === "VP8X") return chunkSize >= 10;
+  if (chunkType === "VP8L") return chunkSize >= 5 && bytes[20] === 0x2f;
   return (
-    String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
-    String.fromCharCode(...bytes.slice(8, 12)) === "WEBP"
+    chunkType === "VP8 " &&
+    chunkSize >= 10 &&
+    bytes[23] === 0x9d &&
+    bytes[24] === 0x01 &&
+    bytes[25] === 0x2a
   );
 }

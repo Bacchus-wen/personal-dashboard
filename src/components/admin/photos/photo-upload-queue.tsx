@@ -32,6 +32,10 @@ export function PhotoUploadQueue() {
   const [items, setItems] = useState<QueueItem[]>([]);
   const pendingItems = useRef<QueueItem[]>([]);
   const activeWorkers = useRef(0);
+  const enqueuedIds = useRef(new Set<string>());
+  const busy = items.some((item) =>
+    ["queued", "processing", "uploading"].includes(item.status),
+  );
 
   const update = (id: string, values: Partial<QueueItem>) => {
     setItems((current) =>
@@ -73,6 +77,7 @@ export function PhotoUploadQueue() {
       if (!item) return;
       activeWorkers.current += 1;
       void processOne(item).finally(() => {
+        enqueuedIds.current.delete(item.id);
         activeWorkers.current -= 1;
         pumpQueue();
       });
@@ -80,11 +85,19 @@ export function PhotoUploadQueue() {
   };
 
   const enqueue = (queue: QueueItem[]) => {
-    pendingItems.current.push(...queue);
+    for (const item of queue) {
+      if (enqueuedIds.current.has(item.id)) continue;
+      enqueuedIds.current.add(item.id);
+      pendingItems.current.push(item);
+    }
     pumpQueue();
   };
 
   const selectFiles = (event: ChangeEvent<HTMLInputElement>) => {
+    if (busy) {
+      event.target.value = "";
+      return;
+    }
     const files = Array.from(event.target.files ?? []);
     const validation = validateClientPhotoSelection(files);
     const selected = files.map<QueueItem>((file, index) => ({
@@ -96,6 +109,7 @@ export function PhotoUploadQueue() {
     }));
     setItems(selected);
     pendingItems.current = [];
+    enqueuedIds.current.clear();
     enqueue(selected.filter((item) => item.status === "queued"));
     event.target.value = "";
   };
@@ -121,6 +135,7 @@ export function PhotoUploadQueue() {
           选择照片
           <input
             accept="image/jpeg,image/png,image/webp"
+            disabled={busy}
             multiple
             onChange={selectFiles}
             type="file"

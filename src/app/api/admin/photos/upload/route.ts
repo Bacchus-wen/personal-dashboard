@@ -1,6 +1,8 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { requireApiAdmin } from "@/lib/auth/api-admin";
+import { getPhotoMutationRevalidationPaths } from "@/lib/photos/actions";
 import { getPhotoStorageService } from "@/lib/photos/server-storage";
 import { parseProcessedPhotoFile } from "@/lib/photos/upload-request";
 import type { PhotoUploadResult } from "@/lib/photos/types";
@@ -25,6 +27,7 @@ export async function POST(request: Request) {
       parsed.bytes,
       parsed.originalFilename,
     );
+    for (const path of getPhotoMutationRevalidationPaths()) revalidatePath(path);
     return NextResponse.json<PhotoUploadResult>({
       ok: true,
       message: "照片已上传为草稿。",

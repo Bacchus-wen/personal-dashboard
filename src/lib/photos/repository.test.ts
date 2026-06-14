@@ -51,6 +51,7 @@ function database() {
     },
     async delete(request) {
       requests.push(request);
+      return request.returning ? { row: photoRow } : undefined;
     },
     async upsert(request) {
       requests.push(request);
@@ -145,6 +146,7 @@ describe("createPhotoRepository", () => {
 
     await repository.replaceStoragePath(
       "photo-id",
+      "album/photo-id/old-file.webp",
       "album/photo-id/new-file.webp",
       "new.jpg",
     );
@@ -153,6 +155,11 @@ describe("createPhotoRepository", () => {
     expect(requests[0].values).toEqual({
       storage_path: "album/photo-id/new-file.webp",
       original_filename: "new.jpg",
+    });
+    expect(requests[0].filters).toContainEqual({
+      column: "storage_path",
+      operator: "eq",
+      value: "album/photo-id/old-file.webp",
     });
     expect(requests[1]).toMatchObject({
       filters: [
@@ -180,6 +187,19 @@ describe("createPhotoRepository", () => {
       operator: "not_is",
       value: null,
     });
+    expect(requests[0].returning).toBe(true);
+    expect(requests[1].returning).toBe(true);
+  });
+
+  it("rejects lifecycle mutations when no record matches", async () => {
+    const { client } = database();
+    client.update = async () => undefined;
+    client.delete = async () => undefined;
+    const repository = createPhotoRepository(client, String);
+
+    await expect(repository.moveToTrash("missing")).rejects.toThrow();
+    await expect(repository.restore("missing")).rejects.toThrow();
+    await expect(repository.deleteRecord("missing")).rejects.toThrow();
   });
 
   it("lists, upserts, and deletes cleanup tasks", async () => {

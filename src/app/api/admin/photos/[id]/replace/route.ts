@@ -1,6 +1,8 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { requireApiAdmin } from "@/lib/auth/api-admin";
+import { getPhotoMutationRevalidationPaths } from "@/lib/photos/actions";
 import { getPhotoRepository } from "@/lib/photos/server-repository";
 import { getPhotoStorageService } from "@/lib/photos/server-storage";
 import { parseProcessedPhotoFile } from "@/lib/photos/upload-request";
@@ -49,6 +51,7 @@ export async function POST(
       parsed.bytes,
       parsed.originalFilename,
     );
+    for (const path of getPhotoMutationRevalidationPaths()) revalidatePath(path);
     return NextResponse.json<PhotoUploadResult>({
       ok: true,
       message: "照片已替换。",

@@ -46,14 +46,26 @@ describe("safeOriginalFilename", () => {
 });
 
 describe("isWebpBytes", () => {
-  it("accepts only RIFF WEBP headers", () => {
+  const validWebp = new Uint8Array([
+    0x52, 0x49, 0x46, 0x46, 0x16, 0, 0, 0, 0x57, 0x45, 0x42, 0x50,
+    0x56, 0x50, 0x38, 0x58, 0x0a, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+
+  it("accepts a structurally valid WebP image chunk", () => {
+    expect(isWebpBytes(validWebp)).toBe(true);
+  });
+
+  it("rejects truncated, size-mismatched, and unsupported WebP data", () => {
     expect(
       isWebpBytes(
         new Uint8Array([
           0x52, 0x49, 0x46, 0x46, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50,
         ]),
       ),
-    ).toBe(true);
+    ).toBe(false);
+    const sizeMismatch = new Uint8Array(validWebp);
+    sizeMismatch[4] = 0;
+    expect(isWebpBytes(sizeMismatch)).toBe(false);
     expect(isWebpBytes(new Uint8Array([0x52, 0x49, 0x46, 0x46]))).toBe(false);
     expect(
       isWebpBytes(

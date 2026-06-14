@@ -48,7 +48,9 @@ export type PhotoDatabaseClient = {
   update(
     request: PhotoDatabaseRequest,
   ): Promise<{ row: PhotoDatabaseRow } | void>;
-  delete(request: PhotoDatabaseRequest): Promise<void>;
+  delete(
+    request: PhotoDatabaseRequest,
+  ): Promise<{ row: PhotoDatabaseRow } | void>;
   upsert(request: PhotoDatabaseRequest): Promise<void>;
 };
 
@@ -65,6 +67,7 @@ export type PhotoRepository = {
   updateMetadata(id: string, input: ValidPhotoInput): Promise<Photo>;
   replaceStoragePath(
     id: string,
+    oldStoragePath: string,
     storagePath: string,
     originalFilename: string,
   ): Promise<Photo>;
@@ -207,13 +210,19 @@ export function createPhotoRepository(
       return photoFromRow(result.row);
     },
 
-    async replaceStoragePath(id, storagePath, originalFilename) {
+    async replaceStoragePath(
+      id,
+      oldStoragePath,
+      storagePath,
+      originalFilename,
+    ) {
       const result = await client.update({
         table: "photos",
         columns: PHOTO_COLUMNS,
         filters: [
           { column: "id", operator: "eq", value: id },
           activeFilter,
+          { column: "storage_path", operator: "eq", value: oldStoragePath },
         ],
         values: {
           storage_path: storagePath,
@@ -226,35 +235,44 @@ export function createPhotoRepository(
     },
 
     async moveToTrash(id) {
-      await client.update({
+      const result = await client.update({
         table: "photos",
+        columns: PHOTO_COLUMNS,
         filters: [
           { column: "id", operator: "eq", value: id },
           activeFilter,
         ],
         values: { deleted_at: new Date().toISOString() },
+        returning: true,
       });
+      if (!result) throw new Error("Active photo not found");
     },
 
     async restore(id) {
-      await client.update({
+      const result = await client.update({
         table: "photos",
+        columns: PHOTO_COLUMNS,
         filters: [
           { column: "id", operator: "eq", value: id },
           { column: "deleted_at", operator: "not_is", value: null },
         ],
         values: { deleted_at: null, visibility: "draft" },
+        returning: true,
       });
+      if (!result) throw new Error("Trashed photo not found");
     },
 
     async deleteRecord(id) {
-      await client.delete({
+      const result = await client.delete({
         table: "photos",
+        columns: PHOTO_COLUMNS,
         filters: [
           { column: "id", operator: "eq", value: id },
           { column: "deleted_at", operator: "not_is", value: null },
         ],
+        returning: true,
       });
+      if (!result) throw new Error("Trashed photo not found");
     },
 
     async listCleanupTasks() {

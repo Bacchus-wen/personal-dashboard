@@ -107,6 +107,13 @@ function createSupabasePhotoDatabaseClient(
     async delete(request) {
       let query = from(client, request.table).delete();
       query = applyFilters(query, request.filters);
+      if (request.returning) {
+        const { data, error } = await query
+          .select(request.columns ?? columnsForTable(request.table))
+          .single();
+        if (error) throw error;
+        return { row: data as PhotoDatabaseRow };
+      }
       const { error } = await query;
       if (error) throw error;
     },
