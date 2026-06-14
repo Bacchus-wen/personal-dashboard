@@ -106,15 +106,20 @@ Delete all temporary verification records and objects after testing.
 In an external browser, verify:
 
 1. `/album` shows at most twelve photos in each group.
-2. Activating a non-top photo raises it; activating the top photo again opens
-   the lightbox.
-3. The lightbox browses all public photos and supports its close button,
-   backdrop click, `Escape`, left arrow, and right arrow.
-4. Keyboard focus returns to the triggering photo after the lightbox closes.
-5. The homepage shows at most three real public photos and controlled empty or
+2. Photos initially appear distributed across the board rather than clustered
+   in one stack.
+3. Dragging any visible part of a photo moves it and raises it above the other
+   photos for the current page session.
+4. Clicking a photo opens a single-photo lightbox.
+5. The lightbox has no visible close, previous, next, or page-number controls.
+6. Clicking the empty backdrop or pressing `Escape` closes the lightbox.
+7. Keyboard focus returns to the triggering photo after the lightbox closes.
+8. The homepage shows at most three real public photos and controlled empty or
    unavailable states.
-6. Desktop, tablet, and approximately 320px layouts have no page-level
+9. Desktop, tablet, and approximately 320px layouts have no page-level
    horizontal scrolling.
+10. Desktop `/album` uses a one-screen side-copy layout and should not require
+    vertical scrolling for normal viewport heights.
 
 ## Verify Cleanup Retry
 

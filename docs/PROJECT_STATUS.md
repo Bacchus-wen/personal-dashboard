@@ -1,6 +1,6 @@
 # Theodore Personal Dashboard - Project Status
 
-Last updated: 2026-06-14
+Last updated: 2026-06-15
 
 This document is the primary handoff entry for a new Codex conversation. It
 summarizes the current product direction, completed work, active Git state,
@@ -69,14 +69,14 @@ Current technology:
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
 | 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
-| 5A | Public album and Storage foundation | Implemented locally; cloud and browser acceptance pending |
+| 5A | Public album and Storage foundation | Implemented and verified locally; PR pending |
 | 5B | Avatar, favicon, works, and collection image uploads | Designed as a later sub-flow; not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
 ## Current Git And GitHub State
 
-Verified on 2026-06-14:
+Verified on 2026-06-15:
 
 - GitHub repository:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard`
@@ -109,10 +109,14 @@ Active flow 5A state:
   `docs/superpowers/specs/2026-06-14-public-album-storage-design.md`;
 - implementation plan:
   `docs/superpowers/plans/2026-06-14-public-album-storage.md`;
-- local implementation and final local automated verification through Task 13
-  are complete;
-- real Supabase migration, security checks, CRUD acceptance, responsive
-  external-browser acceptance, and Pull Request remain pending.
+- draggable board adjustment design:
+  `docs/superpowers/specs/2026-06-14-draggable-photo-board-design.md`;
+- draggable board implementation plan:
+  `docs/superpowers/plans/2026-06-14-draggable-photo-board.md`;
+- local implementation, real Supabase migration, SQL security checks, automated
+  verification, and external-browser public album layout acceptance are
+  complete;
+- Flow 5A Pull Request remains pending.
 
 ## Completed Work
 
@@ -301,37 +305,46 @@ Implemented locally:
   queue;
 - administrator photo list, status editing, replacement, trash, restore,
   permanent deletion, and cleanup pages;
-- real public 拍立得 stack, complete-photo lightbox, group navigation, keyboard
-  controls, and controlled failure/empty states;
+- real public draggable photo board, single-photo lightbox, group navigation,
+  keyboard close support, and controlled failure/empty states;
 - real homepage album preview with at most three random public photos;
 - responsive public album and administrator layouts without new dependencies.
 
-Current local verification:
+Cloud verification completed:
 
-- final `npm test`: 35 files and 184 tests passed;
+- `supabase/migrations/202606140002_public_album_storage.sql` was executed
+  successfully in the real Supabase SQL Editor;
+- user-run SQL Editor verification confirmed RLS is enabled for `photos` and
+  `storage_cleanup_tasks`;
+- user-run SQL Editor verification confirmed `anon` and `authenticated` have no
+  direct table privileges;
+- user-run SQL Editor verification confirmed `public-media` is public, limited
+  to 10 MB, and allows only `image/webp`;
+- user-run SQL Editor verification found no existing browser-role
+  `storage.objects` policies;
+- post-migration HTTP checks confirmed `/` and `/album` return `200`, and
+  `/admin/photos` and `/admin/photos/cleanup` redirect unauthenticated visitors
+  to login.
+
+Latest local automated verification:
+
+- final `npm test`: 37 files and 191 tests passed;
 - final `npm run lint`: passed;
 - final `npx tsc --noEmit`: passed;
 - final `git diff --check`: passed;
-- final `npm run build -- --webpack`: passed after the known `.next` Windows
-  `EPERM` required one narrow elevated rerun;
-- local HTTP checks previously confirmed `/` and `/album` return `200`,
-  `/admin/photos` redirects to login, and unauthenticated upload and
-  replacement requests return safe JSON `401`;
+- final `npm run build -- --webpack`: passed;
 - merge-readiness review led to commit `5032a16`, which added replacement
   compare-and-swap, lifecycle zero-row detection, stronger WebP structure
   validation, upload-queue deduplication, and upload/replacement cache
   revalidation.
+- external-browser acceptance found the original album stack too large,
+  vertically wasteful, and too hard to drag from the photo body;
+- commits through `bd3f49d` refined `/album` into a one-screen desktop layout
+  with side copy, smaller photos, wider board space, whole-photo dragging, and
+  a minimal single-photo lightbox.
 
 Still pending and must not be reported as passed before observation:
 
-- apply `supabase/migrations/202606140002_public_album_storage.sql` in the real
-  Supabase SQL Editor;
-- verify table RLS, browser-role grants, bucket settings, and rejected direct
-  browser-role writes;
-- complete administrator upload, replace, state, trash, restore, permanent
-  delete, and cleanup-retry acceptance;
-- complete public isolation, keyboard, desktop, tablet, and approximately
-  320px external-browser acceptance;
 - publish the Flow 5A Pull Request.
 
 Primary references:
@@ -508,6 +521,5 @@ Database:
 
 ## Immediate Next Step
 
-1. Apply and verify the real Supabase Flow 5A migration.
-2. Complete external-browser administrator and public album acceptance.
-3. Publish Flow 5A for review.
+1. Publish Flow 5A for review.
+2. After merge, update `main` and start Flow 5B only after design confirmation.
