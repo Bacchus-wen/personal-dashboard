@@ -225,8 +225,10 @@ Cloud migration status:
   executed successfully in the real Supabase SQL Editor on 2026-06-14;
 - post-migration public server reads returned successfully without migration or
   loading errors;
-- RLS state, browser-role grant isolation, administrator CRUD, and public
-  visibility isolation still require final cloud acceptance.
+- user-run SQL Editor verification confirmed both tables have RLS enabled and
+  that `anon` and `authenticated` have no table privileges;
+- administrator CRUD and public visibility isolation still require final cloud
+  acceptance.
 
 Still pending:
 
@@ -429,9 +431,7 @@ Database:
 
 ## Immediate Next Step
 
-1. Verify flow 4 RLS and browser-role grants in the real Supabase SQL Editor
-   using `docs/operations/collections-and-featured-projects.md`.
-2. Run administrator CRUD, public isolation, and external-browser visual
+1. Run administrator CRUD, public isolation, and external-browser visual
    acceptance.
-3. Fix only confirmed defects, then create the flow 4 Pull Request.
-4. Update this file when the Pull Request is opened or merged.
+2. Fix only confirmed defects, then create the flow 4 Pull Request.
+3. Update this file when the Pull Request is opened or merged.
