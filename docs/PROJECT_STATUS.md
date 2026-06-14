@@ -68,8 +68,9 @@ Current technology:
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Pull Request #4 open and ready for review |
-| 5 | Media storage, album management, real avatar and favicon uploads | Not started |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
+| 5A | Public album and Storage foundation | Implemented locally; cloud and browser acceptance pending |
+| 5B | Avatar, favicon, works, and collection image uploads | Designed as a later sub-flow; not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
@@ -87,20 +88,31 @@ Verified on 2026-06-14:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/3`
 - PR #3 state: merged into `main` as
   `96434a1 Add works management and public portfolio pages (#3)`.
-- Active flow 4 worktree:
+- Previous flow 4 worktree:
   `F:\网站制作\.worktrees\collections-featured-projects`
-- Active flow 4 branch: `codex/collections-featured-projects`
-- Open flow 4 Pull Request:
+- Previous flow 4 branch: `codex/collections-featured-projects`
+- Merged flow 4 Pull Request:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/4`
 
 The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
 logs and must not be committed.
 
-Flow 4 implementation and acceptance are complete on the active worktree. The
-cloud migration, production build, cloud permission checks, CRUD checks, and
-external-browser acceptance passed. Pull Request #4 is open and ready for
-review.
+Flow 4 implementation and acceptance are complete. Pull Request #4 was squash
+merged into `main` as `1e1572c Add collections and featured projects (#4)`.
+
+Active flow 5A state:
+
+- worktree: `F:\网站制作\.worktrees\public-album-storage`;
+- branch: `codex/public-album-storage`;
+- approved design:
+  `docs/superpowers/specs/2026-06-14-public-album-storage-design.md`;
+- implementation plan:
+  `docs/superpowers/plans/2026-06-14-public-album-storage.md`;
+- local implementation through Task 11 is complete;
+- real Supabase migration, security checks, CRUD acceptance, responsive
+  external-browser acceptance, final production build, and Pull Request remain
+  pending.
 
 ## Completed Work
 
@@ -236,9 +248,7 @@ Cloud migration status:
   homepage featured-only recommendations, original-site new-tab links, and
   desktop, tablet, and approximately 320px responsive layouts.
 
-Still pending:
-
-- review and merge Pull Request #4.
+Flow 4 is merged and has no remaining implementation work in this flow.
 
 Latest local automated verification:
 
@@ -275,6 +285,59 @@ Primary references:
 - `src/lib/collections/`
 - `src/lib/featured-projects/`
 - `src/lib/recommendations/`
+
+### Flow 5A - Public Album And Storage Foundation
+
+Implemented locally:
+
+- public `public-media` Storage bucket migration with WebP-only and 10 MB
+  limits;
+- server-only `photos` and `storage_cleanup_tasks` tables with RLS and browser
+  role revocation;
+- photo validation, deterministic grouping, repositories, Storage lifecycle,
+  rollback tracking, and cleanup retry;
+- protected JSON upload and replacement Route Handlers;
+- browser resize and WebP conversion, ten-file selection, and two-worker upload
+  queue;
+- administrator photo list, status editing, replacement, trash, restore,
+  permanent deletion, and cleanup pages;
+- real public 拍立得 stack, complete-photo lightbox, group navigation, keyboard
+  controls, and controlled failure/empty states;
+- real homepage album preview with at most three random public photos;
+- responsive public album and administrator layouts without new dependencies.
+
+Current local verification:
+
+- focused Task 2 through Task 10 tests passed;
+- latest stage full suite before Tasks 7 through 11: 34 files and 180 tests
+  passed;
+- `npm run lint`: passed after Task 11;
+- `npx tsc --noEmit`: passed after Task 11;
+- `git diff --check`: passed after Task 11.
+
+Still pending and must not be reported as passed before observation:
+
+- apply `supabase/migrations/202606140002_public_album_storage.sql` in the real
+  Supabase SQL Editor;
+- verify table RLS, browser-role grants, bucket settings, and rejected direct
+  browser-role writes;
+- complete administrator upload, replace, state, trash, restore, permanent
+  delete, and cleanup-retry acceptance;
+- complete public isolation, keyboard, desktop, tablet, and approximately
+  320px external-browser acceptance;
+- run the final full test/lint/type/build verification and publish the Flow 5A
+  Pull Request.
+
+Primary references:
+
+- `docs/superpowers/specs/2026-06-14-public-album-storage-design.md`
+- `docs/superpowers/plans/2026-06-14-public-album-storage.md`
+- `docs/operations/public-album-storage.md`
+- `supabase/migrations/202606140002_public_album_storage.sql`
+- `src/lib/photos/`
+- `src/components/photos/`
+- `src/components/admin/photos/`
+- `src/app/admin/(protected)/photos/`
 
 ## Approved Product Decisions
 
@@ -425,6 +488,7 @@ Application:
 - `src/lib/plans/`: recent-plans domain and repository.
 - `src/lib/site-settings/`: site-settings domain and repository.
 - `src/lib/works/`: works domain and repository.
+- `src/lib/photos/`: public album, Storage lifecycle, and photo actions.
 
 Database:
 
@@ -433,8 +497,12 @@ Database:
 - `supabase/migrations/202606130001_site_settings_home_layout.sql`
 - `supabase/migrations/202606130002_fix_site_configuration_publish.sql`
 - `supabase/migrations/202606130003_works_management.sql`
+- `supabase/migrations/202606140001_collections_featured_projects.sql`
+- `supabase/migrations/202606140002_public_album_storage.sql`
 
 ## Immediate Next Step
 
-1. Review and merge Pull Request #4.
-2. Update this file after the Pull Request is merged.
+1. Run final local Flow 5A verification.
+2. Apply and verify the real Supabase Flow 5A migration.
+3. Complete external-browser administrator and public album acceptance.
+4. Publish Flow 5A for review.

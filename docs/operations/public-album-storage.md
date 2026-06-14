@@ -101,6 +101,21 @@ protected administrator pages.
 
 Delete all temporary verification records and objects after testing.
 
+## Verify Public Interaction And Responsive Layout
+
+In an external browser, verify:
+
+1. `/album` shows at most twelve photos in each group.
+2. Activating a non-top photo raises it; activating the top photo again opens
+   the lightbox.
+3. The lightbox browses all public photos and supports its close button,
+   backdrop click, `Escape`, left arrow, and right arrow.
+4. Keyboard focus returns to the triggering photo after the lightbox closes.
+5. The homepage shows at most three real public photos and controlled empty or
+   unavailable states.
+6. Desktop, tablet, and approximately 320px layouts have no page-level
+   horizontal scrolling.
+
 ## Verify Cleanup Retry
 
 If a failed old-file cleanup task is safely available:
@@ -117,11 +132,13 @@ cleanup task.
 ## Normal Content Operations
 
 1. Upload up to ten supported images at a time.
-2. Confirm every successful image appears as a draft.
-3. Review the full and polaroid previews.
-4. Set sort order and publish only photos intended for public sharing.
-5. Archive or move obsolete photos to trash.
-6. Permanently delete trashed photos only after confirming they are no longer
+2. Confirm unsupported, empty, and oversized files fail independently without
+   preventing valid files from uploading.
+3. Confirm every successful image appears as a draft.
+4. Review the full and polaroid previews.
+5. Set sort order and publish only photos intended for public sharing.
+6. Archive or move obsolete photos to trash.
+7. Permanently delete trashed photos only after confirming they are no longer
    needed.
 
 Important photos must also exist in an independent backup location.
