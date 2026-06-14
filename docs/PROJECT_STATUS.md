@@ -109,10 +109,10 @@ Active flow 5A state:
   `docs/superpowers/specs/2026-06-14-public-album-storage-design.md`;
 - implementation plan:
   `docs/superpowers/plans/2026-06-14-public-album-storage.md`;
-- local implementation through Task 11 is complete;
+- local implementation and final local automated verification through Task 13
+  are complete;
 - real Supabase migration, security checks, CRUD acceptance, responsive
-  external-browser acceptance, final production build, and Pull Request remain
-  pending.
+  external-browser acceptance, and Pull Request remain pending.
 
 ## Completed Work
 
@@ -308,12 +308,19 @@ Implemented locally:
 
 Current local verification:
 
-- focused Task 2 through Task 10 tests passed;
-- latest stage full suite before Tasks 7 through 11: 34 files and 180 tests
-  passed;
-- `npm run lint`: passed after Task 11;
-- `npx tsc --noEmit`: passed after Task 11;
-- `git diff --check`: passed after Task 11.
+- final `npm test`: 35 files and 184 tests passed;
+- final `npm run lint`: passed;
+- final `npx tsc --noEmit`: passed;
+- final `git diff --check`: passed;
+- final `npm run build -- --webpack`: passed after the known `.next` Windows
+  `EPERM` required one narrow elevated rerun;
+- local HTTP checks previously confirmed `/` and `/album` return `200`,
+  `/admin/photos` redirects to login, and unauthenticated upload and
+  replacement requests return safe JSON `401`;
+- merge-readiness review led to commit `5032a16`, which added replacement
+  compare-and-swap, lifecycle zero-row detection, stronger WebP structure
+  validation, upload-queue deduplication, and upload/replacement cache
+  revalidation.
 
 Still pending and must not be reported as passed before observation:
 
@@ -325,8 +332,7 @@ Still pending and must not be reported as passed before observation:
   delete, and cleanup-retry acceptance;
 - complete public isolation, keyboard, desktop, tablet, and approximately
   320px external-browser acceptance;
-- run the final full test/lint/type/build verification and publish the Flow 5A
-  Pull Request.
+- publish the Flow 5A Pull Request.
 
 Primary references:
 
@@ -502,7 +508,6 @@ Database:
 
 ## Immediate Next Step
 
-1. Run final local Flow 5A verification.
-2. Apply and verify the real Supabase Flow 5A migration.
-3. Complete external-browser administrator and public album acceptance.
-4. Publish Flow 5A for review.
+1. Apply and verify the real Supabase Flow 5A migration.
+2. Complete external-browser administrator and public album acceptance.
+3. Publish Flow 5A for review.
