@@ -68,7 +68,7 @@ Current technology:
 | 1 | Authentication, security foundation, recent plans | Merged into `main` through PR #1 |
 | 2 | Site settings and homepage layout management | Merged into `main` through PR #2 |
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
-| 4 | Curated articles/videos and noteworthy GitHub projects | Implementation and acceptance complete; Pull Request pending |
+| 4 | Curated articles/videos and noteworthy GitHub projects | Pull Request #4 open and ready for review |
 | 5 | Media storage, album management, real avatar and favicon uploads | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
@@ -90,7 +90,8 @@ Verified on 2026-06-14:
 - Active flow 4 worktree:
   `F:\网站制作\.worktrees\collections-featured-projects`
 - Active flow 4 branch: `codex/collections-featured-projects`
-- Open Pull Requests for flow 4: none at the time of this update.
+- Open flow 4 Pull Request:
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/4`
 
 The previous works worktree may contain `.dev-server.out.log` and
 `.dev-server.err.log` while the local server is running. They are local runtime
@@ -98,7 +99,8 @@ logs and must not be committed.
 
 Flow 4 implementation and acceptance are complete on the active worktree. The
 cloud migration, production build, cloud permission checks, CRUD checks, and
-external-browser acceptance passed. Pull Request publication remains pending.
+external-browser acceptance passed. Pull Request #4 is open and ready for
+review.
 
 ## Completed Work
 
@@ -236,7 +238,7 @@ Cloud migration status:
 
 Still pending:
 
-- create and publish the flow 4 Pull Request.
+- review and merge Pull Request #4.
 
 Latest local automated verification:
 
@@ -434,5 +436,5 @@ Database:
 
 ## Immediate Next Step
 
-1. Run final automated verification and create the flow 4 Pull Request.
-2. Update this file when the Pull Request is opened or merged.
+1. Review and merge Pull Request #4.
+2. Update this file after the Pull Request is merged.
