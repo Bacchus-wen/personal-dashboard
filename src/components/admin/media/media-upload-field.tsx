@@ -22,6 +22,7 @@ type MediaUploadFieldProps = {
   variant: MediaVariant;
   ownerId?: string | null;
   preview?: string;
+  multiple?: boolean;
   onUploaded(result: { path: string; publicUrl: string }): void;
 };
 
@@ -48,6 +49,7 @@ export function MediaUploadField({
   variant,
   ownerId = null,
   preview,
+  multiple = false,
   onUploaded,
 }: MediaUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -94,18 +96,23 @@ export function MediaUploadField({
   };
 
   const selectFile = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const files = [...(event.target.files ?? [])];
     event.target.value = "";
-    if (!file || busy) return;
-    void upload(file);
+    if (!files.length || busy) return;
+    void uploadSelected(files);
+  };
+
+  const uploadSelected = async (files: File[]) => {
+    const selected = multiple ? files : files.slice(0, 1);
+    for (const file of selected) await upload(file);
   };
 
   const dropFile = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setDragging(false);
-    const file = event.dataTransfer.files?.[0];
-    if (!file || busy) return;
-    void upload(file);
+    const files = [...(event.dataTransfer.files ?? [])];
+    if (!files.length || busy) return;
+    void uploadSelected(files);
   };
 
   return (
@@ -154,6 +161,7 @@ export function MediaUploadField({
         <input
           accept={acceptForVariant(variant)}
           disabled={busy}
+          multiple={multiple}
           onChange={selectFile}
           ref={inputRef}
           type="file"

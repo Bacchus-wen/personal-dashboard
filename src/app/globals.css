@@ -706,6 +706,14 @@ p { text-wrap: pretty; }
 .media-upload-status.processing, .media-upload-status.uploading { color: var(--accent); }
 .media-upload-status.success { color: var(--fg); background: color-mix(in oklch, var(--accent) 22%, var(--surface)); }
 .media-upload-status.error { color: #984755; background: color-mix(in oklch, var(--pink) 25%, var(--surface)); }
+.compact-media-upload { display: grid; gap: 8px; margin-top: 8px; }
+.compact-media-upload .media-upload-field { gap: 8px; }
+.compact-media-upload .media-upload-head .eyebrow { display: none; }
+.compact-media-upload .media-upload-head h3 { font-size: 13px; }
+.compact-media-upload .media-upload-dropzone { grid-template-columns: 72px minmax(0, 1fr); padding: 9px; }
+.compact-media-upload .media-upload-preview { width: 72px; border-radius: 12px; }
+.compact-media-upload > .btn { justify-self: start; }
+.media-upload-hint { margin: 8px 0 0; font-size: 12px; }
 .media-test-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .media-result-card { display: grid; gap: 12px; }
 .media-result-card p { display: grid; gap: 4px; margin-bottom: 0; overflow-wrap: anywhere; }
