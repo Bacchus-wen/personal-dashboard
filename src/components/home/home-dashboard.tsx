@@ -9,6 +9,10 @@ import { HomeAlbumPreview } from "@/components/home/home-album-preview";
 import { RecentPlanWidget } from "@/components/home/recent-plan-widget";
 import { AdminIcon, NavIcon } from "@/components/icons";
 import { navigation } from "@/data/site-content";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 import { MOBILE_HOME_MODULE_ORDER } from "@/lib/site-settings/defaults";
 import type {
   HomeLayoutItem,
@@ -113,7 +117,7 @@ function ProfileAvatar({
     // eslint-disable-next-line @next/next/no-img-element
     <img
       className="avatar profile-avatar"
-      src={path}
+      src={resolveMediaDisplayUrl(path, publicMediaUrlForPath) ?? path}
       alt=""
       onError={() => setFailed(true)}
     />

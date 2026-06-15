@@ -8,6 +8,7 @@ import {
   getCollectionMutationRevalidationPaths,
 } from "@/lib/collections/actions";
 import { getCollectionRepository } from "@/lib/collections/server-repository";
+import { getMediaStorageService } from "@/lib/media/server-storage";
 import type {
   CollectionActionResult,
   CollectionInput,
@@ -47,6 +48,8 @@ function service() {
   return createCollectionActionService({
     repository: getCollectionRepository(),
     adminUserId: getAdminUserId(),
+    deleteMediaObject: (path, reason) =>
+      getMediaStorageService().deleteObject(path, reason),
   });
 }
 

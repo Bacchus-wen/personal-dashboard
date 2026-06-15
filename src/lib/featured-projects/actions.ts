@@ -1,4 +1,9 @@
 import { runProtectedAdminOperation } from "../auth/guard";
+import {
+  cleanupObsoleteMedia,
+  obsoleteSystemMediaPaths,
+} from "../media/lifecycle";
+import type { MediaCleanupReason } from "../media/types";
 import type { FeaturedProjectRepository } from "./repository";
 import type {
   FeaturedProjectActionResult,
@@ -9,6 +14,10 @@ import { validateFeaturedProjectInput } from "./validation";
 type Dependencies = {
   repository: FeaturedProjectRepository;
   adminUserId: string;
+  deleteMediaObject?: (
+    path: string,
+    reason: MediaCleanupReason,
+  ) => Promise<void>;
 };
 
 export function getFeaturedProjectMutationRevalidationPaths() {
@@ -18,6 +27,7 @@ export function getFeaturedProjectMutationRevalidationPaths() {
 export function createFeaturedProjectActionService({
   repository,
   adminUserId,
+  deleteMediaObject = async () => {},
 }: Dependencies) {
   async function save(
     userId: string | null,
@@ -34,7 +44,17 @@ export function createFeaturedProjectActionService({
         } satisfies FeaturedProjectActionResult;
       }
       try {
+        const previous = id ? await repository.getById(id) : null;
         const project = await repository.save(id, validated.data);
+        if (previous) {
+          await cleanupObsoleteMedia(
+            obsoleteSystemMediaPaths(
+              [previous.coverPath],
+              [validated.data.coverPath],
+            ),
+            (path) => deleteMediaObject(path, "replace_old_file"),
+          );
+        }
         return {
           ok: true,
           message: id ? "项目已保存。" : "项目已创建。",
@@ -76,7 +96,14 @@ export function createFeaturedProjectActionService({
     permanentlyDelete(userId: string | null, id: string) {
       return runProtectedAdminOperation(userId, adminUserId, async () => {
         try {
+          const project = await repository.getById(id);
           await repository.permanentlyDelete(id);
+          if (project) {
+            await cleanupObsoleteMedia(
+              obsoleteSystemMediaPaths([project.coverPath], []),
+              (path) => deleteMediaObject(path, "delete_asset_file"),
+            );
+          }
           return { ok: true, message: "项目已永久删除。", projectId: id };
         } catch {
           return { ok: false, message: "项目永久删除失败。" };

@@ -6,6 +6,7 @@ export type FeaturedProject = {
   repositoryUrl: string | null;
   summary: string | null;
   recommendation: string | null;
+  coverPath: string | null;
   language: string | null;
   tags: string[];
   starCount: number | null;
@@ -23,6 +24,7 @@ export type FeaturedProjectInput = {
   repositoryUrl: string | null;
   summary: string | null;
   recommendation: string | null;
+  coverPath: string | null;
   language: string | null;
   tags: string[];
   starCount: number | string | null;

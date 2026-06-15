@@ -4,15 +4,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type ChangeEvent, type MouseEvent, useActionState, useEffect, useMemo, useState } from "react";
 
+import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
 import { FeaturedProjectCard } from "@/components/featured-projects/project-card";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 import { RECOMMENDATION_VISIBILITIES, RECOMMENDATION_VISIBILITY_LABELS } from "@/lib/featured-projects/constants";
 import type { FeaturedProject, FeaturedProjectActionResult, FeaturedProjectFieldErrors, FeaturedProjectInput } from "@/lib/featured-projects/types";
 
 type Action = (previousState: FeaturedProjectActionResult, formData: FormData) => Promise<FeaturedProjectActionResult>;
-type Values = { name: string; repositoryUrl: string; summary: string; recommendation: string; language: string; tagsText: string; starCount: string; starRecordedOn: string; visibility: string; featured: boolean; sortOrder: string };
+type Values = { name: string; repositoryUrl: string; summary: string; recommendation: string; coverPath: string; language: string; tagsText: string; starCount: string; starRecordedOn: string; visibility: string; featured: boolean; sortOrder: string };
 const EMPTY_RESULT: FeaturedProjectActionResult = { ok: false, message: "" };
 function valuesFromProject(project: FeaturedProject | null): Values {
-  return { name: project?.name ?? "", repositoryUrl: project?.repositoryUrl ?? "", summary: project?.summary ?? "", recommendation: project?.recommendation ?? "", language: project?.language ?? "", tagsText: project?.tags.join(", ") ?? "", starCount: project?.starCount === null || project?.starCount === undefined ? "" : String(project.starCount), starRecordedOn: project?.starRecordedOn ?? "", visibility: project?.visibility ?? "draft", featured: project?.featured ?? false, sortOrder: String(project?.sortOrder ?? 0) };
+  return { name: project?.name ?? "", repositoryUrl: project?.repositoryUrl ?? "", summary: project?.summary ?? "", recommendation: project?.recommendation ?? "", coverPath: project?.coverPath ?? "", language: project?.language ?? "", tagsText: project?.tags.join(", ") ?? "", starCount: project?.starCount === null || project?.starCount === undefined ? "" : String(project.starCount), starRecordedOn: project?.starRecordedOn ?? "", visibility: project?.visibility ?? "draft", featured: project?.featured ?? false, sortOrder: String(project?.sortOrder ?? 0) };
 }
 function fieldError(errors: FeaturedProjectFieldErrors | undefined, field: keyof FeaturedProjectInput) { return errors?.[field]?.[0] ?? ""; }
 
@@ -21,10 +26,11 @@ export function ProjectEditor({ action, project = null }: { action: Action; proj
   const initialValues = useMemo(() => valuesFromProject(project), [project]);
   const [values, setValues] = useState(initialValues);
   const [savedSnapshot, setSavedSnapshot] = useState(JSON.stringify(initialValues));
+  const uploadDisabledHint = project ? undefined : "Save the project once before uploading a cover.";
   const dirty = JSON.stringify(values) !== savedSnapshot;
   const tags = values.tagsText.split(",").map((tag) => tag.trim()).filter(Boolean);
-  const preview: FeaturedProject = { id: project?.id ?? "preview", name: values.name, repositoryUrl: values.repositoryUrl || null, summary: values.summary || null, recommendation: values.recommendation || null, language: values.language || null, tags, starCount: values.starCount && Number.isInteger(Number(values.starCount)) ? Number(values.starCount) : null, starRecordedOn: values.starRecordedOn || null, visibility: values.visibility === "public" ? "public" : values.visibility === "archived" ? "archived" : "draft", featured: values.featured, sortOrder: Number(values.sortOrder) || 0, deletedAt: null, createdAt: project?.createdAt ?? "", updatedAt: project?.updatedAt ?? "" };
-  const submit = async (previousState: FeaturedProjectActionResult, formData: FormData) => { const result = await action(previousState, formData); if (result.ok) { setSavedSnapshot(JSON.stringify(values)); router.replace("/admin/projects"); } return result; };
+  const preview: FeaturedProject = { id: project?.id ?? "preview", name: values.name, repositoryUrl: values.repositoryUrl || null, summary: values.summary || null, recommendation: values.recommendation || null, coverPath: values.coverPath || null, language: values.language || null, tags, starCount: values.starCount && Number.isInteger(Number(values.starCount)) ? Number(values.starCount) : null, starRecordedOn: values.starRecordedOn || null, visibility: values.visibility === "public" ? "public" : values.visibility === "archived" ? "archived" : "draft", featured: values.featured, sortOrder: Number(values.sortOrder) || 0, deletedAt: null, createdAt: project?.createdAt ?? "", updatedAt: project?.updatedAt ?? "" };
+  const submit = async (previousState: FeaturedProjectActionResult, formData: FormData) => { const result = await action(previousState, formData); if (result.ok) { setSavedSnapshot(JSON.stringify(values)); router.replace(result.projectId ? `/admin/projects/${result.projectId}/edit` : "/admin/projects"); } return result; };
   const [state, formAction, pending] = useActionState(submit, EMPTY_RESULT);
   useEffect(() => { if (!dirty) return; const warn = (event: BeforeUnloadEvent) => event.preventDefault(); window.addEventListener("beforeunload", warn); return () => window.removeEventListener("beforeunload", warn); }, [dirty]);
   const update = (field: keyof Values) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { const value = event.target instanceof HTMLInputElement && event.target.type === "checkbox" ? event.target.checked : event.target.value; setValues((current) => ({ ...current, [field]: value })); };
@@ -38,6 +44,7 @@ export function ProjectEditor({ action, project = null }: { action: Action; proj
         <EditorField error={fieldError(state.fieldErrors, "repositoryUrl")} label="GitHub 仓库 HTTPS 链接"><input name="repositoryUrl" onChange={update("repositoryUrl")} value={values.repositoryUrl} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "summary")} label="项目简介"><textarea name="summary" onChange={update("summary")} rows={3} value={values.summary} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "recommendation")} label="推荐理由"><textarea name="recommendation" onChange={update("recommendation")} rows={4} value={values.recommendation} /></EditorField>
+        <EditorField error={fieldError(state.fieldErrors, "coverPath")} label="封面路径或 HTTPS URL"><input name="coverPath" onChange={update("coverPath")} value={values.coverPath} /><CompactMediaUpload disabledHint={uploadDisabledHint} label="Upload or replace cover" onClear={() => setValues((current) => ({ ...current, coverPath: "" }))} onUploaded={({ path }) => setValues((current) => ({ ...current, coverPath: path }))} ownerId={project?.id} preview={resolveMediaDisplayUrl(values.coverPath, publicMediaUrlForPath) ?? undefined} purpose="projects" value={values.coverPath} variant="cover" /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "language")} label="主要语言"><input name="language" onChange={update("language")} value={values.language} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "tags")} label="标签（使用逗号分隔）"><input onChange={update("tagsText")} value={values.tagsText} /></EditorField>
       </section>

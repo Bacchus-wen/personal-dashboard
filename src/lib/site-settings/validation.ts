@@ -12,6 +12,7 @@ import type {
   SiteConfigurationValidationResult,
   SocialLinkInput,
 } from "./types";
+import { isSystemMediaPath } from "../media/path";
 
 function trimmed(value: string | null | undefined) {
   return value?.trim() ?? "";
@@ -42,7 +43,9 @@ function isMailtoUrl(value: string) {
 
 export function validateImagePath(value: string) {
   const normalized = trimmed(value);
-  return isSafeLocalPath(normalized) || isHttpsUrl(normalized)
+  return isSafeLocalPath(normalized) ||
+    isHttpsUrl(normalized) ||
+    isSystemMediaPath(normalized)
     ? normalized
     : null;
 }

@@ -1,4 +1,8 @@
 import { COLLECTION_CONTENT_TYPE_LABELS } from "@/lib/collections/constants";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 import type { Collection } from "@/lib/collections/types";
 
 export function CollectionCard({
@@ -8,12 +12,17 @@ export function CollectionCard({
   collection: Collection;
   preview?: boolean;
 }) {
+  const coverPath = resolveMediaDisplayUrl(
+    collection.coverPath,
+    publicMediaUrlForPath,
+  );
+
   const content = (
     <>
       <div className="collection-card-cover">
-        {collection.coverPath ? (
+        {coverPath ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img alt="" src={collection.coverPath} />
+          <img alt="" src={coverPath} />
         ) : (
           <span>{COLLECTION_CONTENT_TYPE_LABELS[collection.contentType]}</span>
         )}

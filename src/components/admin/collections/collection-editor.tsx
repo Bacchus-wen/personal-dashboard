@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type ChangeEvent, type MouseEvent, useActionState, useEffect, useMemo, useState } from "react";
 
+import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
 import { CollectionCard } from "@/components/collections/collection-card";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 import {
   COLLECTION_CONTENT_TYPES,
   COLLECTION_CONTENT_TYPE_LABELS,
@@ -30,6 +35,7 @@ export function CollectionEditor({ action, collection = null }: { action: Action
   const initialValues = useMemo(() => valuesFromCollection(collection), [collection]);
   const [values, setValues] = useState(initialValues);
   const [savedSnapshot, setSavedSnapshot] = useState(JSON.stringify(initialValues));
+  const uploadDisabledHint = collection ? undefined : "Save the collection once before uploading a cover.";
   const dirty = JSON.stringify(values) !== savedSnapshot;
   const tags = values.tagsText.split(",").map((tag) => tag.trim()).filter(Boolean);
   const preview: Collection = {
@@ -37,7 +43,10 @@ export function CollectionEditor({ action, collection = null }: { action: Action
   };
   const submit = async (previousState: CollectionActionResult, formData: FormData) => {
     const result = await action(previousState, formData);
-    if (result.ok) { setSavedSnapshot(JSON.stringify(values)); router.replace("/admin/collections"); }
+    if (result.ok) {
+      setSavedSnapshot(JSON.stringify(values));
+      router.replace(result.collectionId ? `/admin/collections/${result.collectionId}/edit` : "/admin/collections");
+    }
     return result;
   };
   const [state, formAction, pending] = useActionState(submit, EMPTY_RESULT);
@@ -67,7 +76,7 @@ export function CollectionEditor({ action, collection = null }: { action: Action
         <EditorField error={fieldError(state.fieldErrors, "sourceName")} label="来源名称"><input name="sourceName" onChange={update("sourceName")} value={values.sourceName} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "summary")} label="摘要"><textarea name="summary" onChange={update("summary")} rows={4} value={values.summary} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "externalUrl")} label="原网站 HTTPS 链接"><input name="externalUrl" onChange={update("externalUrl")} value={values.externalUrl} /></EditorField>
-        <EditorField error={fieldError(state.fieldErrors, "coverPath")} label="封面路径或 HTTPS URL"><input name="coverPath" onChange={update("coverPath")} value={values.coverPath} /></EditorField>
+        <EditorField error={fieldError(state.fieldErrors, "coverPath")} label="封面路径或 HTTPS URL"><input name="coverPath" onChange={update("coverPath")} value={values.coverPath} /><CompactMediaUpload disabledHint={uploadDisabledHint} label="Upload or replace cover" onClear={() => setValues((current) => ({ ...current, coverPath: "" }))} onUploaded={({ path }) => setValues((current) => ({ ...current, coverPath: path }))} ownerId={collection?.id} preview={resolveMediaDisplayUrl(values.coverPath, publicMediaUrlForPath) ?? undefined} purpose="collections" value={values.coverPath} variant="cover" /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "tags")} label="标签（使用逗号分隔）"><input onChange={update("tagsText")} value={values.tagsText} /></EditorField>
       </section>
       <aside className="work-editor-sidebar">

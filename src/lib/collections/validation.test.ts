@@ -74,6 +74,14 @@ describe("validateCollectionInput", () => {
   it("accepts local or https covers and rejects unsafe paths", () => {
     expect(
       validateCollectionInput(
+        validCollectionInput({
+          coverPath:
+            "collections/collection-id/cover/00000000-0000-4000-8000-000000000001.webp",
+        }),
+      ).ok,
+    ).toBe(true);
+    expect(
+      validateCollectionInput(
         validCollectionInput({ coverPath: "https://example.com/cover.jpg" }),
       ).ok,
     ).toBe(true);
