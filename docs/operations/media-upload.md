@@ -36,17 +36,25 @@ Run:
 select conname, pg_get_constraintdef(oid) as definition
 from pg_constraint
 where conrelid = 'public.storage_cleanup_tasks'::regclass
-  and conname = 'storage_cleanup_tasks_reason_check';
+  and conname in (
+    'storage_cleanup_tasks_reason_check',
+    'storage_cleanup_tasks_object_path_check'
+  )
+order by conname;
 ```
 
-Expected: the definition includes `create_rollback`, `replace_old_file`, and
-`delete_asset_file`.
+Expected:
+
+- `storage_cleanup_tasks_reason_check` includes `create_rollback`,
+  `replace_old_file`, and `delete_asset_file`;
+- `storage_cleanup_tasks_object_path_check` accepts the approved generated
+  album, site, works, collections, projects, and test object paths.
 
 ## Verify Bucket And Browser-Role Isolation
 
 Reuse the bucket query from `docs/operations/public-album-storage.md`.
 Expected: the `public-media` bucket exists, is public, has a 10 MB limit, and
-allows WebP objects.
+allows WebP plus favicon ICO, PNG, and SVG MIME types.
 
 Inspect Storage policies for `storage.objects`. Expected: no policy permits
 `anon` or `authenticated` direct insert, update, or delete access to
