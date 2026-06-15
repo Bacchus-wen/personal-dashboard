@@ -10,6 +10,7 @@ import type {
   WorkScreenshot,
   WorkValidationResult,
 } from "./types";
+import { isSystemMediaPath } from "../media/path";
 
 function optionalText(value: string | null) {
   const normalized = value?.trim() ?? "";
@@ -56,6 +57,7 @@ export function validateImagePath(value: string | null) {
   ) {
     return normalized;
   }
+  if (isSystemMediaPath(normalized)) return normalized;
   return validateHttpsUrl(normalized);
 }
 

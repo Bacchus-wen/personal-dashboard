@@ -109,7 +109,7 @@ export function WorkEditor({
     const result = await action(previousState, formData);
     if (result.ok) {
       setSavedSnapshot(JSON.stringify(values));
-      router.replace(getWorkSaveDestination());
+      router.replace(getWorkSaveDestination(result.workId));
     }
     return result;
   };

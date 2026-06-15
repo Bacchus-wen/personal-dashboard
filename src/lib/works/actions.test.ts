@@ -35,6 +35,7 @@ function input(overrides: Partial<WorkInput> = {}): WorkInput {
 
 function repository() {
   return {
+    getWorkById: vi.fn().mockResolvedValue(null),
     saveWork: vi.fn().mockResolvedValue({ id: "work-id" }),
     moveWorkToTrash: vi.fn().mockResolvedValue(undefined),
     restoreWork: vi.fn().mockResolvedValue(undefined),
@@ -93,6 +94,63 @@ describe("createWorkActionService", () => {
       expect.objectContaining({ ok: true }),
     );
     expect(works.restoreWork).toHaveBeenCalledWith("work-id");
+  });
+
+  it("cleans replaced generated work media after update", async () => {
+    const works = repository();
+    vi.mocked(works.getWorkById).mockResolvedValue({
+      id: "work-id",
+      coverPath:
+        "works/work-id/cover/11111111-1111-4111-8111-111111111111.webp",
+      seoImagePath: null,
+      screenshots: [],
+    } as unknown as Awaited<ReturnType<WorkRepository["getWorkById"]>>);
+    const deleteMediaObject = vi.fn().mockResolvedValue(undefined);
+    const service = createWorkActionService({
+      repository: works,
+      adminUserId,
+      deleteMediaObject,
+    });
+
+    await service.updateWork(adminUserId, "work-id", input({ coverPath: null }));
+
+    expect(deleteMediaObject).toHaveBeenCalledWith(
+      "works/work-id/cover/11111111-1111-4111-8111-111111111111.webp",
+      "replace_old_file",
+    );
+  });
+
+  it("cleans generated work media after permanent delete", async () => {
+    const works = repository();
+    vi.mocked(works.getWorkById).mockResolvedValue({
+      id: "work-id",
+      coverPath: null,
+      seoImagePath:
+        "works/work-id/seo/22222222-2222-4222-8222-222222222222.webp",
+      screenshots: [
+        {
+          imagePath:
+            "works/work-id/screenshots/33333333-3333-4333-8333-333333333333.webp",
+        },
+      ],
+    } as unknown as Awaited<ReturnType<WorkRepository["getWorkById"]>>);
+    const deleteMediaObject = vi.fn().mockResolvedValue(undefined);
+    const service = createWorkActionService({
+      repository: works,
+      adminUserId,
+      deleteMediaObject,
+    });
+
+    await service.permanentlyDeleteWork(adminUserId, "work-id");
+
+    expect(deleteMediaObject).toHaveBeenCalledWith(
+      "works/work-id/seo/22222222-2222-4222-8222-222222222222.webp",
+      "delete_asset_file",
+    );
+    expect(deleteMediaObject).toHaveBeenCalledWith(
+      "works/work-id/screenshots/33333333-3333-4333-8333-333333333333.webp",
+      "delete_asset_file",
+    );
   });
 });
 

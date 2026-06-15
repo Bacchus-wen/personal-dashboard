@@ -78,6 +78,27 @@ describe("validateWorkInput", () => {
     });
   });
 
+  it("accepts generated work media paths", () => {
+    const result = validateWorkInput(
+      validInput({
+        coverPath:
+          "works/work-id/cover/11111111-1111-4111-8111-111111111111.webp",
+        seoImagePath:
+          "works/work-id/seo/22222222-2222-4222-8222-222222222222.webp",
+        screenshots: [
+          {
+            imagePath:
+              "works/work-id/screenshots/33333333-3333-4333-8333-333333333333.webp",
+            caption: "",
+            sortOrder: 0,
+          },
+        ],
+      }),
+    );
+
+    expect(result.ok).toBe(true);
+  });
+
   it("rejects unsafe slugs, links, and image paths", () => {
     const result = validateWorkInput(
       validInput({

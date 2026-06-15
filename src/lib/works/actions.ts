@@ -1,11 +1,17 @@
 import { runProtectedAdminOperation } from "../auth/guard";
+import {
+  cleanupObsoleteMedia,
+  obsoleteSystemMediaPaths,
+} from "../media/lifecycle";
 import type { WorkRepository } from "./repository";
 import type { WorkActionResult, WorkInput } from "./types";
+import type { MediaCleanupReason } from "../media/types";
 import { validateWorkInput } from "./validation";
 
 type Dependencies = {
   repository: WorkRepository;
   adminUserId: string;
+  deleteMediaObject?: (path: string, reason: MediaCleanupReason) => Promise<void>;
 };
 
 function success(message: string, workId?: string): WorkActionResult {
@@ -23,6 +29,7 @@ export function getWorkMutationRevalidationPaths() {
 export function createWorkActionService({
   repository,
   adminUserId,
+  deleteMediaObject = async () => {},
 }: Dependencies) {
   async function save(userId: string | null, id: string | null, input: WorkInput) {
     return runProtectedAdminOperation(userId, adminUserId, async () => {
@@ -35,7 +42,25 @@ export function createWorkActionService({
         } satisfies WorkActionResult;
       }
       try {
+        const previous = id ? await repository.getWorkById(id) : null;
         const work = await repository.saveWork(id, validated.data);
+        if (previous) {
+          await cleanupObsoleteMedia(
+            obsoleteSystemMediaPaths(
+              [
+                previous.coverPath,
+                previous.seoImagePath,
+                ...previous.screenshots.map((screenshot) => screenshot.imagePath),
+              ],
+              [
+                validated.data.coverPath,
+                validated.data.seoImagePath,
+                ...validated.data.screenshots.map((screenshot) => screenshot.imagePath),
+              ],
+            ),
+            (path) => deleteMediaObject(path, "replace_old_file"),
+          );
+        }
         return success(id ? "作品已保存。" : "作品已创建。", work.id);
       } catch {
         return failure("作品保存失败，请确认 slug 没有重复并稍后重试。");
@@ -73,7 +98,21 @@ export function createWorkActionService({
     permanentlyDeleteWork(userId: string | null, id: string) {
       return runProtectedAdminOperation(userId, adminUserId, async () => {
         try {
+          const work = await repository.getWorkById(id);
           await repository.permanentlyDeleteWork(id);
+          if (work) {
+            await cleanupObsoleteMedia(
+              obsoleteSystemMediaPaths(
+                [
+                  work.coverPath,
+                  work.seoImagePath,
+                  ...work.screenshots.map((screenshot) => screenshot.imagePath),
+                ],
+                [],
+              ),
+              (path) => deleteMediaObject(path, "delete_asset_file"),
+            );
+          }
           return success("作品已永久删除。", id);
         } catch {
           return failure("作品永久删除失败，请稍后重试。");
