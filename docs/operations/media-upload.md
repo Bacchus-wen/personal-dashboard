@@ -22,8 +22,11 @@ Cloud verification recorded on 2026-06-15:
   `storage_cleanup_tasks_reason_check`;
 - the bucket query confirmed `public-media` is public, has a 10 MB limit, and
   includes the expanded WebP/favicon MIME configuration;
-- browser-role Storage policy inspection and external-browser acceptance are
-  still pending.
+- the Storage policy query returned no rows, confirming no existing
+  browser-role `storage.objects` policies;
+- external-browser acceptance confirmed authenticated WebP/favicon upload,
+  returned paths and previews, test-object deletion, safe invalid-file
+  rejection, and desktop/narrow/approximately 320px layouts.
 
 Local HTTP verification recorded on 2026-06-15:
 

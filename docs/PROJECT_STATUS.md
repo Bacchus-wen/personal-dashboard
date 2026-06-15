@@ -408,13 +408,16 @@ Cloud and browser verification status:
 - user-run SQL screenshots confirmed both named cleanup constraints exist;
 - user-run bucket verification confirmed `public-media` remains public, keeps
   the 10 MB limit, and includes the expanded WebP/favicon MIME configuration;
-- browser-role Storage write policy inspection is pending;
+- user-run Storage policy query returned no rows, confirming no existing
+  browser-role `storage.objects` policies;
 - local HTTP verification confirmed `/admin/media/test` redirects
   unauthenticated visitors to `/admin/login`, both media APIs return `401`
   without an administrator session, and `/` returns `200`;
 - the current Flow 5B-1 dev server is running at `http://localhost:3011`;
-- in-app browser control is unavailable, so authenticated upload/delete and
-  responsive-layout acceptance remain pending in an external browser.
+- in-app browser control was unavailable;
+- user-run external-browser acceptance confirmed authenticated WebP/favicon
+  upload, returned paths and previews, test-object deletion, safe invalid-file
+  rejection, and desktop/narrow/approximately 320px layouts.
 
 Primary references:
 
@@ -591,7 +594,8 @@ Database:
 
 ## Immediate Next Step
 
-1. Finish Flow 5B-1 cloud migration, SQL verification, and external-browser acceptance.
-2. Then publish the `codex/shared-media-upload-foundation` Pull Request.
+1. Flow 5B-1 verification is complete; PR #6 is ready for final review and
+   merge decision.
+2. Start Flow 5B-2 only after Flow 5B-1 is merged.
 3. Keep using the project-local GitHub CLI at
    `F:\网站制作\.local-tools\github-cli\bin\gh.exe` if `gh` is not in `PATH`.
