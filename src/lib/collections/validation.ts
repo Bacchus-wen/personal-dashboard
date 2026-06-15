@@ -4,6 +4,7 @@ import {
   type CollectionContentType,
   type RecommendationVisibility,
 } from "./constants";
+import { isSystemMediaPath } from "../media/path";
 import type {
   CollectionFieldErrors,
   CollectionInput,
@@ -37,6 +38,10 @@ function validateHttpsUrl(value: string | null) {
 function validateImagePath(value: string | null) {
   const normalized = optionalText(value);
   if (!normalized) return null;
+
+  if (isSystemMediaPath(normalized)) {
+    return normalized;
+  }
 
   if (
     normalized.startsWith("/") &&

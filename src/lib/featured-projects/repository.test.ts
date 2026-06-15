@@ -13,6 +13,8 @@ const row = {
   repository_url: "https://github.com/example/focused-toolkit",
   summary: "Small and focused.",
   recommendation: "A useful example.",
+  cover_path:
+    "projects/project-id/cover/00000000-0000-4000-8000-000000000001.webp",
   language: "TypeScript",
   tags: ["Tools"],
   star_count: 12400,
@@ -31,6 +33,8 @@ function input(): ValidFeaturedProjectInput {
     repositoryUrl: "https://github.com/example/focused-toolkit",
     summary: "Small and focused.",
     recommendation: "A useful example.",
+    coverPath:
+      "projects/project-id/cover/00000000-0000-4000-8000-000000000001.webp",
     language: "TypeScript",
     tags: ["Tools"],
     starCount: 12400,
@@ -139,6 +143,8 @@ describe("createFeaturedProjectRepository", () => {
     await repository.save(null, input());
 
     expect(requests[0].values).toMatchObject({
+      cover_path:
+        "projects/project-id/cover/00000000-0000-4000-8000-000000000001.webp",
       star_count: 12400,
       star_recorded_on: "2026-06-14",
     });

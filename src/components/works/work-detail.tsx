@@ -3,6 +3,8 @@ import Link from "next/link";
 import { MarkdownContent } from "@/components/plans/markdown-content";
 import { WorkGallery } from "./work-gallery";
 import { WORK_STATUS_LABELS } from "@/lib/works/constants";
+import { publicMediaUrlForPath } from "@/lib/media/display";
+import { resolveWorkDisplayMedia } from "@/lib/works/media";
 import type { Work } from "@/lib/works/types";
 
 export function WorkDetail({
@@ -12,6 +14,8 @@ export function WorkDetail({
   preview?: boolean;
   work: Work;
 }) {
+  const displayWork = resolveWorkDisplayMedia(work, publicMediaUrlForPath);
+
   return (
     <article className="work-detail">
       {!preview ? (
@@ -23,9 +27,9 @@ export function WorkDetail({
       <header className="work-detail-hero glass">
         <div className="work-browser-frame">
           <div className="work-browser-bar"><span /><span /><span /></div>
-          {work.coverPath ? (
+          {displayWork.coverPath ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img alt={`${work.name} 封面`} src={work.coverPath} />
+            <img alt={`${work.name} 封面`} src={displayWork.coverPath} />
           ) : (
             <div className="work-cover-fallback"><span>{work.name.slice(0, 2).toUpperCase()}</span></div>
           )}
@@ -62,7 +66,7 @@ export function WorkDetail({
           <p className="muted">这项作品暂未填写详细介绍。</p>
         )}
       </section>
-      <WorkGallery screenshots={work.screenshots} />
+      <WorkGallery screenshots={displayWork.screenshots} />
     </article>
   );
 }

@@ -432,6 +432,77 @@ Primary references:
 - `src/app/api/admin/media/`
 - `src/app/admin/(protected)/media/test/`
 
+### Flow 5B-2 - Media Upload Form Integrations
+
+Implemented locally:
+
+- site settings avatar and favicon fields now use the shared upload controls
+  and public display URL resolution;
+- Works editor now gates uploads until the first save, supports cover and SEO
+  uploads, supports screenshot uploads plus preview, and public Works cards,
+  detail pages, gallery images, and Open Graph metadata now resolve generated
+  system media paths;
+- Collections validation and action flows now accept generated cover paths,
+  clean obsolete covers on replace or permanent delete, preserve successful
+  saves when cleanup fails, redirect new records to
+  `/admin/collections/<id>/edit`, and support cover uploads plus public card
+  display resolution;
+- Featured Projects now include `coverPath` through types, validation,
+  repository payloads, action cleanup lifecycle, editor upload controls, create
+  redirect to `/admin/projects/<id>/edit`, and public/preview card rendering
+  with a `GH` fallback when no cover exists;
+- acceptance review found and fixed missing production media-storage cleanup
+  injection in the Collections and Featured Projects server actions.
+
+Latest local automated verification:
+
+- `npm test -- src/lib/works/media.test.ts`: 1 file and 2 tests passed;
+- `npm test -- src/lib/collections/actions.test.ts src/lib/collections/validation.test.ts`:
+  2 files and 14 tests passed;
+- `npm test -- src/lib/featured-projects/validation.test.ts src/lib/featured-projects/repository.test.ts src/lib/featured-projects/actions.test.ts`:
+  3 files and 21 tests passed;
+- `npm test -- src/lib/media src/lib/site-settings src/lib/works src/lib/collections src/lib/featured-projects`:
+  25 files and 130 tests passed;
+- `npm test`: 45 files and 234 tests passed;
+- `git diff --check`: passed with only LF to CRLF conversion warnings;
+- `npx tsc --noEmit`: passed;
+- `npm run lint`: passed.
+
+Remaining verification and delivery status:
+
+- webpack dev server is reachable at `http://127.0.0.1:3012`; Turbopack cannot
+  run in this worktree because its shared `node_modules` symlink points outside
+  the worktree root;
+- HTTP smoke testing confirmed `/`, `/works`, `/collections`, and `/projects`
+  return `200` with Theodore page titles and no application-error markers;
+- HTTP smoke testing confirmed `/admin/works`, `/admin/collections`, and
+  `/admin/projects` redirect unauthenticated visitors to `/admin/login`;
+- HTTP smoke testing confirmed both media write APIs return `401` without an
+  administrator session;
+- visual desktop/mobile browser testing could not be automated in this thread
+  because the local browser-control execution tool was unavailable;
+- the real Supabase migration was applied and the user confirmed the signed-in
+  browser acceptance workflow passed;
+- Flow 5B-2 implementation and acceptance are complete; the final production
+  build was not run because the active low-consumption constraint excluded a
+  full build;
+- the Flow 5B-2 branch remains uncommitted in this worktree.
+
+Primary references:
+
+- `docs/superpowers/specs/2026-06-15-media-upload-design.md`
+- `docs/superpowers/specs/2026-06-15-media-upload-form-integrations-design.md`
+- `docs/superpowers/plans/2026-06-15-media-upload-form-integrations.md`
+- `src/lib/works/`
+- `src/lib/collections/`
+- `src/lib/featured-projects/`
+- `src/components/admin/works/`
+- `src/components/admin/collections/`
+- `src/components/admin/featured-projects/`
+- `src/components/works/`
+- `src/components/collections/`
+- `src/components/featured-projects/`
+
 ## Approved Product Decisions
 
 ### Navigation And Page Roles
@@ -596,8 +667,7 @@ Database:
 
 ## Immediate Next Step
 
-1. Start Flow 5B-2 by reviewing the approved media-upload design and writing
-   the focused integration plan for site settings, works, collections, and
-   projects forms.
-2. Keep using the project-local GitHub CLI at
-   `F:\网站制作\.local-tools\github-cli\bin\gh.exe` if `gh` is not in `PATH`.
+1. Stage and commit the completed Flow 5B-2 implementation and acceptance
+   records.
+2. Push `codex/media-upload-form-integrations` and prepare the draft PR using
+   the project-local GitHub CLI.

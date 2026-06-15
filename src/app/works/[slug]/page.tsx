@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 
 import { PageShell } from "@/components/chrome/page-shell";
 import { WorkDetail } from "@/components/works/work-detail";
+import { publicMediaUrlForPath } from "@/lib/media/display";
+import { resolveWorkDisplayMedia } from "@/lib/works/media";
 import { getWorkRepository } from "@/lib/works/server-repository";
 
 type Params = Promise<{ slug: string }>;
@@ -18,10 +20,14 @@ async function load(slug: string) {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const work = await load((await params).slug);
   if (!work) return {};
+  const displayWork = resolveWorkDisplayMedia(work, publicMediaUrlForPath);
   return {
     title: work.seoTitle ?? work.name,
     description: work.seoDescription ?? work.summary ?? undefined,
-    openGraph: work.seoImagePath || work.coverPath ? { images: [work.seoImagePath ?? work.coverPath!] } : undefined,
+    openGraph:
+      displayWork.seoImagePath || displayWork.coverPath
+        ? { images: [displayWork.seoImagePath ?? displayWork.coverPath!] }
+        : undefined,
   };
 }
 

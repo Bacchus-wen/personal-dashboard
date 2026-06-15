@@ -143,3 +143,16 @@ Expected cleanup reasons for this flow:
 replace_old_file
 delete_asset_file
 ```
+
+## Verified Outcome
+
+Verified on 2026-06-15:
+
+- the real Supabase migration was applied and the user reported the Flow 5B-2
+  acceptance workflow passed;
+- authenticated browser acceptance for the integrated site settings, Works,
+  Collections, and Featured Projects media flows passed;
+- public Theodore routes and unauthenticated administrator/API protections were
+  also verified locally against the webpack development server;
+- the final production build was not run in this thread because the active
+  low-consumption constraint explicitly excluded a full build.

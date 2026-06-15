@@ -11,6 +11,7 @@ function validProjectInput(
     repositoryUrl: "https://github.com/example/focused-toolkit",
     summary: "A small toolkit with clear boundaries.",
     recommendation: "A useful example of controlled complexity.",
+    coverPath: null,
     language: "TypeScript",
     tags: ["Tools", "Architecture"],
     starCount: "12400",
@@ -63,6 +64,32 @@ describe("validateFeaturedProjectInput", () => {
       summary: expect.any(Array),
       recommendation: expect.any(Array),
     });
+  });
+
+  it("accepts system, local, and https cover paths while rejecting unsafe ones", () => {
+    expect(
+      validateFeaturedProjectInput(
+        validProjectInput({
+          coverPath:
+            "projects/project-id/cover/00000000-0000-4000-8000-000000000001.webp",
+        }),
+      ).ok,
+    ).toBe(true);
+    expect(
+      validateFeaturedProjectInput(
+        validProjectInput({ coverPath: "/images/project-cover.webp" }),
+      ).ok,
+    ).toBe(true);
+    expect(
+      validateFeaturedProjectInput(
+        validProjectInput({ coverPath: "https://example.com/project-cover.webp" }),
+      ).ok,
+    ).toBe(true);
+    expect(
+      validateFeaturedProjectInput(
+        validProjectInput({ coverPath: "//example.com/project-cover.webp" }),
+      ).errors.coverPath,
+    ).toBeDefined();
   });
 
   it("requires an https github repository url", () => {

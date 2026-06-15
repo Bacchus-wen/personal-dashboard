@@ -11,14 +11,20 @@ import {
   useState,
 } from "react";
 
+import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
 import { ScreenshotEditor } from "./screenshot-editor";
 import { MarkdownContent } from "@/components/plans/markdown-content";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 import {
   WORK_STATUSES,
   WORK_STATUS_LABELS,
   WORK_VISIBILITIES,
   WORK_VISIBILITY_LABELS,
 } from "@/lib/works/constants";
+import { getWorkMediaUploadState } from "@/lib/works/media";
 import { getWorkSaveDestination } from "@/lib/works/navigation";
 import type {
   Work,
@@ -104,6 +110,7 @@ export function WorkEditor({
     JSON.stringify(initialValues),
   );
   const [preview, setPreview] = useState(false);
+  const mediaUploadState = getWorkMediaUploadState(work);
   const dirty = JSON.stringify(values) !== savedSnapshot;
   const submit = async (previousState: WorkActionResult, formData: FormData) => {
     const result = await action(previousState, formData);
@@ -230,11 +237,29 @@ export function WorkEditor({
             onChange={update("coverPath")}
             value={values.coverPath}
           />
+          <CompactMediaUpload
+            disabledHint={mediaUploadState.disabledHint ?? undefined}
+            label="Upload or replace cover"
+            onClear={() => setValues((current) => ({ ...current, coverPath: "" }))}
+            onUploaded={({ path }) =>
+              setValues((current) => ({ ...current, coverPath: path }))
+            }
+            ownerId={mediaUploadState.ownerId}
+            preview={
+              resolveMediaDisplayUrl(values.coverPath, publicMediaUrlForPath) ??
+              undefined
+            }
+            purpose="works"
+            value={values.coverPath}
+            variant="cover"
+          />
         </EditorField>
         <EditorField error={fieldError(state.fieldErrors, "techStack")} label="技术标签（使用逗号分隔）">
           <input onChange={update("techText")} value={values.techText} />
         </EditorField>
         <ScreenshotEditor
+          disabledHint={mediaUploadState.disabledHint ?? undefined}
+          ownerId={mediaUploadState.ownerId}
           onChange={(screenshots) =>
             setValues((current) => ({ ...current, screenshots }))
           }
@@ -339,6 +364,26 @@ export function WorkEditor({
           </EditorField>
           <EditorField error={fieldError(state.fieldErrors, "seoImagePath")} label="SEO 图片">
             <input name="seoImagePath" onChange={update("seoImagePath")} value={values.seoImagePath} />
+            <CompactMediaUpload
+              disabledHint={mediaUploadState.disabledHint ?? undefined}
+              label="Upload or replace SEO image"
+              onClear={() =>
+                setValues((current) => ({ ...current, seoImagePath: "" }))
+              }
+              onUploaded={({ path }) =>
+                setValues((current) => ({ ...current, seoImagePath: path }))
+              }
+              ownerId={mediaUploadState.ownerId}
+              preview={
+                resolveMediaDisplayUrl(
+                  values.seoImagePath,
+                  publicMediaUrlForPath,
+                ) ?? undefined
+              }
+              purpose="works"
+              value={values.seoImagePath}
+              variant="seo"
+            />
           </EditorField>
         </section>
         <section className="plan-editor-save glass">

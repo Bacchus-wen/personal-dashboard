@@ -35,6 +35,7 @@ function project(overrides: Partial<FeaturedProject> = {}): FeaturedProject {
     repositoryUrl: "https://github.com/example/focused-toolkit",
     summary: "Small and focused.",
     recommendation: "A useful example.",
+    coverPath: null,
     language: null,
     tags: [],
     starCount: null,
