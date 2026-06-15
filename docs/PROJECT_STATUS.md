@@ -71,7 +71,7 @@ Current technology:
 | 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
 | 5A | Public album and Storage foundation | Merged into `main` through PR #5 |
 | 5B-1 | Shared avatar/favicon/content image upload foundation | Implemented locally on `codex/shared-media-upload-foundation`; cloud and external-browser acceptance pending |
-| 5B-2 | Integrate uploads into site settings, works, collections, and projects forms | Not started |
+| 5B-2 | Integrate uploads into site settings, works, collections, and projects forms | Implemented and accepted in draft PR #7 |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
