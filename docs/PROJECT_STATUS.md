@@ -70,7 +70,8 @@ Current technology:
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
 | 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
 | 5A | Public album and Storage foundation | Merged into `main` through PR #5 |
-| 5B | Avatar, favicon, works, and collection image uploads | Designed as a later sub-flow; not started |
+| 5B-1 | Shared avatar/favicon/content image upload foundation | Implemented locally on `codex/shared-media-upload-foundation`; cloud and external-browser acceptance pending |
+| 5B-2 | Integrate uploads into site settings, works, collections, and projects forms | Not started |
 | 6 | Internal resume page and PDF download | Not started |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
@@ -120,6 +121,21 @@ Flow 5A state:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/5`;
 - PR #5 state: squash merged into `main` as
   `86e7762 Add public album storage and draggable photo board`.
+
+Flow 5B-1 state:
+
+- worktree: `F:\网站制作\.worktrees\shared-media-upload-foundation`;
+- branch: `codex/shared-media-upload-foundation`;
+- approved design:
+  `docs/superpowers/specs/2026-06-15-media-upload-design.md`;
+- implementation plan:
+  `docs/superpowers/plans/2026-06-15-shared-media-upload-foundation.md`;
+- local implementation is complete through the internal admin media test page;
+- local full verification completed on 2026-06-15;
+- Draft Pull Request:
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/6`;
+- real Supabase migration, SQL security checks, and external-browser
+  acceptance are still pending and must not be claimed complete yet.
 
 ## Completed Work
 
@@ -359,6 +375,61 @@ Primary references:
 - `src/components/admin/photos/`
 - `src/app/admin/(protected)/photos/`
 
+### Flow 5B-1 - Shared Media Upload Foundation
+
+Implemented locally:
+
+- cleanup-task reason migration adding `delete_asset_file`;
+- shared media purpose, variant, path, validation, Storage, API, and browser
+  image-processing helpers;
+- protected administrator upload and delete Route Handlers at
+  `/api/admin/media/upload` and `/api/admin/media/delete`;
+- browser-side WebP conversion, avatar square crop, favicon passthrough, and
+  reusable `MediaUploadField`;
+- internal protected `/admin/media/test` page for WebP and favicon upload and
+  deletion checks;
+- cleanup task display updated for `delete_asset_file`;
+- operations guide for migration, SQL checks, test-page workflow, and cleanup
+  retry.
+
+Latest local automated verification:
+
+- `npm test`: 42 files and 212 tests passed;
+- `npm run lint`: passed;
+- `npx tsc --noEmit`: passed;
+- `git diff --check`: passed;
+- `npm run build -- --webpack`: first normal run hit Windows `EPERM unlink`
+  under `.next`; one elevated rerun passed.
+
+Cloud and browser verification status:
+
+- `supabase/migrations/202606150001_media_upload_cleanup_reasons.sql` was
+  executed successfully in the real Supabase SQL Editor;
+- user-run SQL screenshots confirmed both named cleanup constraints exist;
+- user-run bucket verification confirmed `public-media` remains public, keeps
+  the 10 MB limit, and includes the expanded WebP/favicon MIME configuration;
+- user-run Storage policy query returned no rows, confirming no existing
+  browser-role `storage.objects` policies;
+- local HTTP verification confirmed `/admin/media/test` redirects
+  unauthenticated visitors to `/admin/login`, both media APIs return `401`
+  without an administrator session, and `/` returns `200`;
+- the current Flow 5B-1 dev server is running at `http://localhost:3011`;
+- in-app browser control was unavailable;
+- user-run external-browser acceptance confirmed authenticated WebP/favicon
+  upload, returned paths and previews, test-object deletion, safe invalid-file
+  rejection, and desktop/narrow/approximately 320px layouts.
+
+Primary references:
+
+- `docs/superpowers/specs/2026-06-15-media-upload-design.md`
+- `docs/superpowers/plans/2026-06-15-shared-media-upload-foundation.md`
+- `docs/operations/media-upload.md`
+- `supabase/migrations/202606150001_media_upload_cleanup_reasons.sql`
+- `src/lib/media/`
+- `src/components/admin/media/`
+- `src/app/api/admin/media/`
+- `src/app/admin/(protected)/media/test/`
+
 ## Approved Product Decisions
 
 ### Navigation And Page Roles
@@ -519,9 +590,12 @@ Database:
 - `supabase/migrations/202606130003_works_management.sql`
 - `supabase/migrations/202606140001_collections_featured_projects.sql`
 - `supabase/migrations/202606140002_public_album_storage.sql`
+- `supabase/migrations/202606150001_media_upload_cleanup_reasons.sql`
 
 ## Immediate Next Step
 
-1. Start Flow 5B only after design confirmation.
-2. Keep using the project-local GitHub CLI at
+1. Flow 5B-1 verification is complete; PR #6 is ready for final review and
+   merge decision.
+2. Start Flow 5B-2 only after Flow 5B-1 is merged.
+3. Keep using the project-local GitHub CLI at
    `F:\网站制作\.local-tools\github-cli\bin\gh.exe` if `gh` is not in `PATH`.

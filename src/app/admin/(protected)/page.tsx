@@ -28,6 +28,9 @@ export default function AdminPage() {
         <Link className="btn" href="/admin/photos">
           管理公开相册照片
         </Link>
+        <Link className="btn" href="/admin/media/test">
+          媒体上传内部测试
+        </Link>
         <Link className="btn" href="/">
           返回主页
         </Link>
