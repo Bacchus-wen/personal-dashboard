@@ -41,7 +41,10 @@ export type PhotoActionResult = {
   fieldErrors?: PhotoFieldErrors;
 };
 
-export type CleanupReason = "create_rollback" | "replace_old_file";
+export type CleanupReason =
+  | "create_rollback"
+  | "replace_old_file"
+  | "delete_asset_file";
 
 export type CleanupTaskInput = {
   bucketId: string;

@@ -707,6 +707,8 @@ p { text-wrap: pretty; }
 .media-upload-status.success { color: var(--fg); background: color-mix(in oklch, var(--accent) 22%, var(--surface)); }
 .media-upload-status.error { color: #984755; background: color-mix(in oklch, var(--pink) 25%, var(--surface)); }
 .media-test-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.media-result-card { display: grid; gap: 12px; }
+.media-result-card p { display: grid; gap: 4px; margin-bottom: 0; overflow-wrap: anywhere; }
 .photo-editor-preview { width: 100%; max-height: 580px; object-fit: contain; border-radius: var(--radius-control); }
 .photo-editor-polaroid { position: relative; inset: auto; width: min(240px, 100%); margin: 24px auto 0; transform: rotate(-3deg); }
 .cleanup-task-grid .mono { overflow-wrap: anywhere; font-size: 12px; }
@@ -822,6 +824,8 @@ p { text-wrap: pretty; }
   .category-dialog { padding: 20px; }
   .plan-editor-main, .plan-editor-settings, .plan-editor-save { padding: 20px; }
   .plan-editor-section-head { flex-direction: column; }
+  .media-test-grid, .media-upload-dropzone { grid-template-columns: 1fr; }
+  .media-upload-preview { width: 100%; }
   .trash-plan-card { grid-template-columns: 1fr; }
   .delete-dialog { padding: 20px; }
   .delete-dialog-actions { display: grid; grid-template-columns: 1fr; }
