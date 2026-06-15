@@ -132,6 +132,8 @@ Flow 5B-1 state:
   `docs/superpowers/plans/2026-06-15-shared-media-upload-foundation.md`;
 - local implementation is complete through the internal admin media test page;
 - local full verification completed on 2026-06-15;
+- Draft Pull Request:
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/6`;
 - real Supabase migration, SQL security checks, and external-browser
   acceptance are still pending and must not be claimed complete yet.
 
