@@ -2,6 +2,7 @@ import type { MediaExtension, MediaTarget, MediaTargetInput } from "./types";
 
 const UUID_PATTERN =
   "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+const UUID_REGEX = new RegExp(`^${UUID_PATTERN}$`);
 const OWNER_PATTERN = "[A-Za-z0-9_-]+";
 const OWNER_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 const FAVICON_EXTENSIONS = ["ico", "png", "svg"] as const;
@@ -70,6 +71,10 @@ export function buildMediaObjectPath({
   id,
   extension,
 }: MediaTarget & { id: string; extension: MediaExtension }) {
+  if (!UUID_REGEX.test(id) || (ownerId !== null && !OWNER_ID_PATTERN.test(ownerId))) {
+    throw new Error("Unsafe media object path.");
+  }
+
   if (purpose === "site" && variant === "avatar") {
     return `site/avatar/${id}.webp`;
   }

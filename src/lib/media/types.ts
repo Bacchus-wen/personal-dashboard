@@ -14,11 +14,16 @@ export type MediaTargetInput = {
   ownerId?: string | null;
 };
 
-export type MediaTarget = {
-  purpose: MediaPurpose;
-  variant: MediaVariant;
-  ownerId: string | null;
-};
+export type MediaTarget =
+  | { purpose: "site"; variant: "avatar" | "favicon"; ownerId: null }
+  | {
+      purpose: "works";
+      variant: "cover" | "seo" | "screenshot";
+      ownerId: string;
+    }
+  | { purpose: "collections"; variant: "cover"; ownerId: string }
+  | { purpose: "projects"; variant: "cover"; ownerId: string }
+  | { purpose: "test"; variant: "test" | "favicon"; ownerId: null };
 
 export type MediaUploadResult = {
   ok: boolean;

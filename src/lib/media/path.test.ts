@@ -123,6 +123,27 @@ describe("media path rules", () => {
     ).toBe("test/00000000-0000-4000-8000-000000000001.png");
   });
 
+  it("rejects unsafe generated path inputs", () => {
+    expect(() =>
+      buildMediaObjectPath({
+        purpose: "works",
+        variant: "cover",
+        ownerId: "../bad",
+        id: "00000000-0000-4000-8000-000000000001",
+        extension: "webp",
+      }),
+    ).toThrow("Unsafe media object path.");
+    expect(() =>
+      buildMediaObjectPath({
+        purpose: "works",
+        variant: "cover",
+        ownerId: "work-id",
+        id: "../bad",
+        extension: "webp",
+      }),
+    ).toThrow("Unsafe media object path.");
+  });
+
   it("recognizes only system-owned public-media paths", () => {
     expect(
       isSystemMediaPath(
