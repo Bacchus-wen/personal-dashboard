@@ -132,10 +132,12 @@ Flow 5B-1 state:
   `docs/superpowers/plans/2026-06-15-shared-media-upload-foundation.md`;
 - local implementation is complete through the internal admin media test page;
 - local full verification completed on 2026-06-15;
-- Draft Pull Request:
+- Merged Pull Request:
   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/6`;
+- PR #6 state: squash merged into `main` as
+  `54e963c [codex] Add shared media upload foundation (#6)`;
 - real Supabase migration, SQL security checks, and external-browser
-  acceptance are still pending and must not be claimed complete yet.
+  acceptance are complete.
 
 ## Completed Work
 
@@ -594,8 +596,8 @@ Database:
 
 ## Immediate Next Step
 
-1. Flow 5B-1 verification is complete; PR #6 is ready for final review and
-   merge decision.
-2. Start Flow 5B-2 only after Flow 5B-1 is merged.
-3. Keep using the project-local GitHub CLI at
+1. Start Flow 5B-2 by reviewing the approved media-upload design and writing
+   the focused integration plan for site settings, works, collections, and
+   projects forms.
+2. Keep using the project-local GitHub CLI at
    `F:\网站制作\.local-tools\github-cli\bin\gh.exe` if `gh` is not in `PATH`.
