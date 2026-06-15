@@ -403,11 +403,18 @@ Latest local automated verification:
 
 Cloud and browser verification status:
 
-- `supabase/migrations/202606150001_media_upload_cleanup_reasons.sql` still
-  needs to be executed in the real Supabase SQL Editor;
-- cleanup reason constraint verification is pending;
+- `supabase/migrations/202606150001_media_upload_cleanup_reasons.sql` was
+  executed successfully in the real Supabase SQL Editor;
+- user-run SQL screenshots confirmed both named cleanup constraints exist;
+- user-run bucket verification confirmed `public-media` remains public, keeps
+  the 10 MB limit, and includes the expanded WebP/favicon MIME configuration;
 - browser-role Storage write policy inspection is pending;
-- external-browser acceptance for `/admin/media/test` is pending.
+- local HTTP verification confirmed `/admin/media/test` redirects
+  unauthenticated visitors to `/admin/login`, both media APIs return `401`
+  without an administrator session, and `/` returns `200`;
+- the current Flow 5B-1 dev server is running at `http://localhost:3011`;
+- in-app browser control is unavailable, so authenticated upload/delete and
+  responsive-layout acceptance remain pending in an external browser.
 
 Primary references:
 

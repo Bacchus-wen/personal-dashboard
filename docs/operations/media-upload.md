@@ -14,6 +14,30 @@ credential payloads while following it.
 
 Docker and the Supabase CLI are optional and are not required for this flow.
 
+Cloud verification recorded on 2026-06-15:
+
+- the migration executed successfully in the real Supabase SQL Editor;
+- the constraint query returned both
+  `storage_cleanup_tasks_object_path_check` and
+  `storage_cleanup_tasks_reason_check`;
+- the bucket query confirmed `public-media` is public, has a 10 MB limit, and
+  includes the expanded WebP/favicon MIME configuration;
+- browser-role Storage policy inspection and external-browser acceptance are
+  still pending.
+
+Local HTTP verification recorded on 2026-06-15:
+
+- `/admin/media/test` returned a `307` redirect to `/admin/login` without an
+  administrator session;
+- `/api/admin/media/upload` returned JSON `401` without an administrator
+  session;
+- `/api/admin/media/delete` returned JSON `401` without an administrator
+  session;
+- `/` returned `200`;
+- the Flow 5B-1 development server is running at `http://localhost:3011`;
+- in-app browser control was unavailable, so authenticated interaction and
+  responsive-layout acceptance must use an external browser.
+
 ## Local Verification Status
 
 Verified locally on 2026-06-15:
