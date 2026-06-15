@@ -14,6 +14,20 @@ credential payloads while following it.
 
 Docker and the Supabase CLI are optional and are not required for this flow.
 
+## Local Verification Status
+
+Verified locally on 2026-06-15:
+
+- `npm test`: 42 files and 212 tests passed;
+- `npm run lint`: passed;
+- `npx tsc --noEmit`: passed;
+- `git diff --check`: passed;
+- `npm run build -- --webpack`: passed after one elevated rerun resolved a
+  Windows `.next` `EPERM unlink` cleanup issue.
+
+The build used an ignored `.env.local` copied from an existing local worktree
+without reading or displaying its contents.
+
 ## Verify Cleanup Reason Constraint
 
 Run:
