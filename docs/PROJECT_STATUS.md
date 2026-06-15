@@ -486,7 +486,8 @@ Remaining verification and delivery status:
 - Flow 5B-2 implementation and acceptance are complete; the final production
   build was not run because the active low-consumption constraint excluded a
   full build;
-- the Flow 5B-2 branch remains uncommitted in this worktree.
+- Flow 5B-2 was committed as `7611f44` and published in draft PR
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/7`.
 
 Primary references:
 
@@ -667,7 +668,6 @@ Database:
 
 ## Immediate Next Step
 
-1. Stage and commit the completed Flow 5B-2 implementation and acceptance
-   records.
-2. Push `codex/media-upload-form-integrations` and prepare the draft PR using
-   the project-local GitHub CLI.
+1. Review and merge draft PR
+   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/7`.
+2. After merge, update this roadmap for the next approved flow.
