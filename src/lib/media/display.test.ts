@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { resolveMediaDisplayUrl } from "./display";
+import { publicMediaUrlForPath, resolveMediaDisplayUrl } from "./display";
 
 describe("resolveMediaDisplayUrl", () => {
   it("resolves generated media paths through the public URL adapter", () => {
@@ -36,5 +36,14 @@ describe("resolveMediaDisplayUrl", () => {
     expect(resolveMediaDisplayUrl(null, publicUrlForPath)).toBeNull();
     expect(resolveMediaDisplayUrl("", publicUrlForPath)).toBe("");
     expect(publicUrlForPath).not.toHaveBeenCalled();
+  });
+});
+
+describe("publicMediaUrlForPath", () => {
+  it("builds a public-media URL from the public Supabase URL", () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co";
+    expect(publicMediaUrlForPath("site/avatar/file.webp")).toBe(
+      "https://project.supabase.co/storage/v1/object/public/public-media/site/avatar/file.webp",
+    );
   });
 });

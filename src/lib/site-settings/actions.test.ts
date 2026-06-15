@@ -7,7 +7,7 @@ import type { SiteSettingsRepository } from "./repository";
 
 function repository() {
   return {
-    getPublished: vi.fn(),
+    getPublished: vi.fn().mockResolvedValue(DEFAULT_SITE_CONFIGURATION),
     publish: vi.fn().mockResolvedValue(undefined),
   } as unknown as SiteSettingsRepository;
 }
@@ -61,6 +61,24 @@ describe("createSiteSettingsActionService", () => {
 
     expect(result.ok).toBe(true);
     expect(settings.publish).toHaveBeenCalledTimes(1);
+  });
+
+  it("cleans a replaced generated avatar after publishing", async () => {
+    const settings = repository();
+    const previous = structuredClone(DEFAULT_SITE_CONFIGURATION);
+    previous.settings.avatarPath =
+      "site/avatar/11111111-1111-4111-8111-111111111111.webp";
+    vi.mocked(settings.getPublished).mockResolvedValue(previous);
+    const deleteMediaObject = vi.fn().mockResolvedValue(undefined);
+    const service = createSiteSettingsActionService({
+      repository: settings,
+      adminUserId,
+      deleteMediaObject,
+    });
+
+    await service.publish(adminUserId, DEFAULT_SITE_CONFIGURATION);
+
+    expect(deleteMediaObject).toHaveBeenCalledWith(previous.settings.avatarPath);
   });
 
   it("returns a stable failure without database details", async () => {

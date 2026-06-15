@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { getMediaStorageService } from "@/lib/media/server-storage";
 import { createSiteSettingsActionService } from "@/lib/site-settings/actions";
 import { getSiteSettingsRepository } from "@/lib/site-settings/server-repository";
 import type {
@@ -18,6 +19,8 @@ export async function publishSiteConfigurationAction(
   const result = await createSiteSettingsActionService({
     repository: getSiteSettingsRepository(),
     adminUserId: getAdminUserId(),
+    deleteMediaObject: (path) =>
+      getMediaStorageService().deleteObject(path, "replace_old_file"),
   }).publish(user.id, input);
 
   if (result.ok) {
