@@ -106,6 +106,19 @@ describe("validateSiteConfiguration", () => {
     expect(result.errors.moduleVisibility).toBeDefined();
   });
 
+  it("rejects incomplete navigation visibility settings", () => {
+    const result = validateSiteConfiguration(
+      input((draft) => {
+        delete (draft.settings.navigationVisibility as Partial<
+          typeof draft.settings.navigationVisibility
+        >).articles;
+      }),
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.errors.navigationVisibility).toBeDefined();
+  });
+
   it("rejects unknown modules and modified fixed dimensions", () => {
     const result = validateSiteConfiguration(
       input((draft) => {

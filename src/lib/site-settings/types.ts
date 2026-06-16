@@ -1,3 +1,5 @@
+import type { NavigationVisibility } from "@/lib/navigation/visibility";
+
 export type HomeModuleId =
   | "navigation"
   | "welcome"
@@ -21,6 +23,7 @@ export type SiteSettingsInput = {
   filingNumber: string;
   filingUrl: string | null;
   moduleVisibility: ModuleVisibility;
+  navigationVisibility: NavigationVisibility;
 };
 
 export type SocialLinkInput = {
@@ -51,8 +54,9 @@ export type PublishedSiteConfiguration = SiteConfigurationInput;
 
 export type SiteConfigurationFieldErrors = Partial<
   Record<
-    | keyof Omit<SiteSettingsInput, "moduleVisibility">
+    | keyof Omit<SiteSettingsInput, "moduleVisibility" | "navigationVisibility">
     | "moduleVisibility"
+    | "navigationVisibility"
     | "socialLinks"
     | "layout",
     string[]

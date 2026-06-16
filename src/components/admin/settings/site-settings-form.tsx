@@ -15,7 +15,10 @@ type Props = {
 };
 
 const fields: {
-  key: keyof Omit<SiteSettingsInput, "moduleVisibility">;
+  key: keyof Omit<
+    SiteSettingsInput,
+    "moduleVisibility" | "navigationVisibility"
+  >;
   label: string;
   placeholder?: string;
 }[] = [
@@ -30,7 +33,10 @@ const fields: {
 
 export function SiteSettingsForm({ settings, errors, onChange }: Props) {
   function update(
-    key: keyof Omit<SiteSettingsInput, "moduleVisibility">,
+    key: keyof Omit<
+      SiteSettingsInput,
+      "moduleVisibility" | "navigationVisibility"
+    >,
     value: string,
   ) {
     onChange({ ...settings, [key]: value });

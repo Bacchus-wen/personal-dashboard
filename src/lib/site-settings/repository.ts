@@ -1,4 +1,5 @@
 import { cloneDefaultSiteConfiguration } from "./defaults";
+import { normalizeNavigationVisibility } from "../navigation/visibility";
 import type {
   HomeModuleId,
   PublishedSiteConfiguration,
@@ -16,6 +17,7 @@ export type SettingsRow = {
   filing_number: string;
   filing_url: string | null;
   module_visibility: Record<string, boolean>;
+  navigation_visibility: Record<string, boolean> | null;
 };
 
 export type SocialLinkRow = {
@@ -72,6 +74,7 @@ function toPublishInput(input: ValidSiteConfiguration): PublishDatabaseInput {
       filing_number: input.settings.filingNumber,
       filing_url: input.settings.filingUrl,
       module_visibility: input.settings.moduleVisibility,
+      navigation_visibility: input.settings.navigationVisibility,
     },
     links: input.socialLinks.map((link) => ({ ...link })),
     layout: input.layout.map((item) => ({
@@ -111,6 +114,9 @@ export function createSiteSettingsRepository(
               HomeModuleId,
               boolean
             >,
+            navigationVisibility: normalizeNavigationVisibility(
+              settings.navigation_visibility,
+            ),
           },
           socialLinks: socialLinks.map((link) => ({ ...link })),
           layout: layout.map((item) => ({

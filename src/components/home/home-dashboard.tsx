@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 import { FloatingTools } from "@/components/chrome/floating-tools";
 import { HomeAlbumPreview } from "@/components/home/home-album-preview";
 import { RecentPlanWidget } from "@/components/home/recent-plan-widget";
-import { AdminIcon, NavIcon } from "@/components/icons";
+import { NavIcon } from "@/components/icons";
 import { navigation } from "@/data/site-content";
+import { filterVisibleNavigationItems } from "@/lib/navigation/visibility";
 import {
   publicMediaUrlForPath,
   resolveMediaDisplayUrl,
@@ -168,6 +169,10 @@ export function HomeDashboard({
     layout.map((item) => [item.moduleId, item]),
   ) as Record<HomeModuleId, HomeLayoutItem>;
   const visible = settings.moduleVisibility;
+  const visibleNavigation = filterVisibleNavigationItems(
+    navigation,
+    settings.navigationVisibility,
+  );
 
   return (
     <>
@@ -175,7 +180,7 @@ export function HomeDashboard({
       <main className="home-shell">
         <HomeModule item={positions.navigation}>
           <aside className="home-side glass">
-            <div className="profile">
+            <Link className="profile" href="/admin" aria-label="进入管理后台">
               <ProfileAvatar
                 displayName={settings.displayName}
                 path={settings.avatarPath}
@@ -184,19 +189,15 @@ export function HomeDashboard({
                 <strong>{settings.displayName}</strong>
                 <span className="status">{settings.statusText}</span>
               </div>
-            </div>
+            </Link>
             <p className="side-label">GENERAL</p>
             <nav className="side-menu" aria-label="主页导航">
-              {navigation.slice(1).map((item) => (
+              {visibleNavigation.slice(1).map((item) => (
                 <Link key={item.id} href={item.href}>
                   <NavIcon name={item.id} />
                   {item.label}
                 </Link>
               ))}
-              <Link href="/admin">
-                <AdminIcon />
-                管理后台
-              </Link>
             </nav>
           </aside>
         </HomeModule>
