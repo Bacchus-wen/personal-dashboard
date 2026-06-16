@@ -1,6 +1,6 @@
 # Theodore Personal Dashboard - Project Status
 
-Last updated: 2026-06-15
+Last updated: 2026-06-16
 
 This document is the primary handoff entry for a new Codex conversation. It
 summarizes the current product direction, completed work, active Git state,
@@ -70,9 +70,10 @@ Current technology:
 | 3 | My works management and public portfolio | Merged into `main` through PR #3 |
 | 4 | Curated articles/videos and noteworthy GitHub projects | Merged into `main` through PR #4 |
 | 5A | Public album and Storage foundation | Merged into `main` through PR #5 |
-| 5B-1 | Shared avatar/favicon/content image upload foundation | Implemented locally on `codex/shared-media-upload-foundation`; cloud and external-browser acceptance pending |
-| 5B-2 | Integrate uploads into site settings, works, collections, and projects forms | Implemented and accepted in draft PR #7 |
-| 6 | Internal resume page and PDF download | Not started |
+| 5B-1 | Shared avatar/favicon/content image upload foundation | Merged into `main` through PR #6 |
+| 5B-2 | Integrate uploads into site settings, works, collections, and projects forms | Merged into `main` through PR #7 |
+| 5C | Configurable public navigation visibility and avatar-based admin entry | Merged into `main` through PR #8 |
+| 6 | Internal resume page and PDF download | Paused; not started. Deferred pending a product-direction decision. |
 | 7 | Vercel deployment, production verification, and launch | Not started |
 
 ## Current Git And GitHub State
@@ -138,6 +139,29 @@ Flow 5B-1 state:
   `54e963c [codex] Add shared media upload foundation (#6)`;
 - real Supabase migration, SQL security checks, and external-browser
   acceptance are complete.
+
+Verified on 2026-06-16:
+
+- `git fetch origin` plus `git log --oneline --decorate origin/main -15`
+  confirmed `origin/main` HEAD was `71b7577 Add configurable public
+  navigation`;
+- `gh pr list --state all` confirmed PR #1 through PR #8 are all `MERGED` and
+  `gh pr list --state open` returned no open Pull Request;
+- before this update, local `main` was `ahead 2, behind 2` of `origin/main`:
+  the two local-only commits were documentation-only (the Flow 5B-2 design and
+  plan files) and the two remote-only commits were the real PR #7 and PR #8
+  code merges;
+- local `main` was brought up to date with a conflict-free
+  `git merge origin/main` (no overlapping files) rather than a rebase, since
+  the local commits had not been pushed and only added new doc files;
+- `git worktree list` showed seven worktrees; the two most recent,
+  `.worktrees\media-upload-form-integrations` (Flow 5B-2) and
+  `.worktrees\navigation-visibility-avatar-admin` (Flow 5C), correspond to the
+  now-merged PR #7 and PR #8 and can be considered for cleanup;
+- the root workspace has no `.env.local`; the
+  `.worktrees\navigation-visibility-avatar-admin` worktree has one. Copy it
+  into any new worktree without reading its contents rather than recreating
+  it.
 
 ## Completed Work
 
@@ -486,8 +510,10 @@ Remaining verification and delivery status:
 - Flow 5B-2 implementation and acceptance are complete; the final production
   build was not run because the active low-consumption constraint excluded a
   full build;
-- Flow 5B-2 was committed as `7611f44` and published in draft PR
-  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/7`.
+- Flow 5B-2 was published in
+  `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/7` and
+  squash merged into `main` as
+  `a5344cc Integrate media uploads into business forms` on 2026-06-15.
 
 Primary references:
 
@@ -503,6 +529,48 @@ Primary references:
 - `src/components/works/`
 - `src/components/collections/`
 - `src/components/featured-projects/`
+
+### Flow 5C - Configurable Public Navigation
+
+Implemented locally and merged:
+
+- public navigation visibility stored in a new `site_settings.navigation_visibility`
+  JSONB column, defaulting to plans, works, about, collections, and projects
+  visible, and articles hidden;
+- a navigation helper (`src/lib/navigation/`) owns defaults and filtering so the
+  home sidebar and top navigation read the same visibility set;
+- a new "navigation" tab in the admin settings workspace with checkboxes saved
+  through the existing publish action;
+- the explicit admin sidebar item was removed; the homepage profile/avatar
+  block now links to `/admin` as the admin entry point.
+
+This flow has only an implementation plan
+(`docs/superpowers/plans/2026-06-16-navigation-visibility-avatar-admin.md`); no
+separate design spec document was written before implementation.
+
+Cloud and browser verification status:
+
+- `supabase/migrations/202606160001_navigation_visibility.sql` was applied by
+  the user in the real Supabase SQL Editor;
+- user-run browser acceptance passed at `http://localhost:3014`;
+- focused tests: 3 files and 20 tests passed;
+- `npx tsc --noEmit` passed;
+- `git diff --check origin/main...HEAD` passed.
+
+Flow 5C was published in
+`https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/8` and squash
+merged into `main` as `71b7577 Add configurable public navigation` on
+2026-06-16.
+
+Primary references:
+
+- `docs/superpowers/plans/2026-06-16-navigation-visibility-avatar-admin.md`
+- `supabase/migrations/202606160001_navigation_visibility.sql`
+- `src/lib/navigation/`
+- `src/components/admin/settings/navigation-visibility-editor.tsx`
+- `src/components/chrome/top-nav.tsx`
+- `src/components/chrome/page-shell.tsx`
+- `src/components/home/home-dashboard.tsx`
 
 ## Approved Product Decisions
 
@@ -665,9 +733,26 @@ Database:
 - `supabase/migrations/202606140001_collections_featured_projects.sql`
 - `supabase/migrations/202606140002_public_album_storage.sql`
 - `supabase/migrations/202606150001_media_upload_cleanup_reasons.sql`
+- `supabase/migrations/202606150002_media_upload_form_integrations.sql`
+- `supabase/migrations/202606160001_navigation_visibility.sql`
 
 ## Immediate Next Step
 
-1. Review and merge draft PR
-   `https://github.com/Bacchus-wen/theodore-personal-dashboard/pull/7`.
-2. After merge, update this roadmap for the next approved flow.
+PR #7 (Flow 5B-2) and PR #8 (Flow 5C) are both merged into `main`. There is no
+open Pull Request and no flow currently in progress.
+
+Flow 6 (internal resume page and PDF download) is paused by product decision
+and should not be started without a new explicit direction.
+
+The product direction needs re-evaluation before starting new work. Candidate
+directions raised but not yet decided:
+
+- polish the admin/site-settings experience built across flows 2, 3, 4, and 5;
+- polish the homepage experience (layout, module preview, navigation
+  visibility interactions);
+- begin Flow 7 pre-deployment checks (Vercel deployment, production
+  verification, and launch readiness).
+
+Use `brainstorming` to confirm the next flow's design before writing a new
+specification and implementation plan, per the standard development rules
+below.
