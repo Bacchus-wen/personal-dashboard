@@ -3,6 +3,7 @@ import type {
   HomeModuleId,
   PublishedSiteConfiguration,
 } from "./types";
+import { DEFAULT_NAVIGATION_VISIBILITY } from "../navigation/visibility";
 
 export const HOME_GRID = {
   columns: 12,
@@ -77,6 +78,7 @@ export const DEFAULT_SITE_CONFIGURATION: PublishedSiteConfiguration = {
       recommendation: true,
       music: true,
     },
+    navigationVisibility: DEFAULT_NAVIGATION_VISIBILITY,
   },
   socialLinks: [
     {

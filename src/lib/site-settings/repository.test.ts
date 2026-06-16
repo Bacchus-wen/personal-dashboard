@@ -23,6 +23,8 @@ function database(
         filing_url: null,
         module_visibility:
           DEFAULT_SITE_CONFIGURATION.settings.moduleVisibility,
+        navigation_visibility:
+          DEFAULT_SITE_CONFIGURATION.settings.navigationVisibility,
       };
     },
     async getSocialLinks() {
@@ -63,6 +65,35 @@ describe("createSiteSettingsRepository", () => {
       href: "mailto:hello@example.com",
     });
     expect(result.layout[0]).toHaveProperty("moduleId");
+    expect(result.settings.navigationVisibility.articles).toBe(false);
+  });
+
+  it("normalizes missing navigation visibility from older rows", async () => {
+    const repository = createSiteSettingsRepository(
+      database({
+        async getSettings() {
+          return {
+            site_title: "Published title",
+            display_name: "Published name",
+            status_text: "Status",
+            site_description: "Description",
+            avatar_path: "/avatar.png",
+            favicon_path: "/icon.png",
+            filing_number: "",
+            filing_url: null,
+            module_visibility:
+              DEFAULT_SITE_CONFIGURATION.settings.moduleVisibility,
+            navigation_visibility: null,
+          };
+        },
+      }),
+    );
+
+    const result = await repository.getPublished();
+
+    expect(result.settings.navigationVisibility).toEqual(
+      DEFAULT_SITE_CONFIGURATION.settings.navigationVisibility,
+    );
   });
 
   it("falls back to project defaults when published rows are incomplete", async () => {

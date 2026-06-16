@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { FloatingTools } from "@/components/chrome/floating-tools";
 import { PageAction } from "@/components/chrome/page-action";
 import { TopNav } from "@/components/chrome/top-nav";
+import { getVisibleNavigationItems } from "@/lib/navigation/server";
 import { PublicAlbum } from "@/components/photos/public-album";
 import { getPhotoRepository } from "@/lib/photos/server-repository";
 import { normalizePhotoGroup } from "@/lib/photos/validation";
@@ -22,10 +23,11 @@ export default async function AlbumPage({
     photos = null;
   }
   const group = normalizePhotoGroup((await searchParams).group, photos?.length ?? 0);
+  const navigationItems = await getVisibleNavigationItems();
 
   return (
     <>
-      <TopNav />
+      <TopNav items={navigationItems} />
       <PageAction label="编辑" />
       <FloatingTools />
       <main className="page album-page">
