@@ -9,7 +9,7 @@ import type {
 } from "./types";
 
 export const FEATURED_PROJECT_COLUMNS =
-  "id,name,repository_url,summary,recommendation,language,tags,star_count,star_recorded_on,visibility,featured,sort_order,deleted_at,created_at,updated_at";
+  "id,name,repository_url,summary,recommendation,cover_path,language,tags,star_count,star_recorded_on,visibility,featured,sort_order,deleted_at,created_at,updated_at";
 
 export type FeaturedProjectDatabaseRow = Record<string, unknown>;
 export type FeaturedProjectDatabaseFilter = {
@@ -74,6 +74,7 @@ function projectFromRow(row: FeaturedProjectDatabaseRow): FeaturedProject {
     summary: row.summary === null ? null : String(row.summary),
     recommendation:
       row.recommendation === null ? null : String(row.recommendation),
+    coverPath: row.cover_path === null ? null : String(row.cover_path),
     language: row.language === null ? null : String(row.language),
     tags: Array.isArray(row.tags) ? row.tags.map(String) : [],
     starCount: row.star_count === null ? null : Number(row.star_count),
@@ -109,6 +110,7 @@ function payload(input: ValidFeaturedProjectInput) {
     repository_url: input.repositoryUrl,
     summary: input.summary,
     recommendation: input.recommendation,
+    cover_path: input.coverPath,
     language: input.language,
     tags: input.tags,
     star_count: input.starCount,

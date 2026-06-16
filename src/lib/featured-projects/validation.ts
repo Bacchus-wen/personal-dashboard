@@ -2,6 +2,7 @@ import {
   RECOMMENDATION_VISIBILITIES,
   type RecommendationVisibility,
 } from "./constants";
+import { isSystemMediaPath } from "../media/path";
 import type {
   FeaturedProjectFieldErrors,
   FeaturedProjectInput,
@@ -29,6 +30,31 @@ function validateGithubUrl(value: string | null) {
     return url.protocol === "https:" && url.hostname.toLowerCase() === "github.com"
       ? url.toString()
       : null;
+  } catch {
+    return null;
+  }
+}
+
+function validateImagePath(value: string | null) {
+  const normalized = optionalText(value);
+  if (!normalized) return null;
+
+  if (isSystemMediaPath(normalized)) {
+    return normalized;
+  }
+
+  if (
+    normalized.startsWith("/") &&
+    !normalized.startsWith("//") &&
+    !normalized.includes("\\") &&
+    !/[\u0000-\u001f\u007f]/.test(normalized)
+  ) {
+    return normalized;
+  }
+
+  try {
+    const url = new URL(normalized);
+    return url.protocol === "https:" ? url.toString() : null;
   } catch {
     return null;
   }
@@ -70,6 +96,7 @@ export function validateFeaturedProjectInput(
   const repositoryUrl = validateGithubUrl(input.repositoryUrl);
   const summary = optionalText(input.summary);
   const recommendation = optionalText(input.recommendation);
+  const coverPath = validateImagePath(input.coverPath);
   const language = optionalText(input.language);
   const tags = normalizeTags(input.tags);
   const rawStarCount =
@@ -95,6 +122,9 @@ export function validateFeaturedProjectInput(
   }
   if ((language?.length ?? 0) > 60) {
     errors.language = ["语言最多 60 个字符。"];
+  }
+  if (optionalText(input.coverPath) && !coverPath) {
+    errors.coverPath = ["封面必须使用项目本地路径或 HTTPS 地址。"];
   }
   if (optionalText(input.repositoryUrl) && !repositoryUrl) {
     errors.repositoryUrl = ["仓库链接必须是 github.com 的 HTTPS 地址。"];
@@ -145,6 +175,7 @@ export function validateFeaturedProjectInput(
       repositoryUrl,
       summary,
       recommendation,
+      coverPath,
       language,
       tags,
       starCount,

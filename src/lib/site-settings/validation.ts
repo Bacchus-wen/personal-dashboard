@@ -12,6 +12,11 @@ import type {
   SiteConfigurationValidationResult,
   SocialLinkInput,
 } from "./types";
+import {
+  isCompleteNavigationVisibility,
+  normalizeNavigationVisibility,
+} from "../navigation/visibility";
+import { isSystemMediaPath } from "../media/path";
 
 function trimmed(value: string | null | undefined) {
   return value?.trim() ?? "";
@@ -42,7 +47,9 @@ function isMailtoUrl(value: string) {
 
 export function validateImagePath(value: string) {
   const normalized = trimmed(value);
-  return isSafeLocalPath(normalized) || isHttpsUrl(normalized)
+  return isSafeLocalPath(normalized) ||
+    isHttpsUrl(normalized) ||
+    isSystemMediaPath(normalized)
     ? normalized
     : null;
 }
@@ -176,6 +183,9 @@ export function validateSiteConfiguration(
   ) {
     errors.moduleVisibility = ["核心模块必须启用，且模块配置必须完整。"];
   }
+  if (!isCompleteNavigationVisibility(input.settings.navigationVisibility)) {
+    errors.navigationVisibility = ["导航显示配置必须完整。"];
+  }
 
   const socialLinks = normalizeSocialLinks(input.socialLinks, errors);
   if (!validateLayout(input.layout)) {
@@ -200,6 +210,9 @@ export function validateSiteConfiguration(
         filingNumber,
         filingUrl,
         moduleVisibility: { ...input.settings.moduleVisibility },
+        navigationVisibility: normalizeNavigationVisibility(
+          input.settings.navigationVisibility,
+        ),
       },
       socialLinks,
       layout: input.layout.map((item) => ({ ...item })),

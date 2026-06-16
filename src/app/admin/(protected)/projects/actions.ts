@@ -8,6 +8,7 @@ import {
   getFeaturedProjectMutationRevalidationPaths,
 } from "@/lib/featured-projects/actions";
 import { getFeaturedProjectRepository } from "@/lib/featured-projects/server-repository";
+import { getMediaStorageService } from "@/lib/media/server-storage";
 import type {
   FeaturedProjectActionResult,
   FeaturedProjectInput,
@@ -34,6 +35,7 @@ function inputFromFormData(formData: FormData): FeaturedProjectInput {
     repositoryUrl: stringValue(formData, "repositoryUrl"),
     summary: stringValue(formData, "summary"),
     recommendation: stringValue(formData, "recommendation"),
+    coverPath: stringValue(formData, "coverPath"),
     language: stringValue(formData, "language"),
     tags: parseStringArray(stringValue(formData, "tags")),
     starCount: stringValue(formData, "starCount"),
@@ -48,6 +50,8 @@ function service() {
   return createFeaturedProjectActionService({
     repository: getFeaturedProjectRepository(),
     adminUserId: getAdminUserId(),
+    deleteMediaObject: (path, reason) =>
+      getMediaStorageService().deleteObject(path, reason),
   });
 }
 

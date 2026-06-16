@@ -23,6 +23,19 @@ describe("validateSiteConfiguration", () => {
     expect(result.data?.settings.siteTitle).toBe("Theodore · Personal Space");
   });
 
+  it("accepts generated site media paths", () => {
+    const result = validateSiteConfiguration(
+      input((draft) => {
+        draft.settings.avatarPath =
+          "site/avatar/11111111-1111-4111-8111-111111111111.webp";
+        draft.settings.faviconPath =
+          "site/favicon/22222222-2222-4222-8222-222222222222.png";
+      }),
+    );
+
+    expect(result.ok).toBe(true);
+  });
+
   it("requires a site title and display name", () => {
     const result = validateSiteConfiguration(
       input((draft) => {
@@ -91,6 +104,19 @@ describe("validateSiteConfiguration", () => {
 
     expect(result.ok).toBe(false);
     expect(result.errors.moduleVisibility).toBeDefined();
+  });
+
+  it("rejects incomplete navigation visibility settings", () => {
+    const result = validateSiteConfiguration(
+      input((draft) => {
+        delete (draft.settings.navigationVisibility as Partial<
+          typeof draft.settings.navigationVisibility
+        >).articles;
+      }),
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.errors.navigationVisibility).toBeDefined();
   });
 
   it("rejects unknown modules and modified fixed dimensions", () => {

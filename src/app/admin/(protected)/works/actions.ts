@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { getMediaStorageService } from "@/lib/media/server-storage";
 import {
   createWorkActionService,
   getWorkMutationRevalidationPaths,
@@ -72,6 +73,8 @@ function service() {
   return createWorkActionService({
     repository: getWorkRepository(),
     adminUserId: getAdminUserId(),
+    deleteMediaObject: (path, reason) =>
+      getMediaStorageService().deleteObject(path, reason),
   });
 }
 

@@ -1,12 +1,21 @@
 "use client";
 
+import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 import type { WorkScreenshotInput } from "@/lib/works/types";
 
 export function ScreenshotEditor({
+  disabledHint,
   onChange,
+  ownerId,
   screenshots,
 }: {
+  disabledHint?: string;
   onChange: (screenshots: WorkScreenshotInput[]) => void;
+  ownerId?: string | null;
   screenshots: WorkScreenshotInput[];
 }) {
   const normalize = (items: WorkScreenshotInput[]) =>
@@ -52,6 +61,21 @@ export function ScreenshotEditor({
           添加截图
         </button>
       </div>
+      <CompactMediaUpload
+        disabledHint={disabledHint}
+        label="Upload screenshots"
+        multiple
+        onUploaded={({ path }) =>
+          onChange([
+            ...screenshots,
+            { imagePath: path, caption: "", sortOrder: screenshots.length },
+          ])
+        }
+        ownerId={ownerId}
+        purpose="works"
+        value=""
+        variant="screenshot"
+      />
       {screenshots.length ? (
         <div className="screenshot-editor-list">
           {screenshots.map((screenshot, index) => (
@@ -62,6 +86,7 @@ export function ScreenshotEditor({
                   onChange={(event) =>
                     update(index, "imagePath", event.target.value)
                   }
+                  placeholder="works/<id>/screenshots/... or https://..."
                   value={screenshot.imagePath}
                 />
               </label>
@@ -107,6 +132,20 @@ export function ScreenshotEditor({
                   删除
                 </button>
               </div>
+              {screenshot.imagePath ? (
+                <div className="screenshot-editor-preview">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={screenshot.caption ?? `Screenshot ${index + 1}`}
+                    src={
+                      resolveMediaDisplayUrl(
+                        screenshot.imagePath,
+                        publicMediaUrlForPath,
+                      ) ?? screenshot.imagePath
+                    }
+                  />
+                </div>
+              ) : null}
             </article>
           ))}
         </div>

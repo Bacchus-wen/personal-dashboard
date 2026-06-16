@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { FloatingTools } from "@/components/chrome/floating-tools";
 import { PageAction } from "@/components/chrome/page-action";
 import { TopNav } from "@/components/chrome/top-nav";
+import { getVisibleNavigationItems } from "@/lib/navigation/server";
 
-export function PageShell({
+export async function PageShell({
   eyebrow,
   title,
   description,
@@ -16,9 +17,11 @@ export function PageShell({
   action?: string;
   children: ReactNode;
 }) {
+  const navigationItems = await getVisibleNavigationItems();
+
   return (
     <>
-      <TopNav />
+      <TopNav items={navigationItems} />
       <PageAction label={action} />
       <FloatingTools />
       <main className="page">

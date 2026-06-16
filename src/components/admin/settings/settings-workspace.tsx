@@ -9,6 +9,7 @@ import {
   restoreDefaultVisibility,
 } from "@/lib/site-settings/layout";
 import { HomeLayoutEditor } from "./home-layout-editor";
+import { NavigationVisibilityEditor } from "./navigation-visibility-editor";
 import { SiteSettingsForm } from "./site-settings-form";
 import { SocialLinksEditor } from "./social-links-editor";
 import { ThemePlaceholder } from "./theme-placeholder";
@@ -118,11 +119,23 @@ export function SettingsWorkspace({
         ))}
       </nav>
       {activeTab === "site" ? (
-        <SiteSettingsForm
-          settings={draft.settings}
-          errors={result.fieldErrors ?? {}}
-          onChange={(settings) => setDraft({ ...draft, settings })}
-        />
+        <>
+          <SiteSettingsForm
+            settings={draft.settings}
+            errors={result.fieldErrors ?? {}}
+            onChange={(settings) => setDraft({ ...draft, settings })}
+          />
+          <NavigationVisibilityEditor
+            visibility={draft.settings.navigationVisibility}
+            errors={result.fieldErrors ?? {}}
+            onChange={(navigationVisibility) =>
+              setDraft({
+                ...draft,
+                settings: { ...draft.settings, navigationVisibility },
+              })
+            }
+          />
+        </>
       ) : null}
       {activeTab === "socials" ? (
         <SocialLinksEditor

@@ -4,9 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { NavIcon } from "@/components/icons";
-import { navigation } from "@/data/site-content";
+import { navigation, type NavId } from "@/data/site-content";
 
-export function TopNav() {
+export function TopNav({
+  items = navigation,
+}: {
+  items?: { id: NavId; href: string; label: string }[];
+}) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const [glider, setGlider] = useState({ x: 8, y: 8 });
@@ -32,7 +36,7 @@ export function TopNav() {
       onPointerLeave={() => moveTo(navRef.current?.querySelector<HTMLElement>("[data-active='true']") ?? null)}
     >
       <span className="nav-glider" style={{ transform: `translate3d(${glider.x}px, ${glider.y}px, 0)` }} />
-      {navigation.map((item, index) => {
+      {items.map((item, index) => {
         const active = activeId === item.id;
         return (
           <Link

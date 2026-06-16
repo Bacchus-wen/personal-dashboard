@@ -2,6 +2,11 @@ import type {
   SiteConfigurationFieldErrors,
   SiteSettingsInput,
 } from "@/lib/site-settings/types";
+import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
+import {
+  publicMediaUrlForPath,
+  resolveMediaDisplayUrl,
+} from "@/lib/media/display";
 
 type Props = {
   settings: SiteSettingsInput;
@@ -10,7 +15,10 @@ type Props = {
 };
 
 const fields: {
-  key: keyof Omit<SiteSettingsInput, "moduleVisibility">;
+  key: keyof Omit<
+    SiteSettingsInput,
+    "moduleVisibility" | "navigationVisibility"
+  >;
   label: string;
   placeholder?: string;
 }[] = [
@@ -25,7 +33,10 @@ const fields: {
 
 export function SiteSettingsForm({ settings, errors, onChange }: Props) {
   function update(
-    key: keyof Omit<SiteSettingsInput, "moduleVisibility">,
+    key: keyof Omit<
+      SiteSettingsInput,
+      "moduleVisibility" | "navigationVisibility"
+    >,
     value: string,
   ) {
     onChange({ ...settings, [key]: value });
@@ -52,6 +63,22 @@ export function SiteSettingsForm({ settings, errors, onChange }: Props) {
               <small className="settings-field-error">
                 {errors[field.key]?.[0]}
               </small>
+            ) : null}
+            {field.key === "avatarPath" || field.key === "faviconPath" ? (
+              <CompactMediaUpload
+                label={field.key === "avatarPath" ? "上传或替换头像" : "上传或替换 Favicon"}
+                onClear={() => update(field.key, "")}
+                onUploaded={({ path }) => update(field.key, path)}
+                preview={
+                  resolveMediaDisplayUrl(
+                    settings[field.key],
+                    publicMediaUrlForPath,
+                  ) ?? undefined
+                }
+                purpose="site"
+                value={settings[field.key]}
+                variant={field.key === "avatarPath" ? "avatar" : "favicon"}
+              />
             ) : null}
           </label>
         ))}
