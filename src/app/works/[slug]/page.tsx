@@ -35,7 +35,7 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
   const work = await load((await params).slug);
   if (!work) notFound();
   return (
-    <PageShell action="作品详情" description={work.summary ?? "作品详情"} eyebrow="WORK DETAIL" title={work.name}>
+    <PageShell description={work.summary ?? "作品详情"} eyebrow="WORK DETAIL" title={work.name}>
       <WorkDetail work={work} />
     </PageShell>
   );

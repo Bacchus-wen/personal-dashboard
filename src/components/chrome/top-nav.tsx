@@ -48,7 +48,12 @@ export function TopNav({
             title={item.label}
             onPointerEnter={(event) => moveTo(event.currentTarget)}
           >
-            {index === 0 ? <span className="avatar">T</span> : <NavIcon name={item.id} />}
+            {index === 0 ? (
+              <span className="avatar">T</span>
+            ) : (
+              <NavIcon name={item.id} />
+            )}
+            <span className="nav-link-label">{item.label}</span>
           </Link>
         );
       })}

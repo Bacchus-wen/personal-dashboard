@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_HOME_LAYOUT } from "./defaults";
 import {
   moveLayoutItem,
+  normalizeHomeLayoutOrder,
   restoreDefaultVisibility,
   restoreDefaultLayout,
   setModuleVisibility,
@@ -73,5 +74,44 @@ describe("homepage layout helpers", () => {
       recommendation: true,
       music: true,
     });
+  });
+
+  it("normalizes layout order while keeping storage-safe coordinates", () => {
+    const reversed = [...DEFAULT_HOME_LAYOUT].reverse();
+    const normalized = normalizeHomeLayoutOrder(reversed, {
+      navigation: true,
+      welcome: true,
+      socials: true,
+      album: true,
+      clock: true,
+      calendar: true,
+      recentPlans: true,
+      recommendation: true,
+      music: true,
+    });
+
+    expect(normalized.map((item) => item.moduleId)).toEqual(
+      reversed.map((item) => item.moduleId),
+    );
+    expect(normalized.find((item) => item.moduleId === "navigation")).toEqual(
+      DEFAULT_HOME_LAYOUT.find((item) => item.moduleId === "navigation"),
+    );
+  });
+
+  it("moves hidden modules to the end without dropping them", () => {
+    const normalized = normalizeHomeLayoutOrder(DEFAULT_HOME_LAYOUT, {
+      navigation: true,
+      welcome: true,
+      socials: true,
+      album: false,
+      clock: true,
+      calendar: true,
+      recentPlans: true,
+      recommendation: true,
+      music: true,
+    });
+
+    expect(normalized).toHaveLength(DEFAULT_HOME_LAYOUT.length);
+    expect(normalized.at(-1)?.moduleId).toBe("album");
   });
 });

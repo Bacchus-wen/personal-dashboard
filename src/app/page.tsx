@@ -1,4 +1,5 @@
 import { HomeDashboard } from "@/components/home/home-dashboard";
+import { getMusicTrackRepository } from "@/lib/music/server-repository";
 import { pickRandomHomePhotos } from "@/lib/photos/home-selection";
 import { getPhotoRepository } from "@/lib/photos/server-repository";
 import { getPlanRepository } from "@/lib/plans/server-repository";
@@ -22,18 +23,28 @@ async function loadHomePhotos() {
   }
 }
 
+async function loadHomeMusic() {
+  try {
+    return await getMusicTrackRepository().listActive();
+  } catch {
+    return null;
+  }
+}
+
 export default async function Home() {
-  const [planCandidates, configuration, recommendation, photos] = await Promise.all([
+  const [planCandidates, configuration, recommendation, photos, musicTrack] = await Promise.all([
     loadHomePlans(),
     getSiteSettingsRepository()
       .getPublished()
       .catch(() => cloneDefaultSiteConfiguration()),
     loadHomeRecommendation(),
     loadHomePhotos(),
+    loadHomeMusic(),
   ]);
   return (
     <HomeDashboard
       configuration={configuration}
+      musicTrack={musicTrack}
       photos={photos}
       planCandidates={planCandidates}
       recommendation={recommendation}

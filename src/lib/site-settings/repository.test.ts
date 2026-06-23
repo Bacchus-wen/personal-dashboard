@@ -21,6 +21,7 @@ function database(
         favicon_path: "/icon.png",
         filing_number: "",
         filing_url: null,
+        theme_id: "night-radio",
         module_visibility:
           DEFAULT_SITE_CONFIGURATION.settings.moduleVisibility,
         navigation_visibility:
@@ -66,6 +67,7 @@ describe("createSiteSettingsRepository", () => {
     });
     expect(result.layout[0]).toHaveProperty("moduleId");
     expect(result.settings.navigationVisibility.articles).toBe(false);
+    expect(result.settings.themeId).toBe("night-radio");
   });
 
   it("normalizes missing navigation visibility from older rows", async () => {
@@ -81,6 +83,7 @@ describe("createSiteSettingsRepository", () => {
             favicon_path: "/icon.png",
             filing_number: "",
             filing_url: null,
+            theme_id: null,
             module_visibility:
               DEFAULT_SITE_CONFIGURATION.settings.moduleVisibility,
             navigation_visibility: null,
@@ -126,6 +129,7 @@ describe("createSiteSettingsRepository", () => {
       expect.objectContaining({
         settings: expect.objectContaining({
           site_title: "Theodore · Personal Space",
+          theme_id: "paper-editorial",
         }),
         links: expect.any(Array),
         layout: expect.any(Array),

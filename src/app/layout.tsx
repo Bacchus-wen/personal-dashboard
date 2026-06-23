@@ -26,14 +26,18 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const configuration = await getSiteSettingsRepository()
+    .getPublished()
+    .catch(() => cloneDefaultSiteConfiguration());
+
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body data-theme={configuration.settings.themeId}>{children}</body>
     </html>
   );
 }

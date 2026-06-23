@@ -1,4 +1,5 @@
 import type { NavigationVisibility } from "@/lib/navigation/visibility";
+import type { ThemeId } from "./theme";
 
 export type HomeModuleId =
   | "navigation"
@@ -22,6 +23,7 @@ export type SiteSettingsInput = {
   faviconPath: string;
   filingNumber: string;
   filingUrl: string | null;
+  themeId: ThemeId;
   moduleVisibility: ModuleVisibility;
   navigationVisibility: NavigationVisibility;
 };

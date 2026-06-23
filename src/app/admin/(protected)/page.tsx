@@ -1,40 +1,25 @@
-import Link from "next/link";
-
-import { SignOutButton } from "@/components/admin/sign-out-button";
-
 export default function AdminPage() {
   return (
-    <main className="admin-page">
-      <section className="admin-card glass">
-        <p className="eyebrow">Administrator workspace</p>
-        <h1>后台基础已建立</h1>
-        <p className="muted">当前会话已通过服务器管理员身份验证。</p>
-        <p>从这里管理近日规划以及后续加入的网站内容。</p>
-        <Link className="btn primary" href="/admin/plans">
-          管理近日规划
-        </Link>
-        <Link className="btn" href="/admin/settings">
-          网站设置与首页布局
-        </Link>
-        <Link className="btn" href="/admin/works">
-          管理我的作品
-        </Link>
-        <Link className="btn" href="/admin/collections">
-          管理内容收藏
-        </Link>
-        <Link className="btn" href="/admin/projects">
-          管理优秀项目
-        </Link>
-        <Link className="btn" href="/admin/photos">
-          管理公开相册照片
-        </Link>
-        <Link className="btn" href="/admin/media/test">
-          媒体上传内部测试
-        </Link>
-        <Link className="btn" href="/">
-          返回主页
-        </Link>
-        <SignOutButton />
+    <main className="admin-workspace">
+      <header className="admin-workspace-head">
+        <div>
+          <p className="eyebrow">ADMINISTRATOR WORKSPACE</p>
+          <h1>网站管理</h1>
+          <p className="muted">内容、展示和媒体现在集中在同一个工作区。</p>
+        </div>
+      </header>
+      <section className="admin-overview glass">
+        <div>
+          <p className="eyebrow">CONTROL CENTER</p>
+          <h2>选择一个管理模块开始</h2>
+          <p className="muted">
+            使用侧边导航维护近日规划、作品、收藏、项目、相册和音乐；网站外观与首页布局统一在网站设置中调整。
+          </p>
+        </div>
+        <div className="admin-overview-note">
+          <strong>管理员会话已验证</strong>
+          <span>所有写入仍通过服务器端管理员权限执行。</span>
+        </div>
       </section>
     </main>
   );

@@ -17,6 +17,8 @@ import {
   normalizeNavigationVisibility,
 } from "../navigation/visibility";
 import { isSystemMediaPath } from "../media/path";
+import { normalizeHomeLayoutOrder } from "./layout";
+import { isThemeId, normalizeThemeId } from "./theme";
 
 function trimmed(value: string | null | undefined) {
   return value?.trim() ?? "";
@@ -145,6 +147,8 @@ export function validateSiteConfiguration(
   const filingNumber = trimmed(input.settings.filingNumber);
   const filingUrlText = trimmed(input.settings.filingUrl);
   const filingUrl = filingUrlText ? validateSocialHref(filingUrlText) : null;
+  const themeIdValue = (input.settings as { themeId?: unknown }).themeId;
+  const themeId = normalizeThemeId(themeIdValue);
 
   if (!siteTitle || siteTitle.length > 80) {
     errors.siteTitle = ["网站标题必须为 1 至 80 个字符。"];
@@ -169,6 +173,9 @@ export function validateSiteConfiguration(
   }
   if (filingUrlText && !filingUrl) {
     errors.filingUrl = ["备案链接必须使用 HTTPS 地址。"];
+  }
+  if (!isThemeId(themeIdValue)) {
+    errors.themeId = ["请选择有效的网站主题。"];
   }
 
   const visibilityKeys = Object.keys(input.settings.moduleVisibility);
@@ -209,13 +216,17 @@ export function validateSiteConfiguration(
         faviconPath,
         filingNumber,
         filingUrl,
+        themeId,
         moduleVisibility: { ...input.settings.moduleVisibility },
         navigationVisibility: normalizeNavigationVisibility(
           input.settings.navigationVisibility,
         ),
       },
       socialLinks,
-      layout: input.layout.map((item) => ({ ...item })),
+      layout: normalizeHomeLayoutOrder(
+        input.layout,
+        input.settings.moduleVisibility,
+      ),
     },
   };
 }

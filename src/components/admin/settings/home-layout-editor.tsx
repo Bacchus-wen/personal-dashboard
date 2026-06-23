@@ -96,7 +96,7 @@ export function HomeLayoutEditor({
           {errors.layout?.[0] ?? errors.moduleVisibility?.[0]}
         </p>
       ) : null}
-      <div className="layout-module-toggles">
+      <div className="layout-order-list">
         {HOME_MODULES.map((definition) => (
           <label className="settings-check" key={definition.id}>
             <input

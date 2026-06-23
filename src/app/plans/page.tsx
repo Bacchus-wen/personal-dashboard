@@ -30,7 +30,6 @@ export default async function PlansPage({ searchParams }: { searchParams: Search
 
   return (
     <PageShell
-      action="规划"
       description="按优先级与截止日期整理近期目标，记录正在推进的事情。"
       eyebrow="RECENT PLANS"
       title="近日规划"

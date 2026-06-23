@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import { FloatingTools } from "@/components/chrome/floating-tools";
 import { HomeAlbumPreview } from "@/components/home/home-album-preview";
+import { MusicWidget } from "@/components/home/music-widget";
 import { RecentPlanWidget } from "@/components/home/recent-plan-widget";
 import { NavIcon } from "@/components/icons";
 import { navigation } from "@/data/site-content";
@@ -15,6 +16,7 @@ import {
   resolveMediaDisplayUrl,
 } from "@/lib/media/display";
 import { MOBILE_HOME_MODULE_ORDER } from "@/lib/site-settings/defaults";
+import type { MusicTrack } from "@/lib/music/types";
 import type {
   HomeLayoutItem,
   HomeModuleId,
@@ -158,11 +160,13 @@ export function HomeDashboard({
   photos,
   planCandidates,
   recommendation,
+  musicTrack,
 }: {
   configuration: PublishedSiteConfiguration;
   photos: PublicPhoto[] | null;
   planCandidates: Plan[] | null;
   recommendation: HomeRecommendation | null;
+  musicTrack: MusicTrack | null;
 }) {
   const { settings, socialLinks, layout } = configuration;
   const positions = Object.fromEntries(
@@ -278,18 +282,9 @@ export function HomeDashboard({
           </HomeModule>
         ) : null}
 
-        {visible.music ? (
+        {visible.music && musicTrack ? (
           <HomeModule item={positions.music}>
-            <section className="music-widget glass card lift">
-              <span aria-hidden="true">♪</span>
-              <div>
-                <strong>Close To You</strong>
-                <div className="music-progress" />
-              </div>
-              <button type="button" aria-label="播放音乐">
-                ▶
-              </button>
-            </section>
+            <MusicWidget track={musicTrack} />
           </HomeModule>
         ) : null}
         {settings.filingNumber ? (

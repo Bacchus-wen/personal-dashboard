@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { FloatingTools } from "@/components/chrome/floating-tools";
-import { PageAction } from "@/components/chrome/page-action";
 import { TopNav } from "@/components/chrome/top-nav";
 import { getVisibleNavigationItems } from "@/lib/navigation/server";
 import { PublicAlbum } from "@/components/photos/public-album";
@@ -28,7 +27,6 @@ export default async function AlbumPage({
   return (
     <>
       <TopNav items={navigationItems} />
-      <PageAction label="编辑" />
       <FloatingTools />
       <main className="page album-page">
         <header className="page-head album-page-head">

@@ -17,15 +17,24 @@ export default async function WorksPage({ searchParams }: { searchParams: Search
   } catch {
     data = null;
   }
+  const featuredWork = data?.works[0] ?? null;
+  const remainingWorks = data?.works.slice(1) ?? [];
   return (
-    <PageShell action="作品" description="这里记录已经完成、持续维护和仍在成长的网站项目。" eyebrow="SELECTED WORKS" title="我的作品">
+    <PageShell description="这里记录已经完成、持续维护和仍在成长的网站项目。" eyebrow="SELECTED WORKS" title="我的作品">
       {!data ? (
         <section className="admin-empty glass"><h2>作品暂时无法加载</h2><p className="muted">请稍后刷新页面。</p></section>
       ) : (
         <>
           <WorkFilters technologies={data.availableTech} />
           {data.works.length ? (
-            <section className="work-grid">{data.works.map((work) => <WorkCard key={work.id} work={work} />)}</section>
+            <section className="work-directory">
+              {featuredWork ? <WorkCard featured work={featuredWork} /> : null}
+              {remainingWorks.length ? (
+                <div className="work-list">
+                  {remainingWorks.map((work) => <WorkCard key={work.id} work={work} />)}
+                </div>
+              ) : null}
+            </section>
           ) : (
             <section className="admin-empty glass"><h2>暂无公开作品</h2><p className="muted">可以调整筛选条件，或稍后再次查看。</p></section>
           )}

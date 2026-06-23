@@ -1,5 +1,6 @@
 import { cloneDefaultSiteConfiguration } from "./defaults";
 import { normalizeNavigationVisibility } from "../navigation/visibility";
+import { normalizeThemeId } from "./theme";
 import type {
   HomeModuleId,
   PublishedSiteConfiguration,
@@ -16,6 +17,7 @@ export type SettingsRow = {
   favicon_path: string;
   filing_number: string;
   filing_url: string | null;
+  theme_id: string | null;
   module_visibility: Record<string, boolean>;
   navigation_visibility: Record<string, boolean> | null;
 };
@@ -73,6 +75,7 @@ function toPublishInput(input: ValidSiteConfiguration): PublishDatabaseInput {
       favicon_path: input.settings.faviconPath,
       filing_number: input.settings.filingNumber,
       filing_url: input.settings.filingUrl,
+      theme_id: input.settings.themeId,
       module_visibility: input.settings.moduleVisibility,
       navigation_visibility: input.settings.navigationVisibility,
     },
@@ -110,6 +113,7 @@ export function createSiteSettingsRepository(
             faviconPath: settings.favicon_path,
             filingNumber: settings.filing_number,
             filingUrl: settings.filing_url,
+            themeId: normalizeThemeId(settings.theme_id),
             moduleVisibility: settings.module_visibility as Record<
               HomeModuleId,
               boolean

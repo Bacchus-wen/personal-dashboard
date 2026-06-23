@@ -8,11 +8,11 @@ import {
   restoreDefaultLayout,
   restoreDefaultVisibility,
 } from "@/lib/site-settings/layout";
-import { HomeLayoutEditor } from "./home-layout-editor";
+import { HomeLayoutOrderEditor } from "./home-layout-order-editor";
 import { NavigationVisibilityEditor } from "./navigation-visibility-editor";
 import { SiteSettingsForm } from "./site-settings-form";
 import { SocialLinksEditor } from "./social-links-editor";
-import { ThemePlaceholder } from "./theme-placeholder";
+import { ThemeSelector } from "./theme-selector";
 import type {
   PublishedSiteConfiguration,
   SiteConfigurationActionResult,
@@ -145,7 +145,7 @@ export function SettingsWorkspace({
         />
       ) : null}
       {activeTab === "layout" ? (
-        <HomeLayoutEditor
+        <HomeLayoutOrderEditor
           layout={draft.layout}
           visibility={draft.settings.moduleVisibility}
           errors={result.fieldErrors ?? {}}
@@ -168,7 +168,18 @@ export function SettingsWorkspace({
           }
         />
       ) : null}
-      {activeTab === "theme" ? <ThemePlaceholder /> : null}
+      {activeTab === "theme" ? (
+        <ThemeSelector
+          value={draft.settings.themeId}
+          errors={result.fieldErrors ?? {}}
+          onChange={(themeId) =>
+            setDraft({
+              ...draft,
+              settings: { ...draft.settings, themeId },
+            })
+          }
+        />
+      ) : null}
     </main>
   );
 }

@@ -4,6 +4,7 @@ import type {
   PublishedSiteConfiguration,
 } from "./types";
 import { DEFAULT_NAVIGATION_VISIBILITY } from "../navigation/visibility";
+import { DEFAULT_THEME_ID } from "./theme";
 
 export const HOME_GRID = {
   columns: 12,
@@ -33,6 +34,18 @@ export const CORE_HOME_MODULE_IDS = HOME_MODULES.filter(
   (module) => module.core,
 ).map((module) => module.id);
 
+export const EDITORIAL_HOME_MODULE_ORDER: HomeModuleId[] = [
+  "navigation",
+  "welcome",
+  "recentPlans",
+  "recommendation",
+  "album",
+  "music",
+  "socials",
+  "clock",
+  "calendar",
+];
+
 export const MOBILE_HOME_MODULE_ORDER: HomeModuleId[] = [
   "welcome",
   "socials",
@@ -47,14 +60,14 @@ export const MOBILE_HOME_MODULE_ORDER: HomeModuleId[] = [
 
 export const DEFAULT_HOME_LAYOUT: HomeLayoutItem[] = [
   { moduleId: "navigation", x: 0, y: 1, width: 2, height: 5 },
-  { moduleId: "album", x: 2, y: 0, width: 7, height: 2 },
   { moduleId: "welcome", x: 2, y: 2, width: 7, height: 3 },
-  { moduleId: "socials", x: 2, y: 5, width: 7, height: 1 },
-  { moduleId: "recommendation", x: 2, y: 6, width: 4, height: 2 },
   { moduleId: "recentPlans", x: 6, y: 6, width: 3, height: 2 },
+  { moduleId: "recommendation", x: 2, y: 6, width: 4, height: 2 },
+  { moduleId: "album", x: 2, y: 0, width: 7, height: 2 },
+  { moduleId: "music", x: 9, y: 5, width: 3, height: 1 },
+  { moduleId: "socials", x: 2, y: 5, width: 7, height: 1 },
   { moduleId: "clock", x: 9, y: 0, width: 3, height: 2 },
   { moduleId: "calendar", x: 9, y: 2, width: 3, height: 3 },
-  { moduleId: "music", x: 9, y: 5, width: 3, height: 1 },
 ];
 
 export const DEFAULT_SITE_CONFIGURATION: PublishedSiteConfiguration = {
@@ -67,6 +80,7 @@ export const DEFAULT_SITE_CONFIGURATION: PublishedSiteConfiguration = {
     faviconPath: "/favicon.ico",
     filingNumber: "",
     filingUrl: null,
+    themeId: DEFAULT_THEME_ID,
     moduleVisibility: {
       navigation: true,
       welcome: true,
