@@ -66,7 +66,7 @@ describe("createSiteSettingsRepository", () => {
       href: "mailto:hello@example.com",
     });
     expect(result.layout[0]).toHaveProperty("moduleId");
-    expect(result.settings.navigationVisibility.articles).toBe(false);
+    expect(result.settings.navigationVisibility.plans).toBe(true);
     expect(result.settings.themeId).toBe("night-radio");
   });
 

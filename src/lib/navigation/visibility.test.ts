@@ -12,7 +12,6 @@ describe("navigation visibility", () => {
   it("hides articles by default while keeping the requested public entries", () => {
     expect(DEFAULT_NAVIGATION_VISIBILITY).toEqual({
       plans: true,
-      articles: false,
       works: true,
       about: true,
       collections: true,
@@ -21,9 +20,9 @@ describe("navigation visibility", () => {
   });
 
   it("normalizes missing persisted values to defaults", () => {
-    expect(normalizeNavigationVisibility({ articles: true })).toEqual({
+    expect(normalizeNavigationVisibility({ plans: false })).toEqual({
       ...DEFAULT_NAVIGATION_VISIBILITY,
-      articles: true,
+      plans: false,
     });
   });
 
@@ -35,7 +34,7 @@ describe("navigation visibility", () => {
     expect(
       isCompleteNavigationVisibility({
         ...DEFAULT_NAVIGATION_VISIBILITY,
-        articles: "yes",
+        plans: "yes",
       }),
     ).toBe(false);
   });

@@ -111,7 +111,7 @@ describe("validateSiteConfiguration", () => {
       input((draft) => {
         delete (draft.settings.navigationVisibility as Partial<
           typeof draft.settings.navigationVisibility
-        >).articles;
+        >).plans;
       }),
     );
 

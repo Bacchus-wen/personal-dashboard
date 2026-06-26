@@ -5,7 +5,6 @@ export type NavigationVisibility = Record<PublicNavigationId, boolean>;
 
 export const PUBLIC_NAVIGATION_IDS: PublicNavigationId[] = [
   "plans",
-  "articles",
   "works",
   "about",
   "collections",
@@ -14,7 +13,6 @@ export const PUBLIC_NAVIGATION_IDS: PublicNavigationId[] = [
 
 export const DEFAULT_NAVIGATION_VISIBILITY: NavigationVisibility = {
   plans: true,
-  articles: false,
   works: true,
   about: true,
   collections: true,
