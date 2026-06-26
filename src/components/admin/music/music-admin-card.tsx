@@ -14,20 +14,20 @@ export function MusicAdminCard({ track }: { track: MusicTrack }) {
   const [pending, startTransition] = useTransition();
 
   return (
-    <article className="admin-plan-card glass card">
-      <div className="admin-plan-card-head">
+    <article className="admin-list-row">
+      <div className="admin-list-row-main">
         <div>
           <p className="eyebrow">{track.isActive ? "NOW PLAYING" : "MUSIC TRACK"}</p>
           <h2>{track.title}</h2>
+          <p className="muted">{track.artist ?? "未填写艺术家"}</p>
         </div>
-        <span className="pill mono">#{track.sortOrder}</span>
       </div>
-      <p className="muted">{track.artist ?? "未填写艺术家"}</p>
-      <div className="plan-meta-row">
+      <div className="admin-list-row-meta">
         {track.isActive ? <span className="pill">当前播放</span> : null}
         <span className="pill">MP3</span>
+        <span className="pill mono">#{track.sortOrder}</span>
       </div>
-      <div className="admin-plan-actions">
+      <div className="admin-list-row-actions">
         <Link className="btn primary" href={`/admin/music/${track.id}/edit`}>
           编辑
         </Link>

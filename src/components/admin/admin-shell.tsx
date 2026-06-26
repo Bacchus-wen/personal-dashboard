@@ -16,7 +16,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="admin-shell">
-      <aside className="admin-shell-sidebar glass">
+      <aside className="admin-shell-sidebar">
         <Link className="admin-shell-brand" href="/admin">
           <span className="admin-shell-mark">T</span>
           <span>

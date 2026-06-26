@@ -19,7 +19,7 @@ export default async function AdminMusicPage() {
           <h1>音乐库</h1>
           <p className="muted">上传 MP3，并选择一首作为首页当前播放音乐。</p>
         </div>
-        <div className="admin-workspace-actions">
+        <div className="admin-workspace-actions admin-toolbar">
           <Link className="btn" href="/admin">
             返回后台
           </Link>
@@ -32,18 +32,18 @@ export default async function AdminMusicPage() {
         </div>
       </header>
       {!tracks ? (
-        <section className="admin-empty glass">
+        <section className="admin-empty admin-panel">
           <h2>音乐库暂时无法加载</h2>
           <p className="muted">请确认已执行音乐库数据库迁移。</p>
         </section>
       ) : tracks.length ? (
-        <section className="admin-plan-grid">
+        <section className="admin-list" aria-label="音乐列表">
           {tracks.map((track) => (
             <MusicAdminCard key={track.id} track={track} />
           ))}
         </section>
       ) : (
-        <section className="admin-empty glass">
+        <section className="admin-empty admin-panel">
           <h2>还没有音乐</h2>
           <p className="muted">上传第一首 MP3 后，首页音乐模块会显示真实播放器。</p>
         </section>
