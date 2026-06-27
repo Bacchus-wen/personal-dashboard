@@ -1,32 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { PauseIcon, PlayIcon } from "@/components/icons";
+import { useMusic } from "@/components/music/music-provider";
 
-import {
-  publicMediaUrlForPath,
-  resolveMediaDisplayUrl,
-} from "@/lib/media/display";
-import type { MusicTrack } from "@/lib/music/types";
-
-export function MusicWidget({ track }: { track: MusicTrack }) {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const coverUrl = track.coverPath
-    ? resolveMediaDisplayUrl(track.coverPath, publicMediaUrlForPath)
-    : null;
-
-  async function toggle() {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (audio.paused) {
-      await audio.play();
-      setPlaying(true);
-    } else {
-      audio.pause();
-      setPlaying(false);
-    }
-  }
+export function MusicWidget() {
+  const { track, playing, progress, coverUrl, toggle } = useMusic();
+  if (!track) return null;
 
   return (
     <section className="music-widget glass card lift" data-playing={playing}>
@@ -49,21 +28,8 @@ export function MusicWidget({ track }: { track: MusicTrack }) {
         aria-label={playing ? "暂停音乐" : "播放音乐"}
         onClick={toggle}
       >
-        {playing ? "Ⅱ" : "▶"}
+        {playing ? <PauseIcon /> : <PlayIcon />}
       </button>
-      <audio
-        ref={audioRef}
-        src={publicMediaUrlForPath(track.audioPath)}
-        onEnded={() => setPlaying(false)}
-        onPause={() => setPlaying(false)}
-        onPlay={() => setPlaying(true)}
-        onTimeUpdate={(event) => {
-          const audio = event.currentTarget;
-          setProgress(
-            audio.duration ? (audio.currentTime / audio.duration) * 100 : 0,
-          );
-        }}
-      />
     </section>
   );
 }

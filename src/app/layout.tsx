@@ -17,6 +17,8 @@ import {
   publicMediaUrlForPath,
   resolveMediaDisplayUrl,
 } from "@/lib/media/display";
+import { MusicProvider } from "@/components/music/music-provider";
+import { getMusicTrackRepository } from "@/lib/music/server-repository";
 
 export async function generateMetadata(): Promise<Metadata> {
   const configuration = await getSiteSettingsRepository()
@@ -42,9 +44,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const configuration = await getSiteSettingsRepository()
-    .getPublished()
-    .catch(() => cloneDefaultSiteConfiguration());
+  const [configuration, musicTrack] = await Promise.all([
+    getSiteSettingsRepository()
+      .getPublished()
+      .catch(() => cloneDefaultSiteConfiguration()),
+    getMusicTrackRepository()
+      .listActive()
+      .catch(() => null),
+  ]);
 
   return (
     <html lang="zh-CN" className={editorialSerif.variable}>
@@ -55,7 +62,7 @@ export default async function RootLayout({
               "try{var t=localStorage.getItem('site-theme');if(t==='paper-editorial'||t==='night-radio'){document.body.dataset.theme=t;}}catch(e){}",
           }}
         />
-        {children}
+        <MusicProvider track={musicTrack}>{children}</MusicProvider>
       </body>
     </html>
   );

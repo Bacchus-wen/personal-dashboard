@@ -36,3 +36,13 @@ export function MoonIcon(props: IconProps) {
 export function WavesIcon(props: IconProps) {
   return <svg {...base} {...props}><path d="M3 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /></svg>;
 }
+
+export function PlayIcon(props: IconProps) {
+  // Triangle whose bounding box is centred on the viewBox centre (12,12), so its
+  // middle aligns with the round button's middle. Sized to fill the button.
+  return <svg {...base} {...props}><path d="M5 4.5v15l14-7.5z" fill="currentColor" stroke="none" /></svg>;
+}
+
+export function PauseIcon(props: IconProps) {
+  return <svg {...base} {...props}><rect x="6.5" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" stroke="none" /><rect x="13.9" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" stroke="none" /></svg>;
+}

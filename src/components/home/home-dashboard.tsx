@@ -284,7 +284,7 @@ export function HomeDashboard({
 
         {visible.music && musicTrack ? (
           <HomeModule item={positions.music}>
-            <MusicWidget track={musicTrack} />
+            <MusicWidget />
           </HomeModule>
         ) : null}
         {settings.filingNumber ? (
