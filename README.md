@@ -14,8 +14,6 @@ system (including a warm editorial look).
 
 - **Dashboard homepage** — greeting, social links, clock/calendar widgets, an
   album preview, recent plans, rotating recommendations, and a music player.
-- **Editorial articles** (`/articles`) — a writing log grouped by year with
-  day/week/month/year and category filters.
 - **Recent plans** (`/plans`) — public plan list with categories, status,
   priority, progress, and target dates.
 - **Portfolio** (`/works`) — your own projects with covers, screenshots, tech
@@ -24,6 +22,7 @@ system (including a warm editorial look).
 - **Featured projects** (`/projects`) — noteworthy GitHub projects worth sharing.
 - **Photo album** (`/album`) — a draggable photo board backed by Supabase Storage.
 - **Music** — upload MP3s and pick the active homepage track.
+- **About page** (`/about`) — write your own intro in Markdown from site settings.
 - **Theme system** — switch the site's visual theme from admin settings.
 - **Admin area** (`/admin`) — a unified dashboard for single-administrator CRUD
   over everything above, including image/audio uploads, trash/restore, homepage
@@ -95,6 +94,7 @@ order). Paste the contents of one file, run it, then move to the next:
 202606220001_music_library.sql
 202606220002_music_storage_mime.sql
 202606230001_site_theme.sql
+202606270001_about_content.sql
 ```
 
 These create the tables, enable Row Level Security, revoke direct browser-role
