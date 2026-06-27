@@ -18,7 +18,7 @@ export default async function AboutPage() {
 
   return (
     <PageShell
-      eyebrow="THEODORE'S SPACE"
+      eyebrow="PERSONAL SPACE"
       title={displayName.toUpperCase()}
       description={siteDescription}
     >

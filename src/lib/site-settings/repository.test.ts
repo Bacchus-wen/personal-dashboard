@@ -128,7 +128,7 @@ describe("createSiteSettingsRepository", () => {
     expect(payload).toEqual(
       expect.objectContaining({
         settings: expect.objectContaining({
-          site_title: "Theodore · Personal Space",
+          site_title: "Personal Dashboard",
           theme_id: "paper-editorial",
         }),
         links: expect.any(Array),

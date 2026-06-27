@@ -20,7 +20,7 @@ describe("validateSiteConfiguration", () => {
     const result = validateSiteConfiguration(input());
 
     expect(result.ok).toBe(true);
-    expect(result.data?.settings.siteTitle).toBe("Theodore · Personal Space");
+    expect(result.data?.settings.siteTitle).toBe("Personal Dashboard");
   });
 
   it("accepts generated site media paths", () => {

@@ -72,10 +72,10 @@ export const DEFAULT_HOME_LAYOUT: HomeLayoutItem[] = [
 
 export const DEFAULT_SITE_CONFIGURATION: PublishedSiteConfiguration = {
   settings: {
-    siteTitle: "Theodore · Personal Space",
-    displayName: "Theodore",
+    siteTitle: "Personal Dashboard",
+    displayName: "Your Name",
     statusText: "正在记录生活",
-    siteDescription: "Theodore 的个人博客、项目、阅读和生活记录。",
+    siteDescription: "个人博客、项目、阅读与生活记录。",
     aboutBody: "",
     avatarPath: "/avatar.svg",
     faviconPath: "/favicon.ico",

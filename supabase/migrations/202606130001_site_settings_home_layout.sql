@@ -133,10 +133,10 @@ insert into public.site_settings (
 )
 values (
   true,
-  'Theodore · Personal Space',
-  'Theodore',
+  'Personal Dashboard',
+  'Your Name',
   '正在记录生活',
-  'Theodore 的个人博客、项目、阅读和生活记录。',
+  '个人博客、项目、阅读与生活记录。',
   '/avatar.svg',
   '/favicon.ico',
   '',

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title description">
-  <title id="title">Theodore default avatar</title>
-  <description id="description">A soft mint and yellow abstract portrait marked with the letter T.</description>
+  <title id="title">Default avatar</title>
+  <description id="description">A soft mint and yellow abstract portrait.</description>
   <defs>
     <linearGradient id="background" x1="22" y1="18" x2="218" y2="222" gradientUnits="userSpaceOnUse">
       <stop stop-color="#c8f2e5"/>
@@ -23,5 +23,4 @@
     <circle cx="120" cy="101" r="48" fill="url(#portrait)" stroke="#fff" stroke-width="7"/>
     <path d="M56 195c5-42 28-67 64-67s59 25 64 67c-18 12-40 18-64 18s-46-6-64-18Z" fill="url(#portrait)" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
   </g>
-  <text x="120" y="119" fill="#294f52" font-family="Arial, sans-serif" font-size="58" font-weight="700" text-anchor="middle">T</text>
 </svg>

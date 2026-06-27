@@ -6,9 +6,9 @@ album, and music; a protected admin area lets a single owner manage all of it.
 Built with the Next.js App Router and Supabase, with a switchable visual theme
 system (including a warm editorial look).
 
-> This is an open-source personal site. The default content is the author's
-> ("Theodore"); fork it and replace the content with your own through the admin
-> area and site settings.
+> This is an open-source personal-site template. It ships with neutral
+> placeholder defaults (e.g. "Your Name") — set your name, title, social links,
+> About text, and all content through the admin area and site settings.
 
 ## Features
 
