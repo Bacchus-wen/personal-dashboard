@@ -76,6 +76,7 @@ export const DEFAULT_SITE_CONFIGURATION: PublishedSiteConfiguration = {
     displayName: "Theodore",
     statusText: "正在记录生活",
     siteDescription: "Theodore 的个人博客、项目、阅读和生活记录。",
+    aboutBody: "",
     avatarPath: "/avatar.svg",
     faviconPath: "/favicon.ico",
     filingNumber: "",

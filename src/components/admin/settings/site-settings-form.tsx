@@ -97,6 +97,20 @@ export function SiteSettingsForm({ settings, errors, onChange }: Props) {
             </small>
           ) : null}
         </label>
+        <label className="settings-wide-field">
+          <span>About 正文（Markdown，留空则显示默认内容）</span>
+          <textarea
+            rows={10}
+            value={settings.aboutBody ?? ""}
+            onChange={(event) => update("aboutBody", event.target.value)}
+            placeholder={"## Hi! I'm ...\n\n- 一句介绍\n- 第二句\n\n> 我的座右铭"}
+          />
+          {errors.aboutBody ? (
+            <small className="settings-field-error">
+              {errors.aboutBody[0]}
+            </small>
+          ) : null}
+        </label>
       </div>
     </section>
   );

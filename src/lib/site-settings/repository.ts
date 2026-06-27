@@ -13,6 +13,7 @@ export type SettingsRow = {
   display_name: string;
   status_text: string;
   site_description: string;
+  about_body: string;
   avatar_path: string;
   favicon_path: string;
   filing_number: string;
@@ -71,6 +72,7 @@ function toPublishInput(input: ValidSiteConfiguration): PublishDatabaseInput {
       display_name: input.settings.displayName,
       status_text: input.settings.statusText,
       site_description: input.settings.siteDescription,
+      about_body: input.settings.aboutBody,
       avatar_path: input.settings.avatarPath,
       favicon_path: input.settings.faviconPath,
       filing_number: input.settings.filingNumber,
@@ -109,6 +111,7 @@ export function createSiteSettingsRepository(
             displayName: settings.display_name,
             statusText: settings.status_text,
             siteDescription: settings.site_description,
+            aboutBody: settings.about_body ?? "",
             avatarPath: settings.avatar_path,
             faviconPath: settings.favicon_path,
             filingNumber: settings.filing_number,

@@ -880,6 +880,15 @@ p { text-wrap: pretty; }
 .about-list { padding-left: 22px; }
 .about-list li { margin: 10px 0; }
 .quote-box { margin: 28px 0; padding: 20px; border-left: 3px solid var(--accent-2); border-radius: 0 18px 18px 0; background: color-mix(in oklch, var(--accent-2) 8%, transparent); }
+.about-markdown { display: grid; gap: 16px; }
+.about-markdown h1,.about-markdown h2 { font-size: clamp(22px, 3vw, 34px); }
+.about-markdown h3,.about-markdown h4 { font-size: 1.1rem; }
+.about-markdown ul,.about-markdown ol { padding-left: 22px; }
+.about-markdown li { margin: 8px 0; }
+.about-markdown blockquote { margin: 0; padding: 16px 20px; border-left: 3px solid var(--accent-2); border-radius: 0 18px 18px 0; background: color-mix(in oklch, var(--accent-2) 8%, transparent); }
+.about-markdown a { color: var(--accent); text-underline-offset: 3px; }
+.about-markdown code { font-family: var(--font-mono); font-size: 0.85em; background: color-mix(in oklch, var(--muted) 20%, transparent); padding: 2px 6px; border-radius: 4px; }
+.about-markdown hr { border: none; border-top: 1px solid var(--border); }
 
 /* Album and photo management */
 .public-album { min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; }
@@ -1263,7 +1272,8 @@ p { text-wrap: pretty; }
   transition: transform .2s ease;
 }
 .mini-player-btn:hover { transform: scale(1.08); }
-.mini-player-btn svg { width: 24px; height: 24px; display: block; }
+.mini-player-btn svg { width: 24px; height: 24px; display: block; position: relative; left: 4px; }
+.mini-player[data-playing="true"] .mini-player-btn svg { left: 3px; }
 .mini-player-cover { flex: 0 0 34px; width: 34px; height: 34px; border-radius: 9px; object-fit: cover; }
 .mini-player-note { flex: 0 0 auto; color: var(--accent-2); font-size: 20px; }
 .mini-player-info { min-width: 0; display: grid; gap: 6px; }
@@ -1297,7 +1307,8 @@ p { text-wrap: pretty; }
 .music-widget strong { display: block; margin-bottom: 2px; font-size: 13px; }
 .music-widget small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; }
 .music-widget button { width: 38px; height: 38px; border: 0; border-radius: 50%; color: var(--surface); background: var(--accent); cursor: pointer; }
-.music-widget button svg { width: 20px; height: 20px; display: block; }
+.music-widget button svg { width: 20px; height: 20px; display: block; position: relative; left: 4px; }
+.music-widget[data-playing="true"] button svg { left: 3px; }
 .music-progress { height: 5px; overflow: hidden; border-radius: 999px; background: color-mix(in oklch, var(--muted) 18%, transparent); }
 .music-progress span { display: block; height: 100%; background: var(--accent); transition: width var(--transition-fast); }
 .home-filing { position: absolute; left: 50%; bottom: 8px; color: var(--muted); font-size: 11px; transform: translateX(-50%); }

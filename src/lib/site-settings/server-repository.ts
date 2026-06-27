@@ -19,7 +19,7 @@ function createSupabaseSiteSettingsDatabaseClient(
       const { data, error } = await client
         .from("site_settings")
         .select(
-          "site_title,display_name,status_text,site_description,avatar_path,favicon_path,filing_number,filing_url,theme_id,module_visibility,navigation_visibility",
+          "site_title,display_name,status_text,site_description,about_body,avatar_path,favicon_path,filing_number,filing_url,theme_id,module_visibility,navigation_visibility",
         )
         .eq("singleton", true)
         .maybeSingle();

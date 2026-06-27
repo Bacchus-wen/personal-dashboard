@@ -142,6 +142,7 @@ export function validateSiteConfiguration(
   const displayName = trimmed(input.settings.displayName);
   const statusText = trimmed(input.settings.statusText);
   const siteDescription = trimmed(input.settings.siteDescription);
+  const aboutBody = trimmed((input.settings as { aboutBody?: unknown }).aboutBody as string ?? "");
   const avatarPath = validateImagePath(input.settings.avatarPath);
   const faviconPath = validateImagePath(input.settings.faviconPath);
   const filingNumber = trimmed(input.settings.filingNumber);
@@ -161,6 +162,9 @@ export function validateSiteConfiguration(
   }
   if (siteDescription.length > 300) {
     errors.siteDescription = ["网站描述不能超过 300 个字符。"];
+  }
+  if (aboutBody.length > 4000) {
+    errors.aboutBody = ["About 正文不能超过 4000 个字符。"];
   }
   if (!avatarPath) {
     errors.avatarPath = ["头像必须使用项目本地路径或 HTTPS 地址。"];
@@ -212,6 +216,7 @@ export function validateSiteConfiguration(
         displayName,
         statusText,
         siteDescription,
+        aboutBody,
         avatarPath,
         faviconPath,
         filingNumber,

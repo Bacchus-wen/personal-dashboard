@@ -19,6 +19,7 @@ export type SiteSettingsInput = {
   displayName: string;
   statusText: string;
   siteDescription: string;
+  aboutBody: string;
   avatarPath: string;
   faviconPath: string;
   filingNumber: string;
@@ -56,7 +57,8 @@ export type PublishedSiteConfiguration = SiteConfigurationInput;
 
 export type SiteConfigurationFieldErrors = Partial<
   Record<
-    | keyof Omit<SiteSettingsInput, "moduleVisibility" | "navigationVisibility">
+    | keyof Omit<SiteSettingsInput, "moduleVisibility" | "navigationVisibility" | "aboutBody">
+    | "aboutBody"
     | "moduleVisibility"
     | "navigationVisibility"
     | "socialLinks"
