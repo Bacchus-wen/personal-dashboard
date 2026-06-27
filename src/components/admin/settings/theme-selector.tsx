@@ -19,7 +19,7 @@ export function ThemeSelector({
           <p className="eyebrow">PUBLIC THEME</p>
           <h2>主题外观</h2>
           <p className="muted">
-            只影响公开网站；后台保持固定浅色工作区。
+            前台与后台都会应用所选主题。
           </p>
         </div>
       </div>

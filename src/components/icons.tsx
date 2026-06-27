@@ -28,3 +28,11 @@ export function UpIcon(props: IconProps) {
 export function AdminIcon(props: IconProps) {
   return <svg {...base} {...props}><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2" /></svg>;
 }
+
+export function MoonIcon(props: IconProps) {
+  return <svg {...base} {...props}><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5Z" /></svg>;
+}
+
+export function WavesIcon(props: IconProps) {
+  return <svg {...base} {...props}><path d="M3 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /></svg>;
+}

@@ -29,7 +29,7 @@ export function MusicWidget({ track }: { track: MusicTrack }) {
   }
 
   return (
-    <section className="music-widget glass card lift">
+    <section className="music-widget glass card lift" data-playing={playing}>
       {coverUrl ? (
         // User-configured media can be local, Storage, or external.
         // eslint-disable-next-line @next/next/no-img-element

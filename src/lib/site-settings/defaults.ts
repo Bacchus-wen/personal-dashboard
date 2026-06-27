@@ -106,7 +106,7 @@ export const DEFAULT_SITE_CONFIGURATION: PublishedSiteConfiguration = {
     {
       id: "xiaohongshu",
       platform: "xiaohongshu",
-      label: "小红书",
+      label: "Rednote",
       href: "https://www.xiaohongshu.com/",
       position: 1,
       enabled: true,

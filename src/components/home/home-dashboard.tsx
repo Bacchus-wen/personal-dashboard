@@ -68,11 +68,11 @@ function Clock() {
         }) ?? "--:--"}
       </div>
       <small>
-        {now?.toLocaleDateString("zh-CN", {
-          month: "long",
-          day: "numeric",
-          weekday: "short",
-        }) ?? "今天"}
+        {now
+          ? `${now.toLocaleDateString("zh-CN", { weekday: "long" })} · ${String(
+              now.getSeconds(),
+            ).padStart(2, "0")}″`
+          : "—"}
       </small>
     </section>
   );
