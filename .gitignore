@@ -42,6 +42,10 @@ yarn-error.log*
 # isolated feature worktrees
 .worktrees/
 
+# local development scratch notes (not part of the template)
+/skill-plan-*.md
+/docs/operations/feature-audit-*.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
