@@ -90,7 +90,7 @@ describe("createPlanRepository", () => {
         {
           column: "status",
           operator: "in",
-          value: ["not_started", "in_progress", "paused"],
+          value: ["not_started", "in_progress", "paused", "completed", "cancelled"],
         },
       ],
     });
@@ -138,7 +138,7 @@ describe("createPlanRepository", () => {
           {
             column: "status",
             operator: "in",
-            value: ["not_started", "in_progress", "paused"],
+            value: ["not_started", "in_progress", "paused", "completed", "cancelled"],
           },
         ],
       },

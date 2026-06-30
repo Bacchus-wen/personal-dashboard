@@ -11,7 +11,11 @@ import type { Plan } from "./types";
 export const PUBLIC_PLAN_PAGE_SIZE = 9;
 export const ADMIN_PLAN_PAGE_SIZE = 12;
 
-const PUBLIC_STATUSES = ["not_started", "in_progress", "paused"] as const;
+// Public plans now surface every status (matches the admin status set), so
+// visitors see in-progress, paused, completed, and cancelled plans alike. The
+// public security boundary is visibility='public' + deleted_at IS NULL, not the
+// status.
+const PUBLIC_STATUSES = PLAN_STATUSES;
 const PRIORITY_RANK: Record<PlanPriority, number> = {
   high: 0,
   medium: 1,

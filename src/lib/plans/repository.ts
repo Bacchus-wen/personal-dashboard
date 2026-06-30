@@ -9,7 +9,10 @@ import type {
 const PLAN_COLUMNS =
   "id,title,summary,description,status,visibility,priority,progress,deadline,related_url,category_id,deleted_at,created_at,updated_at,plan_categories(id,name,created_at,updated_at)";
 const CATEGORY_COLUMNS = "id,name,created_at,updated_at";
-const PUBLIC_STATUSES = ["not_started", "in_progress", "paused"];
+// Public list shows every status; the public boundary is visibility + deleted_at
+// (enforced below), not the plan status. HOME_STATUSES still limits the single
+// homepage recommendation to active plans.
+const PUBLIC_STATUSES = ["not_started", "in_progress", "paused", "completed", "cancelled"];
 const HOME_STATUSES = ["not_started", "in_progress"];
 
 export type DatabaseRow = Record<string, unknown>;

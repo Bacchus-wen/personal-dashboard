@@ -44,7 +44,7 @@ describe("parsePublicPlanQuery", () => {
     ).toEqual({
       page: 1,
       pageSize: PUBLIC_PLAN_PAGE_SIZE,
-      status: null,
+      status: "completed",
       priority: null,
       categoryId: "category-id",
     });
