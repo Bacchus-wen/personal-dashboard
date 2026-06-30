@@ -2,14 +2,14 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { ThemeSelect } from "@/components/ui/theme-select";
 import {
   PLAN_PRIORITIES,
   PLAN_PRIORITY_LABELS,
   PLAN_STATUS_LABELS,
+  PLAN_STATUSES,
 } from "@/lib/plans/constants";
 import type { PlanCategory } from "@/lib/plans/types";
-
-const PUBLIC_STATUSES = ["not_started", "in_progress", "paused"] as const;
 
 export function PlanFilters({ categories }: { categories: PlanCategory[] }) {
   const pathname = usePathname();
@@ -28,24 +28,48 @@ export function PlanFilters({ categories }: { categories: PlanCategory[] }) {
     <section className="public-plan-filters glass" aria-label="公开规划筛选">
       <label>
         状态
-        <select onChange={(event) => update("status", event.target.value)} value={searchParams.get("status") ?? ""}>
-          <option value="">全部状态</option>
-          {PUBLIC_STATUSES.map((status) => <option key={status} value={status}>{PLAN_STATUS_LABELS[status]}</option>)}
-        </select>
+        <ThemeSelect
+          ariaLabel="状态"
+          value={searchParams.get("status") ?? ""}
+          onChange={(value) => update("status", value)}
+          options={[
+            { value: "", label: "全部状态" },
+            ...PLAN_STATUSES.map((status) => ({
+              value: status,
+              label: PLAN_STATUS_LABELS[status],
+            })),
+          ]}
+        />
       </label>
       <label>
         优先级
-        <select onChange={(event) => update("priority", event.target.value)} value={searchParams.get("priority") ?? ""}>
-          <option value="">全部优先级</option>
-          {PLAN_PRIORITIES.map((priority) => <option key={priority} value={priority}>{PLAN_PRIORITY_LABELS[priority]}</option>)}
-        </select>
+        <ThemeSelect
+          ariaLabel="优先级"
+          value={searchParams.get("priority") ?? ""}
+          onChange={(value) => update("priority", value)}
+          options={[
+            { value: "", label: "全部优先级" },
+            ...PLAN_PRIORITIES.map((priority) => ({
+              value: priority,
+              label: PLAN_PRIORITY_LABELS[priority],
+            })),
+          ]}
+        />
       </label>
       <label>
         分类
-        <select onChange={(event) => update("category", event.target.value)} value={searchParams.get("category") ?? ""}>
-          <option value="">全部分类</option>
-          {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-        </select>
+        <ThemeSelect
+          ariaLabel="分类"
+          value={searchParams.get("category") ?? ""}
+          onChange={(value) => update("category", value)}
+          options={[
+            { value: "", label: "全部分类" },
+            ...categories.map((category) => ({
+              value: category.id,
+              label: category.name,
+            })),
+          ]}
+        />
       </label>
     </section>
   );

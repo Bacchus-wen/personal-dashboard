@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 
+import { ThemeSelect } from "@/components/ui/theme-select";
 import {
   PLAN_PRIORITIES,
   PLAN_PRIORITY_LABELS,
@@ -38,10 +39,10 @@ export function AdminPlanFilters() {
         <button className="btn" type="submit">搜索</button>
       </form>
       <div className="admin-plan-filter-grid">
-        <label>状态<select onChange={(event) => update("status", event.target.value)} value={searchParams.get("status") ?? ""}><option value="">全部</option>{PLAN_STATUSES.map((value) => <option key={value} value={value}>{PLAN_STATUS_LABELS[value]}</option>)}</select></label>
-        <label>可见性<select onChange={(event) => update("visibility", event.target.value)} value={searchParams.get("visibility") ?? ""}><option value="">全部</option>{PLAN_VISIBILITIES.map((value) => <option key={value} value={value}>{PLAN_VISIBILITY_LABELS[value]}</option>)}</select></label>
-        <label>优先级<select onChange={(event) => update("priority", event.target.value)} value={searchParams.get("priority") ?? ""}><option value="">全部</option>{PLAN_PRIORITIES.map((value) => <option key={value} value={value}>{PLAN_PRIORITY_LABELS[value]}</option>)}</select></label>
-        <label>截止情况<select onChange={(event) => update("overdue", event.target.value)} value={searchParams.get("overdue") ?? ""}><option value="">全部</option><option value="true">已逾期</option></select></label>
+        <label>状态<ThemeSelect ariaLabel="状态" value={searchParams.get("status") ?? ""} onChange={(value) => update("status", value)} options={[{ value: "", label: "全部" }, ...PLAN_STATUSES.map((value) => ({ value, label: PLAN_STATUS_LABELS[value] }))]} /></label>
+        <label>可见性<ThemeSelect ariaLabel="可见性" value={searchParams.get("visibility") ?? ""} onChange={(value) => update("visibility", value)} options={[{ value: "", label: "全部" }, ...PLAN_VISIBILITIES.map((value) => ({ value, label: PLAN_VISIBILITY_LABELS[value] }))]} /></label>
+        <label>优先级<ThemeSelect ariaLabel="优先级" value={searchParams.get("priority") ?? ""} onChange={(value) => update("priority", value)} options={[{ value: "", label: "全部" }, ...PLAN_PRIORITIES.map((value) => ({ value, label: PLAN_PRIORITY_LABELS[value] }))]} /></label>
+        <label>截止情况<ThemeSelect ariaLabel="截止情况" value={searchParams.get("overdue") ?? ""} onChange={(value) => update("overdue", value)} options={[{ value: "", label: "全部" }, { value: "true", label: "已逾期" }]} /></label>
       </div>
     </section>
   );

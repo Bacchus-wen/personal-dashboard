@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
+import { ThemeSelect } from "@/components/ui/theme-select";
 import {
   COLLECTION_CONTENT_TYPES,
   COLLECTION_CONTENT_TYPE_LABELS,
@@ -45,31 +46,27 @@ export function CollectionFilters() {
       <div className="admin-plan-filter-grid">
         <label>
           内容类型
-          <select
-            onChange={(event) => update("type", event.target.value)}
+          <ThemeSelect
+            ariaLabel="内容类型"
             value={params.get("type") ?? ""}
-          >
-            <option value="">全部</option>
-            {COLLECTION_CONTENT_TYPES.map((value) => (
-              <option key={value} value={value}>
-                {COLLECTION_CONTENT_TYPE_LABELS[value]}
-              </option>
-            ))}
-          </select>
+            onChange={(value) => update("type", value)}
+            options={[
+              { value: "", label: "全部" },
+              ...COLLECTION_CONTENT_TYPES.map((value) => ({ value, label: COLLECTION_CONTENT_TYPE_LABELS[value] })),
+            ]}
+          />
         </label>
         <label>
           可见性
-          <select
-            onChange={(event) => update("visibility", event.target.value)}
+          <ThemeSelect
+            ariaLabel="可见性"
             value={params.get("visibility") ?? ""}
-          >
-            <option value="">全部</option>
-            {RECOMMENDATION_VISIBILITIES.map((value) => (
-              <option key={value} value={value}>
-                {RECOMMENDATION_VISIBILITY_LABELS[value]}
-              </option>
-            ))}
-          </select>
+            onChange={(value) => update("visibility", value)}
+            options={[
+              { value: "", label: "全部" },
+              ...RECOMMENDATION_VISIBILITIES.map((value) => ({ value, label: RECOMMENDATION_VISIBILITY_LABELS[value] })),
+            ]}
+          />
         </label>
       </div>
     </section>

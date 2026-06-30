@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { ThemeSelect } from "@/components/ui/theme-select";
 import { WORK_STATUSES, WORK_STATUS_LABELS } from "@/lib/works/constants";
 
 export function WorkFilters({ technologies }: { technologies: string[] }) {
@@ -18,17 +19,27 @@ export function WorkFilters({ technologies }: { technologies: string[] }) {
     <section className="public-plan-filters work-filter-panel" aria-label="作品筛选">
       <label>
         项目状态
-        <select onChange={(event) => update("status", event.target.value)} value={params.get("status") ?? ""}>
-          <option value="">全部状态</option>
-          {WORK_STATUSES.map((status) => <option key={status} value={status}>{WORK_STATUS_LABELS[status]}</option>)}
-        </select>
+        <ThemeSelect
+          ariaLabel="项目状态"
+          value={params.get("status") ?? ""}
+          onChange={(value) => update("status", value)}
+          options={[
+            { value: "", label: "全部状态" },
+            ...WORK_STATUSES.map((status) => ({ value: status, label: WORK_STATUS_LABELS[status] })),
+          ]}
+        />
       </label>
       <label>
         技术标签
-        <select onChange={(event) => update("tech", event.target.value)} value={params.get("tech") ?? ""}>
-          <option value="">全部技术</option>
-          {technologies.map((technology) => <option key={technology} value={technology}>{technology}</option>)}
-        </select>
+        <ThemeSelect
+          ariaLabel="技术标签"
+          value={params.get("tech") ?? ""}
+          onChange={(value) => update("tech", value)}
+          options={[
+            { value: "", label: "全部技术" },
+            ...technologies.map((technology) => ({ value: technology, label: technology })),
+          ]}
+        />
       </label>
     </section>
   );

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { type ChangeEvent, useActionState, useEffect, useState } from "react";
 
 import { PhotoImage } from "@/components/photos/photo-image";
+import { ThemeSelect } from "@/components/ui/theme-select";
 import { PHOTO_VISIBILITIES, PHOTO_VISIBILITY_LABELS } from "@/lib/photos/constants";
 import { processPhotoFile } from "@/lib/photos/client-image";
 import type { Photo, PhotoActionResult, PhotoUploadResult } from "@/lib/photos/types";
@@ -16,6 +17,25 @@ type Action = (
 ) => Promise<PhotoActionResult>;
 
 const EMPTY_RESULT: PhotoActionResult = { ok: false, message: "" };
+
+// Self-contained so it lives inside the form's `key={formKey}` subtree and
+// re-initialises whenever the edited photo changes. The hidden input keeps the
+// value in FormData on submit.
+function VisibilityField({ value: initial }: { value: string }) {
+  const [value, setValue] = useState<string>(initial);
+  return (
+    <ThemeSelect
+      name="visibility"
+      ariaLabel="状态"
+      value={value}
+      onChange={setValue}
+      options={PHOTO_VISIBILITIES.map((visibility) => ({
+        value: visibility,
+        label: PHOTO_VISIBILITY_LABELS[visibility],
+      }))}
+    />
+  );
+}
 
 export function PhotoEditor({
   action,
@@ -87,13 +107,7 @@ export function PhotoEditor({
           <div className="editor-field-grid">
             <label className="editor-field">
               <span>状态</span>
-              <select defaultValue={photo.visibility} name="visibility">
-                {PHOTO_VISIBILITIES.map((visibility) => (
-                  <option key={visibility} value={visibility}>
-                    {PHOTO_VISIBILITY_LABELS[visibility]}
-                  </option>
-                ))}
-              </select>
+              <VisibilityField value={photo.visibility} />
               {state.fieldErrors?.visibility?.[0] ? (
                 <small className="editor-field-error">
                   {state.fieldErrors.visibility[0]}

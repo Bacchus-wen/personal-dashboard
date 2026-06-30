@@ -12,6 +12,7 @@ import {
 } from "react";
 
 import { MarkdownContent } from "@/components/plans/markdown-content";
+import { ThemeSelect } from "@/components/ui/theme-select";
 import {
   PLAN_PRIORITIES,
   PLAN_PRIORITY_LABELS,
@@ -123,20 +124,21 @@ export function PlanEditor({
     return () => window.removeEventListener("beforeunload", warn);
   }, [dirty]);
 
+  const setField = (field: keyof EditorValues) => (value: string) => {
+    setValues((current) => {
+      if (field === "status" && value === "not_started") {
+        return { ...current, status: value, progress: "0" };
+      }
+      if (field === "status" && value === "completed") {
+        return { ...current, status: value, progress: "100" };
+      }
+      return { ...current, [field]: value };
+    });
+  };
   const update =
     (field: keyof EditorValues) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      const value = event.target.value;
-      setValues((current) => {
-        if (field === "status" && value === "not_started") {
-          return { ...current, status: value, progress: "0" };
-        }
-        if (field === "status" && value === "completed") {
-          return { ...current, status: value, progress: "100" };
-        }
-        return { ...current, [field]: value };
-      });
-    };
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setField(field)(event.target.value);
 
   const confirmLeave = (event: MouseEvent<HTMLAnchorElement>) => {
     if (dirty && !window.confirm("当前修改尚未保存，确定离开吗？")) {
@@ -222,19 +224,13 @@ export function PlanEditor({
           <h2>规划设置</h2>
           <div className="editor-field-grid">
             <EditorField error={fieldError(state.fieldErrors, "status")} label="状态">
-              <select name="status" onChange={update("status")} value={values.status}>
-                {PLAN_STATUSES.map((status) => <option key={status} value={status}>{PLAN_STATUS_LABELS[status]}</option>)}
-              </select>
+              <ThemeSelect name="status" ariaLabel="状态" value={values.status} onChange={setField("status")} options={PLAN_STATUSES.map((status) => ({ value: status, label: PLAN_STATUS_LABELS[status] }))} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "visibility")} label="可见性">
-              <select name="visibility" onChange={update("visibility")} value={values.visibility}>
-                {PLAN_VISIBILITIES.map((visibility) => <option key={visibility} value={visibility}>{PLAN_VISIBILITY_LABELS[visibility]}</option>)}
-              </select>
+              <ThemeSelect name="visibility" ariaLabel="可见性" value={values.visibility} onChange={setField("visibility")} options={PLAN_VISIBILITIES.map((visibility) => ({ value: visibility, label: PLAN_VISIBILITY_LABELS[visibility] }))} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "priority")} label="优先级">
-              <select name="priority" onChange={update("priority")} value={values.priority}>
-                {PLAN_PRIORITIES.map((priority) => <option key={priority} value={priority}>{PLAN_PRIORITY_LABELS[priority]}</option>)}
-              </select>
+              <ThemeSelect name="priority" ariaLabel="优先级" value={values.priority} onChange={setField("priority")} options={PLAN_PRIORITIES.map((priority) => ({ value: priority, label: PLAN_PRIORITY_LABELS[priority] }))} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "progress")} label="进度">
               <div className="editor-progress-input">
@@ -253,10 +249,7 @@ export function PlanEditor({
               <input name="deadline" onChange={update("deadline")} type="date" value={values.deadline} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "categoryId")} label="分类">
-              <select name="categoryId" onChange={update("categoryId")} value={values.categoryId}>
-                <option value="">未分类</option>
-                {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-              </select>
+              <ThemeSelect name="categoryId" ariaLabel="分类" value={values.categoryId} onChange={setField("categoryId")} options={[{ value: "", label: "未分类" }, ...categories.map((category) => ({ value: category.id, label: category.name }))]} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "relatedUrl")} label="相关链接">
               <input name="relatedUrl" onChange={update("relatedUrl")} placeholder="/projects 或 https://..." value={values.relatedUrl} />

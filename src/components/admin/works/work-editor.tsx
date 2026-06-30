@@ -12,6 +12,7 @@ import {
 } from "react";
 
 import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
+import { ThemeSelect } from "@/components/ui/theme-select";
 import { ScreenshotEditor } from "./screenshot-editor";
 import { MarkdownContent } from "@/components/plans/markdown-content";
 import {
@@ -143,6 +144,8 @@ export function WorkEditor({
           : event.target.value;
       setValues((current) => ({ ...current, [field]: value }));
     };
+  const setField = (field: keyof EditorValues) => (value: string) =>
+    setValues((current) => ({ ...current, [field]: value }));
 
   const confirmLeave = (event: MouseEvent<HTMLAnchorElement>) => {
     if (dirty && !window.confirm("当前修改尚未保存，确定离开吗？")) {
@@ -273,26 +276,10 @@ export function WorkEditor({
           <h2>作品设置</h2>
           <div className="editor-field-grid">
             <EditorField error={fieldError(state.fieldErrors, "status")} label="状态">
-              <select name="status" onChange={update("status")} value={values.status}>
-                {WORK_STATUSES.map((status) => (
-                  <option key={status} value={status}>
-                    {WORK_STATUS_LABELS[status]}
-                  </option>
-                ))}
-              </select>
+              <ThemeSelect name="status" ariaLabel="状态" value={values.status} onChange={setField("status")} options={WORK_STATUSES.map((status) => ({ value: status, label: WORK_STATUS_LABELS[status] }))} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "visibility")} label="可见性">
-              <select
-                name="visibility"
-                onChange={update("visibility")}
-                value={values.visibility}
-              >
-                {WORK_VISIBILITIES.map((visibility) => (
-                  <option key={visibility} value={visibility}>
-                    {WORK_VISIBILITY_LABELS[visibility]}
-                  </option>
-                ))}
-              </select>
+              <ThemeSelect name="visibility" ariaLabel="可见性" value={values.visibility} onChange={setField("visibility")} options={WORK_VISIBILITIES.map((visibility) => ({ value: visibility, label: WORK_VISIBILITY_LABELS[visibility] }))} />
             </EditorField>
             <EditorField error={fieldError(state.fieldErrors, "sortOrder")} label="排序">
               <input

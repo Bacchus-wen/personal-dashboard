@@ -6,6 +6,7 @@ import { type ChangeEvent, type MouseEvent, useActionState, useEffect, useMemo, 
 
 import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
 import { CollectionCard } from "@/components/collections/collection-card";
+import { ThemeSelect } from "@/components/ui/theme-select";
 import {
   publicMediaUrlForPath,
   resolveMediaDisplayUrl,
@@ -62,6 +63,8 @@ export function CollectionEditor({ action, collection = null }: { action: Action
     const value = event.target instanceof HTMLInputElement && event.target.type === "checkbox" ? event.target.checked : event.target.value;
     setValues((current) => ({ ...current, [field]: value }));
   };
+  const setField = (field: keyof Values) => (value: string) =>
+    setValues((current) => ({ ...current, [field]: value }));
   const confirmLeave = (event: MouseEvent<HTMLAnchorElement>) => {
     if (dirty && !window.confirm("当前修改尚未保存，确定离开吗？")) event.preventDefault();
   };
@@ -72,7 +75,7 @@ export function CollectionEditor({ action, collection = null }: { action: Action
       <section className="work-editor-main glass">
         <div className="plan-editor-section-head"><div><p className="eyebrow">COLLECTION CONTENT</p><h2>收藏内容</h2></div></div>
         <EditorField error={fieldError(state.fieldErrors, "title")} label="标题"><input name="title" onChange={update("title")} value={values.title} /></EditorField>
-        <EditorField error={fieldError(state.fieldErrors, "contentType")} label="内容类型"><select name="contentType" onChange={update("contentType")} value={values.contentType}>{COLLECTION_CONTENT_TYPES.map((type) => <option key={type} value={type}>{COLLECTION_CONTENT_TYPE_LABELS[type]}</option>)}</select></EditorField>
+        <EditorField error={fieldError(state.fieldErrors, "contentType")} label="内容类型"><ThemeSelect name="contentType" ariaLabel="内容类型" value={values.contentType} onChange={setField("contentType")} options={COLLECTION_CONTENT_TYPES.map((type) => ({ value: type, label: COLLECTION_CONTENT_TYPE_LABELS[type] }))} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "sourceName")} label="来源名称"><input name="sourceName" onChange={update("sourceName")} value={values.sourceName} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "summary")} label="摘要"><textarea name="summary" onChange={update("summary")} rows={4} value={values.summary} /></EditorField>
         <EditorField error={fieldError(state.fieldErrors, "externalUrl")} label="原网站 HTTPS 链接"><input name="externalUrl" onChange={update("externalUrl")} value={values.externalUrl} /></EditorField>
@@ -84,7 +87,7 @@ export function CollectionEditor({ action, collection = null }: { action: Action
         <section className="plan-editor-settings glass">
           <p className="eyebrow">SETTINGS</p><h2>发布设置</h2>
           <div className="editor-field-grid">
-            <EditorField error={fieldError(state.fieldErrors, "visibility")} label="可见性"><select name="visibility" onChange={update("visibility")} value={values.visibility}>{RECOMMENDATION_VISIBILITIES.map((visibility) => <option key={visibility} value={visibility}>{RECOMMENDATION_VISIBILITY_LABELS[visibility]}</option>)}</select></EditorField>
+            <EditorField error={fieldError(state.fieldErrors, "visibility")} label="可见性"><ThemeSelect name="visibility" ariaLabel="可见性" value={values.visibility} onChange={setField("visibility")} options={RECOMMENDATION_VISIBILITIES.map((visibility) => ({ value: visibility, label: RECOMMENDATION_VISIBILITY_LABELS[visibility] }))} /></EditorField>
             <EditorField error={fieldError(state.fieldErrors, "sortOrder")} label="排序"><input min={0} name="sortOrder" onChange={update("sortOrder")} type="number" value={values.sortOrder} /></EditorField>
             <label className="editor-check"><input checked={values.featured} name="featured" onChange={update("featured")} type="checkbox" />进入首页推荐候选</label>
           </div>

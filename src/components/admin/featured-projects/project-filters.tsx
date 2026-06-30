@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
+import { ThemeSelect } from "@/components/ui/theme-select";
 import { RECOMMENDATION_VISIBILITIES, RECOMMENDATION_VISIBILITY_LABELS } from "@/lib/featured-projects/constants";
 
 export function ProjectFilters({ languages }: { languages: string[] }) {
@@ -22,8 +23,8 @@ export function ProjectFilters({ languages }: { languages: string[] }) {
         <button className="btn" type="submit">搜索</button>
       </form>
       <div className="admin-plan-filter-grid">
-        <label>语言<select onChange={(event) => update("language", event.target.value)} value={params.get("language") ?? ""}><option value="">全部</option>{languages.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
-        <label>可见性<select onChange={(event) => update("visibility", event.target.value)} value={params.get("visibility") ?? ""}><option value="">全部</option>{RECOMMENDATION_VISIBILITIES.map((value) => <option key={value} value={value}>{RECOMMENDATION_VISIBILITY_LABELS[value]}</option>)}</select></label>
+        <label>语言<ThemeSelect ariaLabel="语言" value={params.get("language") ?? ""} onChange={(value) => update("language", value)} options={[{ value: "", label: "全部" }, ...languages.map((value) => ({ value, label: value }))]} /></label>
+        <label>可见性<ThemeSelect ariaLabel="可见性" value={params.get("visibility") ?? ""} onChange={(value) => update("visibility", value)} options={[{ value: "", label: "全部" }, ...RECOMMENDATION_VISIBILITIES.map((value) => ({ value, label: RECOMMENDATION_VISIBILITY_LABELS[value] }))]} /></label>
       </div>
     </section>
   );

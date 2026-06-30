@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeSelect } from "@/components/ui/theme-select";
 import type {
   SiteConfigurationFieldErrors,
   SocialLinkInput,
@@ -78,18 +79,12 @@ export function SocialLinksEditor({ links, errors, onChange }: Props) {
           <article className="social-link-editor-row" key={link.id}>
             <label>
               <span>平台</span>
-              <select
+              <ThemeSelect
+                ariaLabel="平台"
                 value={link.platform}
-                onChange={(event) =>
-                  update(link.id, { platform: event.target.value })
-                }
-              >
-                {platforms.map((platform) => (
-                  <option value={platform} key={platform}>
-                    {platform}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => update(link.id, { platform: value })}
+                options={platforms.map((platform) => ({ value: platform, label: platform }))}
+              />
             </label>
             <label>
               <span>显示名称</span>

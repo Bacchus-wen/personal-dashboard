@@ -6,6 +6,7 @@ import { type ChangeEvent, type MouseEvent, useActionState, useEffect, useMemo, 
 
 import { CompactMediaUpload } from "@/components/admin/media/compact-media-upload";
 import { FeaturedProjectCard } from "@/components/featured-projects/project-card";
+import { ThemeSelect } from "@/components/ui/theme-select";
 import {
   publicMediaUrlForPath,
   resolveMediaDisplayUrl,
@@ -34,6 +35,7 @@ export function ProjectEditor({ action, project = null }: { action: Action; proj
   const [state, formAction, pending] = useActionState(submit, EMPTY_RESULT);
   useEffect(() => { if (!dirty) return; const warn = (event: BeforeUnloadEvent) => event.preventDefault(); window.addEventListener("beforeunload", warn); return () => window.removeEventListener("beforeunload", warn); }, [dirty]);
   const update = (field: keyof Values) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { const value = event.target instanceof HTMLInputElement && event.target.type === "checkbox" ? event.target.checked : event.target.value; setValues((current) => ({ ...current, [field]: value })); };
+  const setField = (field: keyof Values) => (value: string) => setValues((current) => ({ ...current, [field]: value }));
   const confirmLeave = (event: MouseEvent<HTMLAnchorElement>) => { if (dirty && !window.confirm("当前修改尚未保存，确定离开吗？")) event.preventDefault(); };
   return (
     <form action={formAction} className="work-editor">
@@ -53,7 +55,7 @@ export function ProjectEditor({ action, project = null }: { action: Action; proj
         <section className="plan-editor-settings glass"><p className="eyebrow">SETTINGS</p><h2>发布设置</h2><div className="editor-field-grid">
           <EditorField error={fieldError(state.fieldErrors, "starCount")} label="Star 数量快照"><input min={0} name="starCount" onChange={update("starCount")} type="number" value={values.starCount} /></EditorField>
           <EditorField error={fieldError(state.fieldErrors, "starRecordedOn")} label="Star 记录日期"><input name="starRecordedOn" onChange={update("starRecordedOn")} type="date" value={values.starRecordedOn} /></EditorField>
-          <EditorField error={fieldError(state.fieldErrors, "visibility")} label="可见性"><select name="visibility" onChange={update("visibility")} value={values.visibility}>{RECOMMENDATION_VISIBILITIES.map((visibility) => <option key={visibility} value={visibility}>{RECOMMENDATION_VISIBILITY_LABELS[visibility]}</option>)}</select></EditorField>
+          <EditorField error={fieldError(state.fieldErrors, "visibility")} label="可见性"><ThemeSelect name="visibility" ariaLabel="可见性" value={values.visibility} onChange={setField("visibility")} options={RECOMMENDATION_VISIBILITIES.map((visibility) => ({ value: visibility, label: RECOMMENDATION_VISIBILITY_LABELS[visibility] }))} /></EditorField>
           <EditorField error={fieldError(state.fieldErrors, "sortOrder")} label="排序"><input min={0} name="sortOrder" onChange={update("sortOrder")} type="number" value={values.sortOrder} /></EditorField>
           <label className="editor-check"><input checked={values.featured} name="featured" onChange={update("featured")} type="checkbox" />进入首页推荐候选</label>
         </div></section>
