@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { MoonIcon, SunIcon, UpIcon, WavesIcon } from "@/components/icons";
 
@@ -14,12 +15,16 @@ function readTheme(): ThemeId {
 
 export function FloatingTools() {
   const [theme, setTheme] = useState<ThemeId | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // Sync the toggle icon to the theme applied by the inline pre-paint script
-    // in the root layout. Reading the DOM on mount avoids a hydration mismatch.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // in the root layout, and mark mounted so the portal only renders on the
+    // client. Reading the DOM on mount avoids a hydration mismatch.
+    /* eslint-disable react-hooks/set-state-in-effect */
     setTheme(readTheme());
+    setMounted(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const toggleQuiet = () => document.body.classList.toggle("quiet");
@@ -38,7 +43,11 @@ export function FloatingTools() {
 
   const isDark = theme === "night-radio";
 
-  return (
+  // Render at the top of <body> so the fixed position is always relative to the
+  // viewport, never trapped by a transformed/scrollable ancestor container.
+  if (!mounted) return null;
+
+  return createPortal(
     <div className="floating-tools">
       <button
         className="tool-btn"
@@ -64,6 +73,7 @@ export function FloatingTools() {
       >
         <UpIcon />
       </button>
-    </div>
+    </div>,
+    document.body,
   );
 }

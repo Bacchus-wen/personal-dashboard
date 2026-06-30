@@ -55,7 +55,7 @@ export function PlanCard({ plan }: { plan: Plan }) {
           ) : null}
         </div>
       ) : null}
-      <button className="btn" onClick={() => setExpanded((current) => !current)} type="button">
+      <button className="btn plan-toggle" onClick={() => setExpanded((current) => !current)} type="button">
         {expanded ? "收起详情" : "展开详情"}
       </button>
     </article>

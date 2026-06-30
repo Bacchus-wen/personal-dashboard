@@ -4,11 +4,13 @@ import { usePathname } from "next/navigation";
 import {
   createContext,
   useContext,
+  useEffect,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 
 import { PauseIcon, PlayIcon } from "@/components/icons";
 import {
@@ -91,10 +93,18 @@ export function MusicProvider({
 
 // Compact player shown on every page except the homepage (which has the full
 // music widget). Lets visitors keep controlling playback after navigating.
+const MINI_PLAYER_POS_KEY = "mini-player-pos";
+
 function GlobalMiniPlayer() {
   const pathname = usePathname();
   const { track, playing, progress, coverUrl, toggle } = useMusic();
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
+  // Mirrors `pos` so endDrag can persist the latest value without waiting for a
+  // re-render. The provider lives in the root layout (never unmounted), so the
+  // in-memory position already survives client navigations; localStorage keeps
+  // it consistent across full reloads and on pages opened directly.
+  const latest = useRef(pos);
   const drag = useRef<{
     startX: number;
     startY: number;
@@ -102,7 +112,26 @@ function GlobalMiniPlayer() {
     origY: number;
   } | null>(null);
 
-  if (!track || pathname === "/") return null;
+  useEffect(() => {
+    // Mark mounted so the widget is portaled only on the client, and restore the
+    // persisted position. Both run once after mount to avoid an SSR mismatch.
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setMounted(true);
+    try {
+      const saved = localStorage.getItem(MINI_PLAYER_POS_KEY);
+      if (!saved) return;
+      const parsed = JSON.parse(saved);
+      if (typeof parsed?.x === "number" && typeof parsed?.y === "number") {
+        latest.current = parsed;
+        setPos(parsed);
+      }
+    } catch {
+      // Ignore unreadable/blocked storage.
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
+
+  if (!track || pathname === "/" || !mounted) return null;
 
   function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
     // The play/pause button keeps its own click behaviour.
@@ -120,17 +149,28 @@ function GlobalMiniPlayer() {
   function onPointerMove(event: ReactPointerEvent<HTMLDivElement>) {
     const state = drag.current;
     if (!state) return;
-    setPos({
+    const next = {
       x: state.origX + (event.clientX - state.startX),
       y: state.origY + (event.clientY - state.startY),
-    });
+    };
+    latest.current = next;
+    setPos(next);
   }
 
   function endDrag() {
+    if (!drag.current) return;
     drag.current = null;
+    try {
+      localStorage.setItem(MINI_PLAYER_POS_KEY, JSON.stringify(latest.current));
+    } catch {
+      // Ignore storage failures (private mode, quota, etc.).
+    }
   }
 
-  return (
+  // Portaled to <body> so its fixed position is anchored to the viewport and is
+  // never trapped by a transformed/scrollable ancestor. Drag math uses
+  // viewport-based clientX/clientY, so it stays put while the page scrolls.
+  return createPortal(
     <div
       className="mini-player glass"
       data-playing={playing}
@@ -163,6 +203,7 @@ function GlobalMiniPlayer() {
           <span style={{ width: `${progress}%` }} />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
