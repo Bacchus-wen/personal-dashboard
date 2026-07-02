@@ -79,15 +79,28 @@ function Clock() {
 }
 
 function Calendar() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const days = new Date(year, month + 1, 0).getDate();
-  const offset = (new Date(year, month, 1).getDay() + 6) % 7;
+  // Compute "today" on the client (visitor's local timezone), not at
+  // render/build time. The homepage is statically pre-rendered on the server
+  // (UTC on most hosts), so a build-time `new Date()` would bake in the wrong
+  // day for visitors in other timezones. Mirrors the Clock pattern.
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    const update = () => setNow(new Date());
+    update();
+    // Roll the highlighted day over at midnight without a per-second timer.
+    const timer = window.setInterval(update, 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const year = now?.getFullYear() ?? 0;
+  const month = now?.getMonth() ?? 0;
+  const days = now ? new Date(year, month + 1, 0).getDate() : 0;
+  const offset = now ? (new Date(year, month, 1).getDay() + 6) % 7 : 0;
+
   return (
     <section className="calendar glass card lift">
       <h3>
-        {now.toLocaleDateString("en-US", { month: "long" })} {year}
+        {now ? `${now.toLocaleDateString("en-US", { month: "long" })} ${year}` : "—"}
       </h3>
       <div className="calendar-grid">
         {"一二三四五六日".split("").map((day) => (
@@ -97,7 +110,7 @@ function Calendar() {
           <span key={`empty-${index}`} />
         ))}
         {Array.from({ length: days }, (_, index) => index + 1).map((day) => (
-          <span className={day === now.getDate() ? "today" : ""} key={day}>
+          <span className={day === now?.getDate() ? "today" : ""} key={day}>
             {day}
           </span>
         ))}
