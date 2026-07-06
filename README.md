@@ -1,86 +1,73 @@
-# Theodore — Personal Dashboard, Blog & Portfolio
+# Theodore — 个人仪表盘、博客与作品集
 
-A self-hosted personal website that doubles as a private content manager. The
-public site presents your writing, plans, portfolio, curated links, photo
-album, and music; a protected admin area lets a single owner manage all of it.
-Built with the Next.js App Router and Supabase, with a switchable visual theme
-system (including a warm editorial look).
+这是一个可自托管的个人网站，同时也是私有内容管理系统。公开站点用于展示你的文章、近期计划、作品集、收藏链接、相册和音乐；受保护的后台区域则供单一站点所有者统一管理这些内容。
 
-> This is an open-source personal-site template. It ships with neutral
-> placeholder defaults (e.g. "Your Name") — set your name, title, social links,
-> About text, and all content through the admin area and site settings.
+项目基于 Next.js App Router 和 Supabase 构建，并内置可切换的视觉主题系统，包括偏暖的编辑部风格主题。
 
-## Features
+> 这是一个开源个人网站模板。项目默认使用中性的占位内容，例如 “Your Name”。请通过后台和站点设置填写你的姓名、头衔、社交链接、关于页文本以及各类内容。
 
-- **Dashboard homepage** — greeting, social links, clock/calendar widgets, an
-  album preview, recent plans, rotating recommendations, and a music player.
-- **Recent plans** (`/plans`) — public plan list with categories, status,
-  priority, progress, and target dates.
-- **Portfolio** (`/works`) — your own projects with covers, screenshots, tech
-  tags, and status/visibility states.
-- **Collections** (`/collections`) — curated external articles and videos.
-- **Featured projects** (`/projects`) — noteworthy GitHub projects worth sharing.
-- **Photo album** (`/album`) — a draggable photo board backed by Supabase Storage.
-- **Music** — upload MP3s and pick the active homepage track.
-- **About page** (`/about`) — write your own intro in Markdown from site settings.
-- **Theme system** — switch the site's visual theme from admin settings.
-- **Admin area** (`/admin`) — a unified dashboard for single-administrator CRUD
-  over everything above, including image/audio uploads, trash/restore, homepage
-  layout editing, and theme selection.
+## 功能
 
-## Tech stack
+- **仪表盘首页**：问候语、社交链接、时钟 / 日历组件、相册预览、近期计划、轮播推荐和音乐播放器。
+- **近期计划**（`/plans`）：公开计划列表，支持分类、状态、优先级、进度和目标日期。
+- **作品集**（`/works`）：展示个人项目，包含封面、截图、技术标签、状态和可见性设置。
+- **收藏夹**（`/collections`）：整理外部文章和视频链接。
+- **精选项目**（`/projects`）：展示值得分享的 GitHub 项目。
+- **相册**（`/album`）：基于 Supabase Storage 的可拖拽照片板。
+- **音乐**：上传 MP3，并选择首页当前播放曲目。
+- **关于页**（`/about`）：在站点设置中使用 Markdown 编写个人介绍。
+- **主题系统**：可在后台切换站点视觉主题。
+- **后台管理**（`/admin`）：为单一管理员提供统一 CRUD 面板，覆盖以上所有内容，包括图片 / 音频上传、删除 / 恢复、首页布局编辑和主题选择。
 
-- **Next.js 16** (App Router) + **React 19** + **TypeScript**
-- **Supabase** — Auth (email/password), PostgreSQL, and Storage
-- Server-only data access with per-request administrator verification
-- **Vitest** for unit tests
+## 技术栈
 
-## Prerequisites
+- **Next.js 16**（App Router）+ **React 19** + **TypeScript**
+- **Supabase**：Auth（邮箱 / 密码）、PostgreSQL 和 Storage
+- 服务端专用数据访问，并在每个请求中重新校验管理员身份
+- **Vitest** 单元测试
 
-- **Node.js 20+** and npm
-- A free **Supabase** account (https://supabase.com) — no local Docker required
+## 前置要求
 
-## Quick start
+- **Node.js 20+** 和 npm
+- 一个免费的 **Supabase** 账号（https://supabase.com），不需要本地 Docker
+
+## 快速开始
 
 ```bash
-# 1. Install dependencies
+# 1. 安装依赖
 npm install
 
-# 2. Configure environment
+# 2. 配置环境变量
 cp .env.example .env.local        # PowerShell: Copy-Item .env.example .env.local
-# then fill in the four values (see "Supabase setup" below)
+# 然后填写四个环境变量，见下方 “Supabase 配置”
 
-# 3. Run the dev server
+# 3. 启动开发服务器
 npm run dev
 ```
 
-Open http://localhost:3000. The public pages render once the database is set
-up; the admin area lives at `/admin`.
+打开 http://localhost:3000。数据库配置完成后，公开页面即可正常渲染；后台入口位于 `/admin`。
 
-## Supabase setup
+## Supabase 配置
 
-This project uses Supabase cloud (the free tier is enough). No Docker needed.
+本项目使用 Supabase 云端项目，免费额度即可。不需要 Docker。
 
-### 1. Create a project
+### 1. 创建项目
 
-Create a new project at https://supabase.com. Once it is ready, open
-**Project Settings → API** and copy these into `.env.local`:
+在 https://supabase.com 创建一个新项目。项目就绪后，打开 **Project Settings → API**，把以下值复制到 `.env.local`：
 
-| `.env.local` variable                   | Where to find it                          |
-| --------------------------------------- | ----------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`              | Project URL                               |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`  | Project API keys → publishable / anon key |
-| `SUPABASE_SECRET_KEY`                   | Project API keys → secret / service_role key |
+| `.env.local` 变量 | 获取位置 |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Project API keys → publishable / anon key |
+| `SUPABASE_SECRET_KEY` | Project API keys → secret / service_role key |
 
-`SUPABASE_SECRET_KEY` is server-only — never expose it to the browser.
+`SUPABASE_SECRET_KEY` 只能用于服务端，不能暴露给浏览器。
 
-### 2. Run the migrations
+### 2. 执行数据库迁移
 
-Open **SQL Editor** in the Supabase dashboard and run each file in
-`supabase/migrations/` **in filename order** (the timestamp prefix is the
-order). Paste the contents of one file, run it, then move to the next:
+打开 Supabase 控制台中的 **SQL Editor**，按文件名顺序执行 `supabase/migrations/` 下的每个 SQL 文件。文件名前缀中的时间戳就是执行顺序。每次粘贴一个文件的内容并运行，然后继续下一个文件：
 
-```
+```txt
 202606110001_private_server_access.sql
 202606110002_recent_plans.sql
 202606130001_site_settings_home_layout.sql
@@ -97,60 +84,50 @@ order). Paste the contents of one file, run it, then move to the next:
 202606270001_about_content.sql
 ```
 
-These create the tables, enable Row Level Security, revoke direct browser-role
-access to backend tables, provision the public `public-media` Storage bucket
-(images and audio) used by the album, image uploads, and music, and add the
-theme setting.
+这些迁移会创建所需表结构、启用 Row Level Security、撤销浏览器角色对后台表的直接访问权限、创建公开的 `public-media` Storage bucket（供相册、图片上传和音乐使用），并加入主题设置。
 
-### 3. Create the administrator
+### 3. 创建管理员
 
-This site has exactly one administrator and public sign-up is disabled.
+本网站只支持一个管理员，并且默认关闭公开注册。
 
-1. In Supabase, go to **Authentication → Users → Add user** and create your
-   admin account with an email and password.
-2. Copy that user's **User UID** and set it as `ADMIN_USER_ID` in `.env.local`.
+1. 在 Supabase 中进入 **Authentication → Users → Add user**，用邮箱和密码创建管理员账号。
+2. 复制该用户的 **User UID**，并写入 `.env.local` 的 `ADMIN_USER_ID`。
 
-Restart `npm run dev` after editing `.env.local`, then sign in at `/admin`.
+修改 `.env.local` 后，重启 `npm run dev`，然后访问 `/admin` 登录。
 
-## Scripts
+## 常用脚本
 
 ```bash
-npm run dev      # start the dev server
-npm run build    # production build
-npm run start    # serve the production build
-npm run lint     # ESLint
-npm test         # Vitest unit tests
+npm run dev      # 启动开发服务器
+npm run build    # 生产构建
+npm run start    # 启动生产构建
+npm run lint     # ESLint 检查
+npm test         # Vitest 单元测试
 ```
 
-## Project structure
+## 项目结构
 
-- `src/app/` — App Router routes, layouts, and global CSS entry.
-- `src/components/` — `chrome/` (nav/page tools), `home/`, `ui/`, and admin
-  components per domain (including `admin/music/` and the admin shell).
-- `src/lib/` — server-only domains and repositories (`auth`, `supabase`,
-  `plans`, `works`, `collections`, `featured-projects`, `photos`, `media`,
-  `music`, `site-settings`, `navigation`, `admin`).
-- `src/data/site-content.ts` — typed static display content and navigation.
-- `src/styles/design-tokens.css` — the design-system source of truth.
-- `supabase/migrations/` — ordered SQL migrations.
+- `src/app/`：App Router 路由、布局和全局 CSS 入口。
+- `src/components/`：共享组件，包括 `chrome/`（导航和页面工具）、`home/`、`ui/`，以及按业务域划分的后台组件（包括 `admin/music/` 和后台外壳）。
+- `src/lib/`：服务端专用业务域和仓储层，包括 `auth`、`supabase`、`plans`、`works`、`collections`、`featured-projects`、`photos`、`media`、`music`、`site-settings`、`navigation`、`admin`。
+- `src/data/site-content.ts`：类型化的静态展示内容和导航数据。
+- `src/styles/design-tokens.css`：设计系统的颜色、排版、间距、圆角、阴影和动效来源。
+- `supabase/migrations/`：按顺序执行的 SQL 迁移文件。
 
-See `AGENTS.md` for the full structure, design-system rules, component
-conventions, and security boundaries.
+完整的项目结构、设计系统规则、组件约定和安全边界见 `AGENTS.md`。
 
-## Security model
+## 安全模型
 
-Designed for a single-owner site, intentionally moderate (not enterprise):
+本项目面向单一站点所有者，安全设计为中等强度，目标不是企业级多租户系统：
 
-- Supabase Auth owns login and password recovery; public sign-up is disabled.
-- Every protected page and backend write re-verifies the administrator on the
-  server.
-- `SUPABASE_SECRET_KEY` and `ADMIN_USER_ID` stay server-only.
-- Backend tables enable RLS and deny direct `anon` / `authenticated` access;
-  public data is read and filtered by Next.js server code.
-- `.env.local` is git-ignored and must never be committed.
+- 登录和密码找回由 Supabase Auth 负责；公开注册默认关闭。
+- 每个受保护页面和后台写操作都会在服务端重新校验管理员身份。
+- `SUPABASE_SECRET_KEY` 和 `ADMIN_USER_ID` 必须只保存在服务端环境变量中。
+- 后台表启用 RLS，并拒绝 `anon` / `authenticated` 浏览器角色直接访问；公开数据由 Next.js 服务端代码读取并过滤。
+- `.env.local` 已被 Git 忽略，绝不能提交真实密钥。
 
-## Deployment
+## 部署
 
-Deploy to any Node host that supports Next.js (e.g. Vercel). Set the same four
-environment variables in the host's project settings. Point it at the same
-Supabase project whose migrations you have already run.
+可以部署到支持 Next.js 的托管平台。部署时需要在托管平台的项目设置中配置与本地相同的四个环境变量，并指向已经执行过迁移的同一个 Supabase 项目。
+
+如果部署到 Cloudflare Workers，请使用 OpenNext for Cloudflare 适配流程，并在 Cloudflare 控制台中同时配置构建阶段和运行时所需的环境变量 / Secrets。
