@@ -2,6 +2,8 @@
 
 这是一个可自托管的个人网站，同时也是私有内容管理系统。公开站点用于展示你的文章、近期计划、作品集、收藏链接、相册和音乐；受保护的后台区域则供单一站点所有者统一管理这些内容。
 
+A self-hosted personal website that doubles as a private content manager. The public site presents your writing, plans, portfolio, curated links, photo album, and music; a protected admin area lets a single owner manage all of it.
+
 项目基于 Next.js App Router 和 Supabase 构建，并内置可切换的视觉主题系统，包括偏暖的编辑部风格主题。
 
 > 这是一个开源个人网站模板。项目默认使用中性的占位内容，例如 “Your Name”。请通过后台和站点设置填写你的姓名、头衔、社交链接、关于页文本以及各类内容。
